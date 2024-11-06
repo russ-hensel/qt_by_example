@@ -1,0 +1,2 @@
+
+Group boxes ar just boxes in which other widgets can be placed for grouping

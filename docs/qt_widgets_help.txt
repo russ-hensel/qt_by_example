@@ -1,0 +1,92 @@
+This is the general help  -- do some consistent version with qt_sql ......
+
+
+This is a little app to demonstrate in a compact way the code used for pyqt Graphical User Interface Widgets.
+
+
+Use of widges involves several different programming aspects:
+
+    Widget creatation and the setting of widget properties.  These
+    properties govern widget appearance and behavior.
+
+    Connection widget events to actions
+
+    Reading of widget state, getting information about the widgets.
+
+    Placement of the widgets on windows.
+
+All of this involves a lot of code.  We will illustrate as much of it
+as we have energy for, hopefully what is here will be useful to you.
+
+The widgets have been divided into group that are shown on an individual
+tab.  Some tabs illustrate more than one type of widget.  In some cases
+a single widget may be shown on more than one tab.
+
+Each tab is itself a descandant of QWidget and coded in its own class.
+Hopefully this keep the code for a single widget in a fairly small easy
+to understand space.
+
+Of course to illustrate the use of widgets we need to use some widget
+to "hold" our illustrations.  This code may also be of use.  For example
+the construstion of tabs is illustrated by the framework of this application
+
+
+Overall App Illustrates:
+    Illustrates:
+        A main window  ( code in: QtWidgetExamplesInTabs or whatever i decide is a better name )
+        TabNotebook with a lot of individual tabs
+            Tabs show the ability to create, name, move, and close
+            plus other stuff shown in the code.
+
+
+
+
+
+Individual Tabs:
+
+    Each illustrates one or more widgets in a Tab.  Tabs are implemented as individual classes
+    to make the code easy to search.
+
+    Each tab is documented internally by comments, by text printed to the console when you
+    interact with the tab, and by a text file document, like this, for each tab.
+
+    Most tabs have buttons for:
+
+        Mutating the objects.
+
+        Inspecting the objects.
+        Breakpoint, breaking into the debugger in the objects code.
+
+
+
+
+
+Reading the code:
+
+    Since these are gui elements much of the info you need will be found in the widget method
+    build_gui
+
+    I sometimes have a Search comment at the top of the code to help you find code of interest
+
+
+
+
+
+
+
+            Try them, and read the docs for more information.
+
+
+
+
+Code Style
+
+    The code style is formatted the way i like it, far from PEP 8, run black... on it if you want.
+
+    The style is a bit pedantic, some code could be more compact, I am going for clarity here.
+
+    I have tried to use good names.... to make the code friendly to cut and paste...
+
+
+
+================= eof ===============

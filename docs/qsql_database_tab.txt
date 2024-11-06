@@ -1,0 +1,16 @@
+
+
+The application uses just one database.
+This tab relates to that database without widgets....
+
+
+Functionality
+
+    *Print out the data in all the tables.
+
+    * Rebuild the db from scratch (  also done every time the application
+        is started )
+
+    * Inspect
+
+    * Breakpoint

@@ -153,9 +153,48 @@ BEGIN_MARK_2  = uft.BEGIN_MARK_2
 
 
 
+# # ---------------------------------------
+def rr_w_crud_create_connection_and_dbxxx():
+    """
+    uses key gen later but this is jus static
+
+    """
+#     db = QSqlDatabase.addDatabase('QSQLITE')
+#     db.setDatabaseName( rr_w_crud_db_file )
+#     if not db.open():
+#         print("Unable to establish a database connection. {rr_w_crud_db_file}")
+#         return None
+
+#     query = QSqlDatabase.database().exec()
+
+#     # Create tables
+#     query.exec_("""CREATE TABLE department (
+#                     id INTEGER PRIMARY KEY,
+#                     name VARCHAR(20) NOT NULL)""")
+
+#     query.exec_("""CREATE TABLE employee (
+#                     id INTEGER PRIMARY KEY,
+#                     name VARCHAR(50) NOT NULL,
+#                     department_id INTEGER,
+#                     phone VARCHAR(50),
+#                     FOREIGN KEY (department_id) REFERENCES department(id))""")
+
+#     # Insert sample data
+#     query.exec_("INSERT INTO department (id, name) VALUES (100, 'HR')")
+#     query.exec_("INSERT INTO department (id, name) VALUES (101, 'Finance')")
+
+
+#     query.exec_("INSERT INTO employee (id, name, department_id, phone ) VALUES (200, 'Alice', 100,  '800 555-1212' )")
+#     query.exec_("INSERT INTO employee (id, name, department_id, phone ) VALUES (201, 'Bob',   101,  '800 555-1212' )")
+#     query.exec_("INSERT INTO employee (id, name, department_id, phone ) VALUES (202, 'Bobie',   101,  '800 555-0202' )")
+#     query.exec_("INSERT INTO employee (id, name, department_id, phone ) VALUES (203, 'Booby',   101,  '800 555-1212' )")
+#     query.exec_("INSERT INTO employee (id, name, department_id, phone ) VALUES (204, 'Robert',   101,  '800 555-2040')")
+
+
 def delete_db_file( file_name ):
     """
     will delete any file, but intended for db file
+
 
     """
     exists    = str( os.path.isfile( file_name ) )
@@ -173,6 +212,7 @@ def delete_db_file( file_name ):
     else:
         print( f"file already gone  {file_name}")
 
+
 # -------------------------------------
 class SampleDB():
     """
@@ -181,36 +221,33 @@ class SampleDB():
         global DB_OBJECT    this object
 
 
+
+    From Chat code now modified :
+        Here’s a complete example of how to create a SQLite database with
+        two tables: people and people_phones, which have a one-to-many relationship.
+        The people table contains personal information, and the people_phones
+        table contains multiple phone numbers for each person.
+        The primary keys for both tables are integers.
+
+        access as .db
     """
     #-------------------
     def __init__( self ):
         """
-        The ususal
         """
-        self.db    = None
-        self.reset()
-
-    #------------
-    def reset( self, ):
-        """
-        Reset and rebuild the db
-        """
+        self.db     = None
         self.create_connection()
         self.create_populate_tables()
 
+
+
     #------------
     def create_connection( self, ):
-        """
-        Create a SQLite database connection.
-        """
+        """Create a SQLite database connection."""
         global EXAMPLE_DB
         global DB_OBJECT
 
-        if self.db is not None:
-            self.db.close()
-            self.db    = None  # or delete
-
-        if DB_FILE    !=  ':memory:':
+        if DB_FILE       !=  ':memory:':
             # delete for a fresh start
             pass
             delete_db_file( DB_FILE )
@@ -241,6 +278,7 @@ class SampleDB():
 
         self.create_book_club_table()
         self.populate_book_club_table()
+
 
     # ---------------------------
     def create_people_table( self, ):
@@ -274,14 +312,14 @@ class SampleDB():
         query   = QSqlQuery( self.db )
 
         table_data = [
-            ("Alice",   25,   "Aunt"      ),
+            ("Alice",   25,   "Aunt"     ),
             ("Bob",     30,   "Father"    ),
             ("Charlie", 35,   "Daughter"  ),
             ("David",   40,   "Daughter2" ),
-            ("James",   28,   "Aunt"      ),
-            ("Jim",     28,   "Son"       ),
-            ("Judy",    28,   "Sun"       ),
-            ("Jo",      29,   "God"       ),
+            ("James",   28,   "Aunt"     ),
+            ("Jim",     28,   "Son"      ),
+            ("Judy",    28,   "Sun"      ),
+            ("Jo",      29,   "God"      ),
         ]
 
         sql  =   """INSERT INTO people (
@@ -430,7 +468,7 @@ class SampleDB():
     #------------
     def populate_people_book_club_data( self, ):
         """
-        what it says
+
         """
         query = QSqlQuery( self.db )
 
@@ -457,12 +495,13 @@ class SampleDB():
             query.addBindValue(family_relation)
             query.exec_()
 
+
     #------------
     def query_print_people( self, ):
         """
-        Print out the table
+        SampleDB.query_dataQuery and print data from the tables.
         """
-        what    = "query_print_people"
+        what    = "create_people_table"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         query           = QSqlQuery( self.db )
@@ -480,13 +519,14 @@ class SampleDB():
     #------------
     def query_print_phone( self, ):
         """
-        !!Print out the table
+        SampleDB.query_dataQuery and print data from the tables.
         """
         what    = "query_print_phone"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         query           = QSqlQuery( self.db )
 
+        # Query all people
         print("people_phones_data table:")
         query.exec_("SELECT id, person_id, phone_number, zone FROM people_phones")
         while query.next():
@@ -499,13 +539,13 @@ class SampleDB():
     #------------
     def query_print_people_phone( self, ):
         """
-        Print a join of people and people_phones
+        this is a join of people and people_phones
         """
         what    = "query_print_people_phone"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         query           = QSqlQuery( self.db )
-
+        # Query all phone numbers associated with people
         print("\nPeople and their phone numbers: join of people and people_phones")
 
         query.exec_("""
@@ -523,7 +563,6 @@ class SampleDB():
 # -------------------------------------
 class KeyGen():
     """
-    This is a key generator, may use in future or not
     """
     #-------------------
     def __init__( self ):
@@ -537,9 +576,178 @@ class KeyGen():
         """
         """
         self.ix_keys  += 1
+        return self.keys[ self.ix_keys ]
 
-        return self.ix_keys
 
+#-----------------------------------------------
+class FilterProxyModelContent( QSortFilterProxyModel ):
+    """
+    from chat seems to filter based on content
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    # Custom filtering method to hide specific rows
+    def filterAcceptsRow(self, source_row, source_parent):
+        # Example condition: hide rows where column 0 value is "HideMe"
+        source_model    = self.sourceModel()
+        index           = source_model.index(source_row, 0, source_parent)
+        value           = source_model.data(index, Qt.DisplayRole)
+
+        # Return True to keep the row, False to hide it
+        return value != "HideMe"
+
+
+
+class DateDelegate( QStyledItemDelegate ):
+    """
+    example from chat of a delegate
+    for DelegateTab
+
+    """
+
+    def createEditor(self, parent, option, index):
+        editor = QDateEdit(parent)
+        editor.setDisplayFormat('yyyy-MM-dd')
+        editor.setCalendarPopup(True)
+        return editor
+
+    def setEditorData(self, editor, index):
+        # Get the current data from the model and set it into the editor
+        date_str = index.model().data(index, Qt.EditRole)
+        date = QDate.fromString(date_str, 'yyyy-MM-dd')
+        editor.setDate(date)
+
+    def setModelData(self, editor, model, index):
+        # When the editor is done, save the data back to the model
+        date = editor.date().toString('yyyy-MM-dd')
+        model.setData(index, date, Qt.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        # Position the editor correctly within the cell
+        editor.setGeometry(option.rect)
+
+
+#-----------------------------------------------
+class DelegateToLineEditsTab( QWidget ):
+    """
+    here build a tab in its own class to hide its variables
+    and have its own namespace
+    this delegate interacts with a line edits
+    """
+    def __init__(self, ):
+        """
+        """
+        super().__init__( )
+
+        if not self.create_tab_connection():
+            sys.exit(-1)
+
+        self.build_tab()
+        # Create a QSqlTableModel and set it to the people table
+        self.row_index  = 0   # row we will edit
+
+        model           = QSqlTableModel( self, self.db )
+        self.model      = model
+        model.setTable('people')
+        model.select()  # Load the data into the model
+        self.load_data()
+
+        # Create a form widget that works with the first row (index 0)
+        #form = FormWidget(model, 0)
+        #form.setWindowTitle('Edit Person Record')
+        #form.show()
+# ----------
+
+#     class FormWidget(QWidget):
+#         def __init__(self, model, row_index):
+#             super().__init__()
+#             self.model = model
+#             self.row_index = row_index
+
+#             self.init_ui()
+#             self.load_data()
+
+
+# ---------------
+
+
+    #-----------------------------------------------
+    def build_tab(self,   ):
+        """
+
+        """
+        self.init_ui()
+
+    #-----------------------------------------------
+    def create_tab_connection( self ):
+        db = QSqlDatabase.addDatabase('QSQLITE')
+        self.db    = db
+        db.setDatabaseName(':memory:')  # Use an in-memory database for testing purposes
+        if not db.open():
+            print("Unable to open database")
+            return False
+
+        # Create a test table and populate it with some data
+        query = db.exec_("""
+            CREATE TABLE people (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                dob TEXT,
+                occupation TEXT
+            );
+        """)
+
+        query = db.exec_("""
+            INSERT INTO people (name, dob, occupation) VALUES
+            ('Alice', '1990-04-20', 'Engineer'),
+            ('Bob', '1985-11-30', 'Designer'),
+            ('Charlie', '1992-06-15', 'Developer');
+        """)
+
+        return True
+
+    def init_ui(self):
+        self.layout = QVBoxLayout()
+
+        # Create QLineEdit widgets
+        self.name_edit = QLineEdit(self)
+        self.dob_edit  = QLineEdit(self)
+        self.occupation_edit = QLineEdit(self)
+
+        # Add labels and line edits to the layout
+        self.layout.addWidget(QLabel("Name"))
+        self.layout.addWidget(self.name_edit)
+        self.layout.addWidget(QLabel("Date of Birth"))
+        self.layout.addWidget(self.dob_edit)
+        self.layout.addWidget(QLabel("Occupation"))
+        self.layout.addWidget(self.occupation_edit)
+
+        # Button to submit changes
+        self.submit_button = QPushButton('Submit Changes')
+        self.submit_button.clicked.connect(self.submit_changes)
+
+        self.layout.addWidget(self.submit_button)
+
+        self.setLayout(self.layout)
+
+    def load_data(self):
+        """Load data from the model into the QLineEdits."""
+        self.name_edit.setText(self.model.index(self.row_index, 1).data())
+        self.dob_edit.setText(self.model.index(self.row_index, 2).data())
+        self.occupation_edit.setText(self.model.index(self.row_index, 3).data())
+
+    def submit_changes(self):
+        """Submit changes back to the model and database."""
+        self.model.setData(self.model.index(self.row_index, 1), self.name_edit.text())
+        self.model.setData(self.model.index(self.row_index, 2), self.dob_edit.text())
+        self.model.setData(self.model.index(self.row_index, 3), self.occupation_edit.text())
+
+        # Submit the changes to the database
+        if self.model.submitAll():
+            print("Changes submitted successfully!")
+        else:
+                print(f"Error submitting changes: {self.model.lastError().text()}")
 
 #-----------------------------------------------
 class TableModelTab( QWidget ):
@@ -630,10 +838,10 @@ class TableModelTab( QWidget ):
         widget.clicked.connect(self.table_model_inspect )
         button_layout.addWidget( widget )
 
-        # widget        = QPushButton('Info/Help')
-        # connect_to      = partial( AppGlobal.os_open_txt_file,  txt_file = "table_model.txt" )
-        # widget.clicked.connect( connect_to )
-        # button_layout.addWidget( widget )
+        widget        = QPushButton('Info/Help')
+        connect_to      = partial( AppGlobal.os_open_txt_file,  txt_file = "table_model.txt" )
+        widget.clicked.connect( connect_to )
+        button_layout.addWidget( widget )
 
         return tab_page
 
@@ -915,10 +1123,7 @@ class TableModelTab( QWidget ):
         return ix_found
 
 
-# print( "!! next not completed")
-
-
-
+print( "!! next not completed")
 #-----------------------------------------------
 class QSqlQueryTab( QWidget ):
     """
@@ -980,9 +1185,92 @@ class QSqlQueryTab( QWidget ):
             print(row_data)
 
 
+print( "!! next not completed")
+#-----------------------------------------------
+class QSqlQueryModelTab( QWidget ):
+    """
+    Yes, you can use a QSqlQueryModel to loop through all the rows of a
+    database table. While QSqlQueryModel is primarily a model class for
+    displaying read-only data in views like QTableView, you can
+    still access the data programmatically by iterating through the rows and columns.
+
+    Here’s an example of how to use QSqlQueryModel to loop through each row in the table.
+    """
+    def __init__(self, ):
+        """
+        """
+        super().__init__( )
+        self.build_tab()
+
+    #-----------------------------------------------
+    def build_tab(self,   ):
+        """
+
+        """
+        tab_page            = self
+        layout              = QVBoxLayout( tab_page )
+
+        table_widget        = QTableWidget(4, 5)  # row, column ??third arg parent
+        self.table_widget   = table_widget
+        layout.addWidget( table_widget )
+
+    def run_it( self, ):
+        """
+        from chat
+        """
+        #def loop_through_rows():
+        """Loop through rows using QSqlQueryModel."""
+
+        print( "need !! to set in db connect ")
+        model = QSqlQueryModel()
+
+        # Set the query to fetch data from the 'people' table
+        model.setQuery("SELECT * FROM people")
+
+        # or
+
+        model.setQuery("SELECT name, age FROM people")
+
+        # Check if the query executed successfully
+        if model.lastError().isValid():
+            print("Error: ", model.lastError().text())
+            return
+
+        # Loop through the rows of the model
+        for row in range(model.rowCount()):
+            # Extract data from each column in the current row
+            row_data = []
+            for col in range(model.columnCount()):
+                row_data.append(model.data(model.index(row, col)))
+
+            print(f"Row {row + 1}: {row_data}")
+
+        # or
+
 
 #-----------------------------------------------
 class QTableWidgetTab( QWidget ):
+    """
+    here build a tab in its own class to hide its variables
+    and have its own namespace
+    this delegate interacts with a view
+    """
+    def __init__(self, ):
+        """
+        """
+        super().__init__( )
+        self.build_tab()
+
+    #-----------------------------------------------
+    def build_tab(self,   ):
+        """
+
+        """
+        tab_page            = self
+        layout              = QVBoxLayout( tab_page )
+
+#-----------------------------------------------
+class QTableWidgetTab2( QWidget ):
     """
     here build a tab in its own class to hide its variables
     and have its own namespace
@@ -1011,7 +1299,7 @@ class QTableWidgetTab( QWidget ):
         for i in range( 4, 0,   -1 ):  # better match table
             for j in range( 5,  0, -1 ):  # col
                 # these items arguments must be strings
-                item     = QTableWidgetItem( "Cell ({}, {})".format( i, j) )
+                item     = QTableWidgetItem("Cell ({}, {})".format( i, j))
                 table_widget.setItem(i, j, item)
 
         ix_col   = 1
@@ -1019,7 +1307,7 @@ class QTableWidgetTab( QWidget ):
         # Set selection behavior and mode
 
         print( "how select_row works may depend on these ")
-        table_widget.setSelectionBehavior( QAbstractItemView.SelectRows )  # Can be SelectRows, SelectColumns, or SelectItems
+        table_widget.setSelectionBehavior(QAbstractItemView.SelectRows)  # Can be SelectRows, SelectColumns, or SelectItems
         # table_widget.setSelectionMode(QAbstractItemView.MultiSelection)  # Can be SingleSelection or MultiSelection
 
         # set row count works but messes up model
@@ -1150,6 +1438,20 @@ class QTableWidgetTab( QWidget ):
         """Select a specific column."""
         self.table_widget.selectColumn(col_index)
 
+    # #-----------------------------------------------
+    # def clicked( self, index: QModelIndex):
+    #     """
+    #     see on_cell_clicked
+    #     what it says,
+    #     index coms from table view
+    #     """
+    #     print( "clicked" )
+    #     model    = self.table_model
+    #     row      = index.row()
+    #     print( f"on_row_other_clicked {row = }")
+
+    #     self.select_row( row )
+    #     #self.add_ix_other( row )
 
     # ------------------------------
     def on_cell_clicked( self, row, col  ):
@@ -1200,6 +1502,13 @@ class QTableWidgetTab( QWidget ):
         # !! more research on args
         self.table_widget.sortItems (  1 , Qt.AscendingOrder  )
 
+    # ------------------------------
+    # def on_list_clicked( self  index: QModelIndex ): ) :
+    #     """
+    #     read it
+    #     """
+    #     msg   = "click headers to sort   "
+    #     print( msg )
 
     # ------------------------------
     def search(self, search_for   = "1," ):
@@ -1230,7 +1539,6 @@ class QTableWidgetTab( QWidget ):
             msg        = f"nothing found {search_for = }"
             print( msg )
 
-    #----------------------------
     def find_row_with_text( self  ):
         """
         read it
@@ -1249,7 +1557,6 @@ class QTableWidgetTab( QWidget ):
 
         return ix_found
 
-    #----------------------------
     def find_row_with_text_in_column(self, ):
         """
         might be faster
@@ -1273,14 +1580,489 @@ class QTableWidgetTab( QWidget ):
         return ix_found
 
 
+#-----------------------------------------------
+class DelegateTab( QWidget ):
+    """
+    here build a tab in its own class to hide its variables
+    and have its own namespace
+    this delegate interacts with a view
+    """
+    def __init__(self, ):
+        """
+        """
+        super().__init__( )
 
+        self.create_tab_connection()
+        self.build_tab()
+        self.model.select()
+
+    #-----------------------------------------------
+    def build_tab(self,   ):
+        """
+
+        """
+        tab_page      = self
+        layout        = QVBoxLayout( tab_page )
+
+        # # ---- QLabel
+        # widget  = QLabel("Qlabel 1")
+        # layout.addWidget( widget )
+
+        # self.qlabel_ex_1  = widget
+
+        # # ---- QLineEdit
+        # widget          = QLineEdit()
+        # widget.setText( "QLineEdit use set text to set value")
+        # layout.addWidget( widget )
+
+        # self.line_edit_ex_1        = widget
+
+        # # ---- QPushButton
+        # widget = QPushButton("QPushButton x")
+        # # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        # a_widget        = widget
+        # widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
+        # layout.addWidget( widget )
+
+        # self.button_ex_1         = widget
+
+        # # ---- QCheckBox
+        # widget      =  QCheckBox("I have a Cat")
+
+        # widget.animal = "Cat"   # monkey patch ??
+        # widget.setChecked(True)
+        # #widget.toggled.connect( self.cbox_clicked )
+
+        # layout.addWidget( widget )
+
+        #self.cbox_ex_1   = widget
+
+        # # ----  QRadioButton
+        # widget        = QRadioButton("AUSTRALIA")
+        # #radiobutton   = QRadioButton("AUSTRALIA")
+        # widget = QRadioButton('Left-Text Radio Button')
+        # widget.setChecked(True)  # Set as default selected
+        # widget.setLayoutDirection(Qt.RightToLeft)  # Set text layout direction to right-to-left textOnLeft
+        # layout.addWidget( widget )
+
+        # #def setup_model_and_view(): # ---- QLabel
+        # widget  = QLabel("Qlabel 1")
+        # layout.addWidget( widget )
+
+        # self.qlabel_ex_1  = widget
+
+        # # ---- QLineEdit
+        # widget          = QLineEdit()
+        # widget.setText( "QLineEdit use set text to set value")
+        # layout.addWidget( widget )
+
+        # self.line_edit_ex_1        = widget
+
+
+        # # ---- QCheckBox
+        # widget      =  QCheckBox("I have a Cat")
+
+        # widget.animal = "Cat"   # monkey patch ??
+        # widget.setChecked(True)
+        #widget.toggled.connect( self.cbox_clicked )
+
+
+        model           = QSqlTableModel(  self, self.db )
+        self.model      = model
+        model.setTable('people')
+        model.select()  # Load data into the model
+
+        table_view = QTableView()
+        table_view.setModel(model)
+
+        # Apply the date delegate to the 'dob' column (column index 1)
+        date_delegate = DateDelegate()
+        table_view.setItemDelegateForColumn( 1, date_delegate )
+
+        table_view.show()
+
+        layout.addWidget( table_view )
+
+        # ---- QLineEdit  can it hold some data, the date?
+        widget          = QLineEdit()
+        widget.setText( "QLineEdit use set text to set value")
+        layout.addWidget( widget )
+
+
+
+        # ---- QPushButton
+        widget              = QPushButton("QPushButton x")
+        self.button_ex_1    = widget
+        # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        a_widget        = widget
+        widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
+        layout.addWidget( widget )
+
+
+
+        #return table_view
+
+    def create_tab_connection( self ):
+        # Setup a connection to an SQLite database (for example)
+        db = QSqlDatabase.addDatabase('QSQLITE')
+        self.db    = db
+        db.setDatabaseName(':memory:')  # In-memory database, for demo purposes
+        if not db.open():
+            print("Unable to open database")
+            return False
+
+        # Create a sample table and insert data
+        query = db.exec_("""
+            CREATE TABLE people (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                dob TEXT,
+                occupation TEXT
+            );
+        """)
+
+        query = db.exec_("""
+            INSERT INTO people (name, dob, occupation) VALUES
+            ('Alice', '1990-04-20', 'Engineer'),
+            ('Bob', '1985-11-30', 'Designer'),
+            ('Charlie', '1992-06-15', 'Developer');
+        """)
+
+        return True
+
+
+#-----------------------------------------------
+class DataMapperTab( QWidget ):
+    """
+    here build a tab in its own class to hide its variables
+
+    """
+    def __init__(self, ):
+        """
+        """
+        super().__init__( )
+
+        self. create_tab_connection()
+
+        # Create a QSqlTableModel and set it to the people table
+        model       = QSqlTableModel( self, self.db )
+        self.model  = model
+        model.setTable('people')
+        model.select()  # Load the data into the model
+
+        self.row_index = 1
+
+        self.build_tab()
+
+    #-----------------------------------------------
+    def build_tab(self,   ):
+        """
+
+        """
+        tab_page      = self
+        layout        = QVBoxLayout( tab_page )
+        self.layout   = layout
+
+        button_layout = QHBoxLayout( tab_page )
+
+
+        # Create QLineEdit widgets
+        self.name_edit          = QLineEdit(self)
+        self.dob_edit           = QLineEdit(self)
+        self.occupation_edit    = QLineEdit(self)
+
+        # Add labels and line edits to the layout
+        layout.addWidget(QLabel("Name"))
+        layout.addWidget(self.name_edit)
+        self.layout.addWidget(QLabel("Date of Birth"))
+        self.layout.addWidget(self.dob_edit)
+        self.layout.addWidget(QLabel("Occupation"))
+        self.layout.addWidget(self.occupation_edit)
+
+        layout.addLayout( button_layout )
+        # Button to submit changes
+        self.submit_button = QPushButton('Submit Changes')
+        self.submit_button.clicked.connect(self.submit_changes)
+        button_layout.addWidget(self.submit_button)
+
+        # ---- QPushButton
+        widget = QPushButton(">Next")
+        # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        widget.clicked.connect( lambda: self.goto_next( ) )
+        button_layout.addWidget( widget )
+
+
+        # ---- QPushButton
+        widget = QPushButton("<Prior")
+        # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        widget.clicked.connect( lambda: self.goto_prior( ) )
+        button_layout.addWidget( widget )
+
+
+        # ---- data mapper
+        # Set up QDataWidgetMapper
+        self.mapper = QDataWidgetMapper(self)
+        self.mapper.setModel(self.model)
+
+        # Map the fields to the respective columns
+        self.mapper.addMapping(self.name_edit,       1)  # Column 1: "name"
+        self.mapper.addMapping(self.dob_edit,        2)   # Column 2: "dob"
+        self.mapper.addMapping(self.occupation_edit, 3)  # Column 3: "occupation"
+
+        # Set the row to display and map data to the widgets
+        self.mapper.setCurrentIndex( self.row_index )
+
+    # -----------------------------
+    def submit_changes(self):
+        """
+        Submit changes back to the database.
+        """
+        # Submit the changes to the model and the database
+        self.mapper.submit()
+        if self.model.submitAll():
+            print("Changes submitted successfully!")
+        else:
+            print(f"Error submitting changes: {self.model.lastError().text()}")
+
+    # -----------------------------
+    def goto_next(self):
+        """
+        readme
+        """
+        self.row_index += 1
+        self.mapper.setCurrentIndex( self.row_index )
+        print( f"{self.row_index = }")
+
+    # -----------------------------
+    def goto_prior(self):
+        """
+        readme
+        """
+        self.row_index -= 1
+        self.mapper.setCurrentIndex( self.row_index )
+        print( f"{self.row_index = }")
+
+
+    #-----------------------------------------------
+    def create_tab_connection( self ):
+        # Setup a connection to an SQLite database (for example)
+        pass
+
+    #def create_connection():
+        db = QSqlDatabase.addDatabase('QSQLITE')
+        self.db     = db
+        db.setDatabaseName(':memory:')  # Use an in-memory database for testing purposes
+        if not db.open():
+            print("Unable to open database")
+            return False
+
+        # Create a test table and populate it with some data
+        query = db.exec_("""
+            CREATE TABLE people (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                dob TEXT,
+                occupation TEXT
+            );
+        """)
+
+        query = db.exec_("""
+            INSERT INTO people (name, dob, occupation) VALUES
+            ('Alice', '1990-04-20', 'Engineer'),
+            ('Bob', '1985-11-30', 'Designer'),
+            ('Charlie', '1992-06-15', 'Developer');
+        """)
+
+        return True
+
+
+
+
+
+# Custom Delegate for Occupation
+class OccupationDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        # Assuming the third column (occupation) needs a combo box
+        if index.column() == 3:
+            combo = QComboBox(parent)
+            combo.addItems(['Engineer', 'Designer', 'Developer', 'Manager', 'Other'])
+            return combo
+        return super().createEditor(parent, option, index)
+
+    def setEditorData(self, editor, index):
+        if isinstance(editor, QComboBox) and index.column() == 3:
+            value = index.model().data(index, Qt.DisplayRole)
+            editor.setCurrentText(value)
+        else:
+            super().setEditorData(editor, index)
+
+    def setModelData(self, editor, model, index):
+        if isinstance(editor, QComboBox) and index.column() == 3:
+            model.setData(index, editor.currentText())
+        else:
+            super().setModelData(editor, model, index)
+
+
+#-----------------------------------------------
+class DataMapperDelegateTab( QWidget ):
+    """
+    here build a tab in its own class to hide its variables
+
+    """
+    def __init__(self, ):
+        """
+        """
+        super().__init__( )
+        self.row_index = 0
+        self.create_tab_connection()
+
+        # Create a QSqlTableModel and set it to the people table
+        model           = QSqlTableModel( self, self.db )
+        self.model      = model
+        model.setTable('people')
+        model.select()  # Load the data into the model
+
+
+        self.build_tab()
+
+
+    #-----------------------------------------------
+    def build_tab(self,   ):
+        """
+
+        """
+        tab_page      = self
+        layout        = QVBoxLayout( tab_page )
+        self.layout   = layout
+        #move here self.init_ui()
+
+        # def init_ui(self):
+        #self.setWindowTitle("Edit Person Record")
+
+        # self.layout = QVBoxLayout()
+
+        # Create QLineEdit widgets
+        self.name_edit = QLineEdit(self)
+        self.dob_edit = QLineEdit(self)
+        self.occupation_combo = QComboBox(self)
+
+        # Add labels and line edits to the layout
+        self.layout.addWidget(QLabel("Name"))
+        self.layout.addWidget(self.name_edit)
+        self.layout.addWidget(QLabel("Date of Birth"))
+        self.layout.addWidget(self.dob_edit)
+        self.layout.addWidget(QLabel("Occupation"))
+        self.layout.addWidget(self.occupation_combo)
+
+        # Button to submit changes
+        self.submit_button = QPushButton('Submit Changes')
+        self.submit_button.clicked.connect(self.submit_changes)
+        self.layout.addWidget(self.submit_button)
+
+        # # Central widget setup
+        # central_widget = QWidget()
+        # central_widget.setLayout(self.layout)
+        # self.setCentralWidget(central_widget)
+
+        # Set up QDataWidgetMapper
+        self.mapper = QDataWidgetMapper(self)
+        self.mapper.setModel( self.model )
+
+        # Map the fields to the respective widgets
+        self.mapper.addMapping(self.name_edit, 1)  # Column 1: "name"
+        self.mapper.addMapping(self.dob_edit, 2)   # Column 2: "dob"
+        self.mapper.addMapping(self.occupation_combo, 3)  # Column 3: "occupation"
+
+        # Set up custom delegate for the entire mapper
+        delegate = OccupationDelegate(self)
+        self.mapper.setItemDelegate(delegate)
+
+        # Set the row to display and map data to the widgets
+        self.mapper.setCurrentIndex(self.row_index)
+
+    def two_way_to_remove_mapper(self):
+        """
+        from chat not tested
+        """
+        # Disconnect the mapper from the model
+        self.mapper.setModel( None )
+
+        # Clear the mappings
+        self.mapper.clearMapping()
+
+        # Optionally, clear any custom delegate
+        self.mapper.setItemDelegate( None )
+
+    def create_tab_connection( self ):
+        # Setup a connection to an SQLite database (for example)
+
+        db = QSqlDatabase.addDatabase('QSQLITE')
+        self.db     = db
+        db.setDatabaseName(':memory:')  # In-memory database for testing
+        if not db.open():
+            print("Unable to open database")
+            return False
+
+        # Create a test table and insert data
+        query = db.exec_("""
+            CREATE TABLE people (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                dob TEXT,
+                occupation TEXT
+            );
+        """)
+        query = db.exec_("""
+            INSERT INTO people (name, dob, occupation) VALUES
+            ('Alice', '1990-04-20', 'Engineer'),
+            ('Bob', '1985-11-30', 'Designer'),
+            ('Charlie', '1992-06-15', 'Developer');
+        """)
+        return True
+
+
+    def submit_changes(self):
+        """Submit changes back to the database."""
+        # Submit the changes to the model and the database
+        self.mapper.submit()
+        if self.model.submitAll():
+            print("Changes submitted successfully!")
+        else:
+            print(f"Error submitting changes: {self.model.lastError().text()}")
+
+
+# def main():
+#     app = QApplication(sys.argv)
+
+#     # Create database connection
+#     if not create_connection():
+#         sys.exit(-1)
+
+
+
+
+#-----------------------------------------------
+class FilterProxyModelHideRows(QSortFilterProxyModel):
+    def __init__(self, rows_to_hide=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Store the list of row indices to hide
+        self.rows_to_hide = rows_to_hide if rows_to_hide is not None else []
+
+    # Custom filtering method to hide specific rows
+    def filterAcceptsRow(self, source_row, source_parent):
+        # Hide the row if its index is in the rows_to_hide list
+        return source_row not in self.rows_to_hide
+
+    # Method to update the list of rows to hide
+    def setRowsToHide(self, rows):
+        self.rows_to_hide = rows
+        self.invalidateFilter()  # Reapply the filter to update the view
 
 # ---- new redoing work under way or even done ** ------------------------------------------------
 #-----------------------------------------------
 class QSqlDatabaseTab( QWidget ):
     """
     for the basic dabase object
-    SampleDB()     QSqlDatabase    query
     """
     def __init__(self, ):
         """
@@ -1293,7 +2075,7 @@ class QSqlDatabaseTab( QWidget ):
     #-----------------------------------------------
     def build_tab( self, ):
         """
-        what it says
+
         """
         self.table_model_is_hidden  = False
 
@@ -1304,10 +2086,10 @@ class QSqlDatabaseTab( QWidget ):
         layout.addLayout( button_layout )
 
         # ---- PB rebuild_db
-        widget              = QPushButton( "rebuild_db\n ")
+        widget              = QPushButton("rebuild_db\n ")
         self.button_ex_1    = widget
-        widget.clicked.connect( self.rebuild_db )
-
+        # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
         button_layout.addWidget( widget )
 
         # ---- PB print_db
@@ -1334,7 +2116,6 @@ class QSqlDatabaseTab( QWidget ):
         """ """
         what    = "breakpoint"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-
         breakpoint()
 
     # ------------------------
@@ -1360,9 +2141,11 @@ class QSqlDatabaseTab( QWidget ):
         what    = "print_db"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
+        #DB_OBJECT.query_data()
         DB_OBJECT.query_print_people()
         DB_OBJECT.query_print_phone()
         DB_OBJECT.query_print_people_phone()
+
 
     # ------------------------
     def rebuild_db(self):
@@ -1370,7 +2153,10 @@ class QSqlDatabaseTab( QWidget ):
         what    = "rebuild_db"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
-        DB_OBJECT.reset()
+
+
+
+        DB_OBJECT.query_data()
 
 #-----------------------------------------------
 class QSqlRelationalTableModelTab( QWidget ):
@@ -1381,6 +2167,7 @@ class QSqlRelationalTableModelTab( QWidget ):
         """
         """
         super().__init__( )
+
 
         self._build_model()
         self._build_gui()
@@ -1414,7 +2201,7 @@ class QSqlRelationalTableModelTab( QWidget ):
         # #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
         # button_layout.addWidget( widget )
 
-        widget            = QPushButton( "select_for\n_id" )
+        widget            = QPushButton("select_for\n_id")
         connect_to        = self.breakpoint
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
@@ -1424,6 +2211,7 @@ class QSqlRelationalTableModelTab( QWidget ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
+
         # ---- PB inspect
         widget              = QPushButton("inspect\n")
         # widget.clicked.connect(lambda: self.print_message(widget.text()))
@@ -1431,7 +2219,12 @@ class QSqlRelationalTableModelTab( QWidget ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
-        # ---- PB breakpoint
+        # widget              = QPushButton("Inspect\nia")
+        # # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        # connect_to        = self.inspect_ia
+        # widget.clicked.connect( connect_to )
+        # button_layout.addWidget( widget )
+
         widget            = QPushButton("breakpoint\n")
         connect_to        = self.breakpoint
         widget.clicked.connect( connect_to )
@@ -1609,12 +2402,13 @@ class QSqlTableModelTab( QWidget ):
         self._build_model()
         self._build_gui()
 
-        self.select_all()
+        self.people_model.select()  # Load the data into the model
+        self.phone_model.select()   # Load the data into the model
 
     # ------------------------------
     def _build_gui( self,   ):
         """
-        What it says
+
         """
         tab_page       = self
 
@@ -1629,15 +2423,16 @@ class QSqlTableModelTab( QWidget ):
         button_layout      = QHBoxLayout(   )
         layout.addLayout( button_layout )
 
-        # ---- PB select_all
-        widget              = QPushButton("select_all\n")
-        connect_to          = self.select_all
-        widget.clicked.connect( connect_to )
-        button_layout.addWidget( widget )
+        # # ---- QPushButton
+        # widget              = QPushButton("QPushButton\n x")
+        # self.button_ex_1    = widget
+        # # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        # #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
+        # button_layout.addWidget( widget )
 
         # ---- PB inspect
         widget              = QPushButton("inspect\n")
-        connect_to          = self.inspect
+        connect_to        = self.inspect
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
@@ -1740,29 +2535,9 @@ class QSqlTableModelTab( QWidget ):
 
     # -----------------------
     def add_record(self):
-        """
-        !!What it says
-        """
+        """ """
         what    = "add_record -- tbd"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-
-    # -----------------------
-    def delete_selected_record(self):
-        """
-        !!What it says
-        """
-        what    = "delete_selected_record -- tbd"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-
-
-    # -----------------------
-    def save(self):
-        """
-        !!What it says
-        """
-        what    = "add_record -- tbd"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-
 
     # # ------------------------
     # def print_data(self):
@@ -1777,15 +2552,6 @@ class QSqlTableModelTab( QWidget ):
     #     """ """
     #     what    = "print_data"
     #     print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-
-    # ------------------------
-    def select_all(self):
-        """ """
-        what    = "select_all"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-
-        self.people_model.select()  # Load the data into the model
-        self.phone_model.select()   # Load the data into the model
 
     # ------------------------
     def inspect(self):
@@ -1897,7 +2663,6 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
         title    = "Tab\nTBD>>"
         self.tab_widget.addTab( tab, title  )
 
-        # ---- QSqlDatabaseTab
         tab      = QSqlRelationalTableModelTab()
         title    = "QSqlRelationalTableModel\nTab"
         self.tab_widget.addTab( tab, title  )
@@ -1906,18 +2671,8 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
         tab      = uft.SeperatorTab()
         title    = "Tab\nPlanned>>"
         self.tab_widget.addTab( tab, title  )
+        #self.tab_help_dict[ title ] = "qsql_relational_table_model_tab.txt"
 
-        # ---- QSqlQueryTab
-        tab      =  QSqlQueryTab()
-        title    = "QSqlQueryTab\nTab"
-        self.tab_widget.addTab( tab, title  )
-        self.tab_help_dict[ title ] = "qsql_query_tab.txt"
-
-        # ---- QTableWidgetTab
-        tab      =  QTableWidgetTab()
-        title    = "QTableWidgetTab\nTab"
-        self.tab_widget.addTab( tab, title  )
-        self.tab_help_dict[ title ] = "q_table_widget_tab.txt"
 
         print( "later tabs are messing up the db beware")
 
@@ -1995,22 +2750,12 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
         menu_help       = menubar.addMenu( "Help" )
 
         action          = QAction( "General Help...", self )
-        connect_to      = partial( self.open_txt_file, "./docs/general_help_maybe.txt" )
+        connect_to      = self.open_general_help
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
         action          = QAction( "Current Tab Help...", self )
         connect_to      = self.open_tab_help
-        action.triggered.connect( connect_to )
-        menu_help.addAction( action )
-
-        action          = QAction( "Developer Notes...", self )
-        connect_to      = partial( self.open_txt_file, "readme_rsh.txt" )
-        action.triggered.connect( connect_to )
-        menu_help.addAction( action )
-
-        action          = QAction( "README.md...", self )
-        connect_to      = partial( self.open_txt_file, "README.md" )
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
@@ -2030,57 +2775,136 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
         self.sample_db          =  SampleDB()
 
     #-------
-    # def open_general_help( self,   ):
-    #     """
-    #     what it says read:
+    def open_general_help( self,   ):
+        """
+        what it says read:
 
-    #     """
-    #     doc_name        = f"{self.doc_dir}qsql_widgets_help.txt"
-    #     ex_editor       = r"xed"
-    #     proc            = subprocess.Popen( [ ex_editor, doc_name ] )
-
-
-
-    #     proc               = subprocess.Popen( [ ex_editor, doc_name ] )
+        """
+        doc_name        = f"{self.doc_dir}qsql_widgets_help.txt"
+        ex_editor       = r"xed"
+        proc            = subprocess.Popen( [ ex_editor, doc_name ] )
 
     #-------
     def open_tab_help( self,   ):
         """
         what it says read:
+            still needs work
         """
         tab_title           = self.tab_widget.tabText( self.tab_widget.currentIndex())
+        # print( f"{self.doc_dir}{tab_title = }")
+
         doc_name            = self.tab_help_dict.get( tab_title, "no_specific_help.txt")
         doc_name            = f"{self.doc_dir}{doc_name}"
         print( f"{doc_name = }")
         ex_editor          = r"xed"
-        #connect_to      = partial( AppGlobal.os_open_txt_file,  txt_file = "table_model.txt" )
 
-        self.open_txt_file( doc_name )
+        proc               = subprocess.Popen( [ ex_editor, doc_name ] )
 
     #-------
-    def open_txt_file( self, file_name  ):
+    def open_tab_helpxx( self,   ):
         """
-        what it says read
+        what it says read:
+            still needs work
+        """
+        tab_title    = self.tab_widget.tabText( self.tab_widget.currentIndex())
+        print( f"{tab_title = }")
+
+
+        doc_name  = self.tab_help_dict.get( tab_title, "no_specific_help.txt")
+        print( f"{doc_name = }")
+        ex_editor          = r"xed"
+
+        proc               = subprocess.Popen( [ ex_editor, doc_name ] )
+        #AppGlobal.os_open_txt_file( doc_name  )
+
+    # ---- mostly junk from here down ----------------------------------
+    #-----------------------------------------------
+    def build_list_widget_tab(self,   ):
+        """
+        should be in qt_widgets not here
+        """
+        tab_page      = QWidget()
+        layout        = QVBoxLayout( tab_page )
+
+        widget        = QListWidget(    )
+        widget.setGeometry( 50, 50, 200, 200 )
+        layout.addWidget( widget )
+
+        #widget.itemClicked.connect( self.activate_clicked_command )
+
+        values    =  [ "one", "two"]
+        for value in values:
+            item = QListWidgetItem( value )
+            widget.addItem( item )
+
+        widget.clear()
+
+        values    =  [ "oneish", "twoish"]
+        for value in values:
+            item = QListWidgetItem( value )
+            widget.addItem( item )
+            index_to_select = 2
+
+            widget.setCurrentRow(index_to_select)
+
+        ia_qt.q_list( widget )
+
+        return tab_page
+
+    #-----------------------------------------------
+    def build_db_tab( self, ):
         """
 
-        proc               = subprocess.Popen( [ TEXT_EDITOR, file_name ] )
+        """
+        tab_page      = QWidget()
+        layout        = QVBoxLayout( tab_page )
 
+        button_layout =  QHBoxLayout(   )
+        layout.addLayout( button_layout )
+
+        # self.line_edit_ex_1        = widget
+
+        # ---- QPushButton
+        widget = QPushButton("QPushButton x")
+        # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        a_widget        = widget
+        #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
+        button_layout.addWidget( widget )
+
+        # ---- QPushButton
+        widget = QPushButton("button 2")
+
+    #-----------------------------------------------
+    def build_group_tab(self,   ):
+        """
+        should not be here should be in qt_widgets
+        """
+        tab_page      = QWidget()
+        layout        = QVBoxLayout( tab_page )
+        # ---- QGroupBox
+        #groupbox   = QGroupBox()
+        groupbox   = QGroupBox( "QGroupBox 1" )   # version with title
+        layout.addWidget( groupbox )
+        layout_b     = QHBoxLayout( groupbox  )
+        self.build_gui_in_groupbox( layout_b )
+        return tab_page
 
 
 # ---- run and a few parameters
 # --------------------
 if __name__ == "__main__":
 
+    #DB_FILE     = "sample.db"    # let other tools access db
+    #DB_FILE     = ':memory:'   # for speed and no cleanup
 
-    TEXT_EDITOR   = "xed"
-    # ---- quasi constants  -- one time setup per run
-    # control with comments
+    # ---- quasi constants  -- one time setup
     DB_FILE       = "sample.db"
-    DB_FILE       =  ':memory:'
+    # DB_FILE       =  ':memory:'
 
     # next will be created and populated
     EXAMPLE_DB    = None  # populated later anyone can connect to this it is open
     DB_OBJECT     = None  # for its onwn functions
+
 
     app         = QApplication(sys.argv)
     dialog      = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog

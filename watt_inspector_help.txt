@@ -1,0 +1,13 @@
+
+
+
+
+This should become the help for the wat_inspector.  A version of wat with a gui for
+running with pyqt5.
+
+
+
+See sample use in:
+
+        wat_app.py
+    wat_app.py

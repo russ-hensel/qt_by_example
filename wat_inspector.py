@@ -684,7 +684,6 @@ if __name__ == '__main__':
         #return  self.get_wat_str_old(  obj )
 
 
-
     def get_wat_str_old( self,  obj, options_dictxxx = None ):
         """
         might want to get exception info if it occurs
@@ -730,7 +729,6 @@ if __name__ == '__main__':
                 # Reset position if end is reached and no match
                 self.last_position = 0
 
-
     # ---------------------
     def search_up(self):
         search_text = self.line_edit.text()
@@ -747,13 +745,10 @@ if __name__ == '__main__':
                 self.last_position = self.text_edit.document().characterCount()
 
 
-
 # -----------------
 def ex_run_display_wat():
     ex_name  = "ex_run_display_wat"
-    print( f"{ex_h.begin_example( ex_name )}"
-            "\n   run several times         "
-            "\n\n" )
+
     app         = QApplication( sys.argv )  # Create the QApplication instance
     dialog      = DisplayWat( app )  # Create an instance of your custom QDialog
     #dialog.setup_go( io, globals()  )
@@ -781,29 +776,7 @@ def ex_run_display_wat():
 
     #dialog.setup_go( ex_helpers, None  )
 
-    ex_h.end_example( ex_name )
 
-
-# -----------------
-def ex_wat_inspect_q_sqlxxxxx():
-    ex_name  = "ex_inspect_q_sql"
-    print( f"{ex_h.begin_example( ex_name )}"
-            "\n    inspect a QSQLTable model     "
-            "\n\n" )
-
-
-    # ----------------------------------------
-    msg          = "  wat  "
-    obj          = make_qt_object.make_q_sql_table_model()
-    code_string  = '  wat(  sys )   '
-    ret  = ex_h.eval_and_print( msg          = msg,
-                                      code         = code_string,
-                                      as_locals    = locals(),
-                                      as_globals   = globals(), )
-
-    ex_h.end_example( ex_name )
-
-#ex_inspect_q_sql()
 
 
 
@@ -848,7 +821,6 @@ def get_traceback_list( msg = "get_traceback_list", print_it = True ):
         short_list (TYPE): DESCRIPTION.
 
     """
-
     stop_text = "main.py"
 
     #stop_text  File "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/debug_util.py", line 171, in call_tbl
@@ -877,11 +849,9 @@ def get_traceback_list( msg = "get_traceback_list", print_it = True ):
     return short_list
 
 
-
 def call_tbl():
     for i_item in get_traceback_list():
         print( i_item )
-
 
 
 # --------------------

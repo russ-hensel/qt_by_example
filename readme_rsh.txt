@@ -181,3 +181,41 @@ WHERE people.id = 2;
                 FOREIGN KEY(person_id) REFERENCES people(id) ON DELETE CASCADE
             )
         """)
+
+
+
+   #------------
+   def populate_people_phones_table( self, ):
+       """
+       Populate the people_phones table.
+       """
+       what    = "populate_people_phones_table"
+       print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+       query = QSqlQuery( self.db )
+
+       table_data = [
+           (1, "555-1234", "A"), (1, "555-5678", "B"), (1, "555-8765", "C"),
+           (2, "555-4321", "A"), (1, "555-8765", "B"), (2, "555-3456", "C"),
+           (3, "555-9876", "A"), (3, "555-1111", "B"), (3, "555-2222", "C"),
+           (4, "555-3333", "A"), (4, "555-4444", "B"), (4, "555-5555", "C"),
+           (5, "555-6666", "A"), (5, "555-7777", "B"), (5, "555-8888", "C"),
+           (5, "555-9999", "A"), (5, "555-0000", "B"), (5, "555-1235", "C"),
+           (2, "555-2345", "A"), (1, "555-3456", "B")
+       ]
+
+       sql   = """INSERT INTO people_phones (
+                     person_id,
+                     phone_number,
+                     zone )
+                    VALUES ( ?, ?, ? )
+       """
+
+       # this  is the positional style with bind values
+       for person_id, phone_number, zone in table_data:
+           query.prepare( sql )
+           # bind value for each ?
+           query.addBindValue( person_id )
+           query.addBindValue( phone_number)
+           query.addBindValue( zone )
+           query.exec_()

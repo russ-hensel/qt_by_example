@@ -36,7 +36,7 @@ from PyQt5.QtWidgets import (
 
 
 INDENT        = "    "   # {INDENT}
-BEGIN_MARK_1  = "\n------------ "
+BEGIN_MARK_1  = "\n\n------------ "
 BEGIN_MARK_2  =  " ------------ "    # uft.
 
 
@@ -46,12 +46,15 @@ class SeperatorTab( QWidget ):
     """
     utils_for_tabs.py
     """
-    def __init__(self, ):
+    def __init__(self, msg = None ):
         """
         """
         super().__init__( )
-
+        if msg is None:
+            msg         = "This tab indicates the status of the tabs to the right --->"
+            self.msg    = msg
         self._build_gui()
+
     # ------------------------------
     def _build_gui( self,   ):
         """
@@ -61,6 +64,9 @@ class SeperatorTab( QWidget ):
 
         layout        = QVBoxLayout( tab_page )
         self.layout   = layout
+
+        widget  = QLabel( self.msg )
+        layout.addWidget( widget )
 
 
 # ------------------------

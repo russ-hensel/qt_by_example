@@ -62,7 +62,7 @@ You can call wat.modifiers / foo with the following modifiers:
 
 # ---- Imports
 
-import adjust_path
+#import adjust_path
 
 
 # ---- imports neq qt

@@ -63,7 +63,7 @@ Examples of the qtsql widgets in use
 
 
 
-import adjust_path  # leave above imports
+#import adjust_path  # leave above imports
 
 # ---- imports
 
@@ -75,7 +75,7 @@ import subprocess
 import sys
 from subprocess import PIPE, STDOUT, Popen, run
 
-
+#from app_global import AppGlobal
 from PyQt5 import QtGui
 from PyQt5.QtCore import (QDate, QModelIndex, QSize, QSortFilterProxyModel, Qt,
                           QTimer)
@@ -83,6 +83,11 @@ from PyQt5.QtCore import (QDate, QModelIndex, QSize, QSortFilterProxyModel, Qt,
 from PyQt5.QtSql import (QSqlDatabase, QSqlQuery, QSqlQueryModel, QSqlRelation,
                          QSqlRelationalDelegate, QSqlRelationalTableModel,
                          QSqlTableModel)
+
+
+from PyQt5.QtSql import QSqlRecord, QSqlField
+
+
 # widgets biger
 # widgets -- small
 # layouts
@@ -109,8 +114,8 @@ from functools import partial
 # sys.path.append( r"D:\Russ\0000\python00\python3\_projects\rshlib"  )
 # sys.path.append( "../")  # not working today vscode
 # sys.path.insert( 1, "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib" )
-
-
+# import ex_helpers
+# import gui_qt_ext
 
 import utils_for_tabs as uft
 import wat_inspector
@@ -142,8 +147,6 @@ rr_w_crud_db_file     = ':memory:'
 
 
 basedir = os.path.dirname(__file__)
-
-
 
 
 
@@ -1411,13 +1414,18 @@ class QSqlRelationalTableModelTab( QWidget ):
         # #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
         # button_layout.addWidget( widget )
 
-        widget            = QPushButton( "select_for\n_id" )
-        connect_to        = self.breakpoint
+        widget            = QPushButton( "select_for\n_all" )
+        connect_to        = self.select_all
+        widget.clicked.connect( connect_to )
+        button_layout.addWidget( widget )
+
+        widget            = QPushButton( "select_\n_some" )
+        connect_to        = self.select_some
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
         widget            = QPushButton("insert\n_record")
-        connect_to        = self.breakpoint
+        connect_to        = self.add_record
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
@@ -1434,11 +1442,21 @@ class QSqlRelationalTableModelTab( QWidget ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
-
     # ------------------------------
     def _build_model( self,   ):
         """
         build model and views if used here
+
+        sql behind this should be:
+            SELECT
+                people.id,
+                people.name,
+                people.age,
+                people.family_relation,
+                people_phones.phone_number
+            FROM people
+            LEFT JOIN people_phones ON people.id = people_phones.person_id
+
 
         """
 
@@ -1459,6 +1477,12 @@ class QSqlRelationalTableModelTab( QWidget ):
             #                                               # columns to fitch.display
         )
 
+        column_index = model.fieldIndex( "age" )  # Get the column index for "name"
+        print( f"{column_index = }")
+        model.setSort( column_index , Qt.AscendingOrder)  # seems needs to be index no
+            # is this working ??
+
+
         # Set headers -- claud
         model.setHeaderData(0, Qt.Horizontal, "ID")
         model.setHeaderData(1, Qt.Horizontal, "Name")
@@ -1472,7 +1496,7 @@ class QSqlRelationalTableModelTab( QWidget ):
         # Configure headers and load data
         # self.model.setEditStrategy(QSqlRelationalTableModel.OnFieldChange)
         model.setEditStrategy(QSqlRelationalTableModel.OnManualSubmit)
-        model.select()
+        self.select_all()
 
         # Setup table view and add it to the layout
         view        = QTableView()
@@ -1482,7 +1506,7 @@ class QSqlRelationalTableModelTab( QWidget ):
         # Adjust view properties
         view.resizeColumnsToContents()
         view.setAlternatingRowColors(True)
-        view.setSortingEnabled(True)
+        view.setSortingEnabled(True)    # is thid click on header?
 
 
 
@@ -1536,14 +1560,49 @@ class QSqlRelationalTableModelTab( QWidget ):
 
     # -----------------------
     def add_record(self):
-        """ """
+        """
+            SELECT
+                people.id,
+                people.name,
+                people.age,
+                people.family_relation,
+                people_phones.phone_number
+            FROM people
+            LEFT JOIN people_phones ON people.id = people_phones.person_id
+
+
+"""
         what    = "add_record -- tbd"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+        model     = self.model
+
+        # Assuming `model` is your QSqlRelationalTableModel instance for the `people` table
+
+        # Create a new empty record for the 'people' table
+        new_record      = model.record()
+
+        # Set values for each field in the new record
+        new_record.setValue("id", 123)                # Replace 123 with the actual ID value
+        new_record.setValue("name", "John Doe")       # Set name
+        new_record.setValue("age", 30)                # Set age
+        new_record.setValue("family_relation", "Brother")  # Set family relation
+
+        # Insert the new record at the end of the table
+        if model.insertRecord(-1, new_record):
+            # Try to submit all changes to the database
+            if model.submitAll():
+                print("Record inserted and changes committed to the database.")
+            else:
+                print("Error committing changes:", model.lastError().text())
+        else:
+            print("Error inserting record:", model.lastError().text())
+        pass # for debug
 
     # ------------------------
     def xxxx(self):
         """ """
-        what    = "print_data"
+        what    = "xxxx"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         DB_OBJECT.query_data()
@@ -1555,6 +1614,31 @@ class QSqlRelationalTableModelTab( QWidget ):
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
         breakpoint()
 
+    # ------------------------
+    def select_all(self):
+        """ """
+        what    = "select_all greater than joe"
+        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+        model        = self.model
+        column_index = model.fieldIndex( "age" )  # Get the column index for "name"
+        print( f"for sorting {column_index = }")
+        model.setSort( column_index , Qt.AscendingOrder)  # seems needs to be index no
+
+
+        model.setFilter( "" )
+        model.select()
+
+    # ------------------------
+    def select_some(self):
+        """ """
+        what    = "select_some"
+        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+        self.model.setFilter('name < LOWER( "aaa" ) '   )  # which is greaterr
+
+
+        self.model.select()
     # ------------------------
     def do_selections(self):
         """ """
@@ -1570,12 +1654,12 @@ class QSqlRelationalTableModelTab( QWidget ):
         # make some locals for inspection
         my_tab_widget = self
         parent_window = self.parent( ).parent( ).parent().parent()
-        a_db          = parent_window.sample_db
-        model         = self.people_model
-        view          = self.people_view
+        a_db                    = parent_window.sample_db
+        local_self_model        = self.model
+        local_self_view         = self.view
         wat_inspector.go(
              msg            = "self.model from inspect method",
-             inspect_me     = self.people_model,
+             #inspect_me     = self.people_model,
              a_locals       = locals(),
              a_globals      = globals(), )
 
@@ -2061,9 +2145,7 @@ class QtSqlWidgetExamples( QMainWindow ):
         """
         what it says read
         """
-
         proc               = subprocess.Popen( [ TEXT_EDITOR, file_name ] )
-
 
 
 # ---- run and a few parameters
@@ -2075,7 +2157,7 @@ if __name__ == "__main__":
     # ---- quasi constants  -- one time setup per run
     # control with comments
     DB_FILE       = "sample.db"
-    DB_FILE       =  ':memory:'
+    #DB_FILE       =  ':memory:'
 
     # next will be created and populated
     EXAMPLE_DB    = None  # populated later anyone can connect to this it is open

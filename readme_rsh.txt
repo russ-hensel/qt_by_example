@@ -7,9 +7,8 @@ Maybe there is something useful here or not
 
 
 
------------------- chat ----------------------
-can you give me the pyqt5 code for a QSqlRelationalTableModel
-and view that implements the following sql?
+------------------ xxx ----------------------
+
 
 
 SELECT
@@ -21,78 +20,50 @@ SELECT
 FROM people
 LEFT JOIN people_phones ON people.id = people_phones.person_id
 
------------------------ claud ------------------
-```python
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView
-from PyQt5.QtSql import QSqlDatabase, QSqlRelationalTableModel, QSqlRelation
-from PyQt5.QtCore import Qt
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("People Database Viewer")
-        self.resize(800, 600)
+I have a QSqlRelationalTableModel that implement the select above.
 
-        # Set up the database connection
-        self.db = QSqlDatabase.addDatabase("QSQLITE")
-        self.db.setDatabaseName("your_database.db")  # Replace with your database path
+Some of the code is
 
-        if not self.db.open():
-            print("Error: Could not open database")
-            sys.exit(1)
+        model           = QSqlRelationalTableModel(self)
+        self.model      = model
+        # self.model          = qt_with_logging.QSqlRelationalTableModelWithLogging(
+        #     self )
+        model.setTable( "people" )
 
-        # Create and set up the model
-        self.model = QSqlRelationalTableModel()
-        self.model.setTable("people")
+        debug_var   = self.model.fieldIndex( "id" )   # field name to number
 
-        # Set up the relation for phone numbers
-        self.model.setRelation(4, QSqlRelation("people_phones", "person_id", "phone_number"))
+        model.setRelation(
+            self.model.fieldIndex( "id" ),  # column name in first table, here people
 
-        # Set headers
-        self.model.setHeaderData(0, Qt.Horizontal, "ID")
-        self.model.setHeaderData(1, Qt.Horizontal, "Name")
-        self.model.setHeaderData(2, Qt.Horizontal, "Age")
-        self.model.setHeaderData(3, Qt.Horizontal, "Family Relation")
-        self.model.setHeaderData(4, Qt.Horizontal, "Phone Number")
+            QSqlRelation("people_phones", "person_id",      "phone_number")
 
-        # Set the edit strategy
-        self.model.setEditStrategy(QSqlRelationalTableModel.OnFieldChange)
+How can I insert a new record and then update the database.  Can you show the code?
 
-        # Create the view
-        self.view = QTableView()
-        self.view.setModel(self.model)
-        self.view.setItemDelegate(QSqlRelationalDelegate(self.view))
 
-        # Adjust view properties
-        self.view.resizeColumnsToContents()
-        self.view.setAlternatingRowColors(True)
-        self.view.setSortingEnabled(True)
+----------------------- chat  ------------------
+from PyQt5.QtSql import QSqlRecord, QSqlField
 
-        # Set up the query
-        self.model.setJoinMode(QSqlRelationalTableModel.LeftJoin)
-        self.model.select()
+# Assuming `model` is your QSqlRelationalTableModel instance for the `people` table
 
-        # Set the view as the central widget
-        self.setCentralWidget(self.view)
+# Create a new empty record for the 'people' table
+new_record = model.record()
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+# Set values for each field in the new record
+new_record.setValue("id", 123)                # Replace 123 with the actual ID value
+new_record.setValue("name", "John Doe")       # Set name
+new_record.setValue("age", 30)                # Set age
+new_record.setValue("family_relation", "Brother")  # Set family relation
 
-```
-
-This code creates a PyQt5 application with a relational table model and view for your SQL query. Here are a few key points:
-
-1. You'll need to replace "your_database.db" with your actual database path
-2. The model uses a LeftJoin mode to match your SQL query
-3. The view is editable by default - you can make it read-only by adding `self.view.setEditTriggers(QTableView.NoEditTriggers)`
-4. The view includes sorting capability and alternating row colors for better readability
-
-Would you like me to add any additional features or modify the existing implementation?
-
+# Insert the new record at the end of the table
+if model.insertRecord(-1, new_record):
+    # Try to submit all changes to the database
+    if model.submitAll():
+        print("Record inserted and changes committed to the database.")
+    else:
+        print("Error committing changes:", model.lastError().text())
+else:
+    print("Error inserting record:", model.lastError().text())
 
 
 ------------------------gpt ---------------------------

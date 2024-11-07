@@ -159,8 +159,8 @@ sys.path.append( r"D:\Russ\0000\python00\python3\_examples"  )
 sys.path.append( r"D:\Russ\0000\python00\python3\_projects\rshlib"  )
 sys.path.append( "../")  # not working today vscode
 sys.path.insert( 1, "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib" )
-import ex_helpers
-import gui_qt_ext
+
+
 #import picture_viewer
 import wat
 import utils_for_tabs as uft

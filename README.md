@@ -12,7 +12,7 @@ Currently the apps run but are in a fairly sad state.
 
 Whatch for updates and for postings here of any overall change in status.
 
-Status:
+Status:import gui_qt_ext
     A bit sad, but not so sad as it was.
     Some percentage of dead code, some waiting for integration
     Repo may be incomplete, but I think will work, let me know.
@@ -25,6 +25,15 @@ To run:
     Needs qt5 and wat
         wat may be found at:     igrek51/wat: Deep inspection of Python objects
                                  https://github.com/igrek51/wat
+
+    Try running 
+        * qt_widgets.py
+        * qt_sql_widgets.py
+
+
+And yes i should learn github markup
+
+
 
 
 

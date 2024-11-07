@@ -137,19 +137,25 @@ import pprint
 from   pprint import pprint as pp
 import sys
 import dis
-import wat
-import ex_helpers
-import ex_helpers as ex_h
+
 #import make_qt_object
 from   subprocess import Popen
 import traceback
 
 
+import wat
+import ia_qt
+
+# import ex_helpers
+# import ex_helpers as ex_h
+
+import io_qt
 
 wat_app        = None
 go             = None    # dialog.setup_go
 display_wat    = None
 
+testing        = True
 
 
 # ------------------------------------
@@ -197,6 +203,8 @@ if __name__ == '__main__':
         global    wat_app
         global    go
 
+        self.last_get_wat_str_obj  = None
+
         if display_wat:
             return
 
@@ -226,13 +234,23 @@ if __name__ == '__main__':
                            qt_height  )
 
 
-        self._build_gui_grid()
+        # ---- info_about
+        self.info_about     = io_qt.InfoAbout( )
+
+        an_inspector   = io_qt.InfoAboutQLineEdit(  )
+        self.info_about.add_inspector( an_inspector )
+
+        an_inspector   = io_qt.InfoAboutList(  )
+        self.info_about.add_inspector( an_inspector )
+
+        an_inspector   = io_qt.InfoAboutQTextEdit(  )
+        self.info_about.add_inspector( an_inspector )
+
+        self._build_gui()
         self.last_position = 0  # for search
 
-
-
     # ------------------------------------------
-    def _build_gui_grid( self, ):
+    def _build_gui( self, ):
         """
         what it says, read?
         """
@@ -246,40 +264,50 @@ if __name__ == '__main__':
 
         # ---- msg_label
         row_span        = 1
-        col_span        = 1
-        widget          = QLabel("Qlabel 1")
+        col_span        = 4
+        widget          = QLabel("msg goes here ")
         self.msg_label  = widget
         #widget.setLayoutDirection( Qt.RightToLeft )
             # Qt.LeftToRight )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-        # ----
-        ix_col       += 1
-        widget        = QPushButton( "What" )
-        widget.clicked.connect(  self.what )
-        # widget.toggled.connect( self.cbox_clicked )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        # # ----
+        # ix_col       += 1
+        # widget        = QPushButton( "What" )
+        # widget.clicked.connect(  self.what )
+        # # widget.toggled.connect( self.cbox_clicked )
+        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
         # ----
-        ix_col       += 1
+        ix_row          += 1
+        ix_col          = 0
+        col_span        = 1
+        #ix_col       += 1
         widget        = QPushButton( "Where" )
-        widget.clicked.connect(  self.where_am_i )
+        widget.clicked.connect(  self.do_where_am_i )
         # widget.toggled.connect( self.cbox_clicked )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-        # ---- QCheckBox
+        # # ---- QCheckBox
+        # ix_col         += 1
+        # widget          =  QCheckBox("tbd")
+        # #self.cbox_ex_1  = widget
+        # #widget.animal   = "Cat"   # monkey patch ??
+        # widget.setChecked(True)
+        # # widget.toggled.connect( self.cbox_clicked )
+        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+
+        # ---- Info
+        # ix_row         += 1
         ix_col         += 1
-        widget          =  QCheckBox("tbd")
-        #self.cbox_ex_1  = widget
-        #widget.animal   = "Cat"   # monkey patch ??
-        widget.setChecked(True)
-        # widget.toggled.connect( self.cbox_clicked )
+        widget          = QPushButton( "testing Info" )
+        widget.clicked.connect(         self.do_info_about )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
         # ---- eval
-        ix_row         += 1
-        ix_col         = 0
-        widget          =  QPushButton( "Eval" )
+        # ix_row         += 1
+        ix_col         += 1
+        widget          = QPushButton( "Eval" )
         widget.clicked.connect(         self.do_eval )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
@@ -289,27 +317,35 @@ if __name__ == '__main__':
         self.eval_widget    = widget
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
+        # if testing:
+        #     #row_span            = 1
+        #     col_span            = 1
+        #     ix_row              += 1
+        #     ix_col              = 0
+        #     widget              = QPushButton( "Test" )
+        #     widget.clicked.connect(         self.do_test )
+        #     layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
 
-        # ---- eval2
-        ix_row          += 1
-        ix_col          = 0
-        widget          =  QPushButton( "Eval 2" )
-        #widget.clicked.connect(         self.do_eval )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        # # ---- eval2
+        # ix_row          += 1
+        # ix_col          = 0
+        # widget          =  QPushButton( "Eval 2" )
+        # #widget.clicked.connect(         self.do_eval )
+        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-        #ix_row         += 1
-        ix_col             += 1
-        widget              =  QLineEdit( " 2 + 2 " )
-        self.eval_widget_2  = widget
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        # #ix_row         += 1
+        # ix_col             += 1
+        # widget              =  QLineEdit( " 2 + 2 " )
+        # self.eval_widget_2  = widget
+        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
         # row_span            = 1
         # col_span            = 2
         # ix_row              += 1
         # ix_col              = 0
 
-        row_span            = 1
+        #row_span            = 1
         col_span            = 2
         ix_row              += 1
         ix_col              = 0
@@ -317,16 +353,16 @@ if __name__ == '__main__':
         widget              = QLabel( "Locals" )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-        row_span            = 1
+        #row_span            = 1
         col_span            = 2
         #ix_row              += 1
-        ix_col              += 1
+        ix_col              += 2
 
         widget              = QLabel( "Globals" )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
         # ---- locals
-        row_span            = 1
+        #row_span            = 1
         col_span            = 2
         ix_row              += 1
         ix_col              = 0
@@ -337,10 +373,10 @@ if __name__ == '__main__':
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
         # ---- globals
-        row_span            = 1
+        #row_span            = 1
         col_span            = 2
         #ix_row              += 1
-        ix_col              += 1
+        ix_col              += 2
         widget              = QListWidget(    )
         self.global_widget  = widget
         #widget.setGeometry( 50, 50, 200, 200 )
@@ -361,6 +397,7 @@ if __name__ == '__main__':
         # ---- text_edit
         ix_row              += 1
         ix_col              = 0
+        col_span            = 4
         # Create QTextEdit widget
         text_edit           = QTextEdit()
         widget              = text_edit
@@ -370,9 +407,6 @@ if __name__ == '__main__':
 
 
         # ---- bottom and buttons
-
-
-
 
 
         ix_row                  += 1
@@ -396,6 +430,35 @@ if __name__ == '__main__':
         self.up_button   = widget
         widget.clicked.connect(self.search_up)
         button_layout.addWidget( widget,   )
+
+        ix_row                  += 1
+        ix_col                  = 0
+        button_layout           = QHBoxLayout()
+        layout.addLayout( button_layout, ix_row, ix_col    )
+
+        # ---- next bottom layout
+        ix_row                  += 1
+        ix_col                  = 0
+        button_layout           = QHBoxLayout()
+        layout.addLayout( button_layout, ix_row, ix_col    )
+
+        widget                  = QLineEdit()
+        self.filter_widget      = widget
+        widget.setPlaceholderText( "Enter filter text" )
+        button_layout.addWidget( widget, )
+
+        # ---- Filter
+        widget                  = QPushButton("Filter")
+        #self.down_button        = widget
+        widget.clicked.connect( self.filter )
+        button_layout.addWidget( widget,   )
+
+
+        # ---- next button layout
+        ix_row                  += 1
+        ix_col                  = 0
+        button_layout           = QHBoxLayout()
+        layout.addLayout( button_layout, ix_row, ix_col    )
 
 
         a_widget                = QPushButton("Save to File")
@@ -435,8 +498,8 @@ if __name__ == '__main__':
         """
         what it says, read?
         """
-        do_wat  = True
-        code    =  self.eval_widget.text()
+        do_wat      = True
+        code        =  self.eval_widget.text()
         try:
             result   = eval( code, self.globals,   self.locals )
 
@@ -455,26 +518,62 @@ if __name__ == '__main__':
             result   = "got exception "
             do_wat   = False
 
-        # finally:
-        #     msg     = f"in finally  {1}"
-        #     print( msg )
-
         if do_wat:
-            self.inspect_object( result  )
+            main_text   = self.get_wat_str(  result )
+            # self.inspect_object( result  )
+            title        = f"Eval -> {code}"
+        else:
+            title       = f"Eval -> {code}"
+            main_text   = s_trace
 
-        print( result )
-        print( code )
+        self.display_text( title = title, main_text = main_text )
+
+    # ------------------------------------------
+    def do_info_about( self ):
+        """
+        """
+        #ia_qt.self.last_get_wat_str_obj
+        # main_text   = ia_qt.ia_obj( self.last_get_wat_str_obj , msg = "what about it " )
+
+        # self.display_text( title = "info_about", main_text = main_text )
+
+        main_text   = self.info_about.get_info( self.last_get_wat_str_obj , msg = "what about it " )
+
+        self.display_text( title = "info_about", main_text = main_text )
+
+    # ------------------------------------------
+    def do_test( self ):
+        """
+        """
+        #ia_qt.self.last_get_wat_str_obj
+        main_text   = self.info_about.get_info( self.last_get_wat_str_obj , msg = "what about it " )
+
+        self.display_text( title = "info_about", main_text = main_text )
+
+    # ------------------------------------------
+    def do_where_am_i( self ):
+        """
+        """
+        print(f"where_am_i   {''}")
+        widget              = self.text_edit
+        widget.clear()
+        debug               = get_traceback_list()
+        main_text             = "\n".join( get_traceback_list() )
+        title                = "Where in the code are you:"
+
+        self.display_text( title = title, main_text= main_text )
 
     # ------------------------------------------
     def setup_go( self, inspect_me = None,
-                 a_locals = None,
-                 a_globals = None,
-                 msg = "no message" ):
+                    a_locals       = None,
+                    a_globals      = None,
+                    msg            = "no message" ):
         """
         what it says, read?
         """
-        if inspect_me is not None:
-            msg    = f"argument inspect_me {inspect_me} is deleted and will be ignored"
+        if inspect_me is None:
+            #msg    = f"argument inspect_me {inspect_me} is deleted and will be ignored"
+            msg    = f"no message from caller "
             print( msg )
         self.msg_label.setText( msg )
         self.setup( None,  a_locals, a_globals   )
@@ -527,17 +626,24 @@ if __name__ == '__main__':
 
         text               = item.text()
         i_object           = self.globals[ text ]
+
+
         print( "\n-------clicked")
         #print( f"{ type(i_key) = } { i_key = }")
         print( f"{text} {type(i_object) = } { i_object = }")
         print( f"do_inspect_clicked i_object { i_object = }   {type(i_object) = }")
-        self._inspect_me    = i_object
-        self.inspect_name  = text     # or pass as args use nonen...
+        #self._inspect_me    = i_object
+        #self.inspect_name   = text     # or pass as args use nonen...
 
-        print(f"Clicked row: {row}, text: {text}")
-        widget              = self.text_edit
-        widget.clear()
-        self.do_inspect( i_object )
+        #print(f"do_inspect_clicked_global Clicked row: {row}, text: {text}")
+        # widget              = self.text_edit
+        # widget.clear()
+        title         = f"Global -> {text}"
+        main_text     = self.get_wat_str( i_object )
+        self.display_text( title = title, main_text = main_text )
+
+
+        #self.do_inspect( i_object )
 
 
     # ------------------------------------------
@@ -550,17 +656,45 @@ if __name__ == '__main__':
 
         text               = item.text()
         i_object           = self.locals[ text ]
-        print( "\n-------clicked")
-        #print( f"{ type(i_key) = } { i_key = }")
-        print( f"{text} {type(i_object) = } { i_object = }")
-        print( f"do_inspect_clicked i_object { i_object = }   {type(i_object) = }")
-        self._inspect_me    = i_object
-        self.inspect_name  = text     # or pass as args use nonen...
+        # print( "\n-------clicked")
+        # #print( f"{ type(i_key) = } { i_key = }")
+        # print( f"{text} {type(i_object) = } { i_object = }")
+        # print( f"do_inspect_clicked i_object { i_object = }   {type(i_object) = }")
+        # self._inspect_me    = i_object
+        # self.inspect_name   = text     # or pass as args use nonen...
 
-        print(f"Clicked row: {row}, text: {text}")
-        widget              = self.text_edit
-        widget.clear()
-        self.do_inspect( i_object )
+        # print(f"Clicked row: {row}, text: {text}")
+        # widget              = self.text_edit
+        # widget.clear()
+        # self.do_inspect( i_object )
+
+        title         = f"Local -> {text}"
+        main_text     = self.get_wat_str( i_object )
+        self.display_text( title = title, main_text = main_text )
+
+    # ---------------------
+    def filter( self ):
+        """
+        filter the lines based on text at start:
+            ignore blank space
+            case insensitive
+        """
+        filter_text = self.filter_widget.text().casefold()
+        all_text    = self.text_edit.toPlainText()
+        splits      = all_text.split( "\n" )
+
+        new_lines   = []
+
+        #print( splits )
+
+        for i_split in splits:
+            i_test    = i_split.strip()
+            if i_test.casefold().startswith( filter_text ):
+                new_lines.append( i_split )
+
+        #rint( new_lines )
+        new_text       = "\n".join( new_lines )
+        self.display_text( f"results filtered on {filter_text}", new_text )
 
     #  --------
     def copy_all_text( self, text_edit ):
@@ -607,21 +741,7 @@ if __name__ == '__main__':
         print( """" Inspect the passed object """ )
         self.inspect_object( self.inspect_arg  )
 
-    # ------------------------------------------
-    def where_am_i( self ):
-        """
-        """
-        print(f"where_am_i   {''}")
-        widget              = self.text_edit
-        widget.clear()
-        debug               = get_traceback_list()
-        ex_text             = "\n".join( get_traceback_list() )
 
-        cursor              = widget.textCursor()
-
-        #ex_text    = f"{self.inspect_name}: \n {ex_text}"
-
-        cursor.insertText( ex_text )
 
     # ------------------------------------------
     def inspect_object( self, an_object  ):
@@ -647,26 +767,32 @@ if __name__ == '__main__':
 
 
     # ------------------------------------------
-    def do_inspect( self, what_object  ):
+    def do_inspectxxxx( self, what_object  ):
         """
         what it says, read?
+        leave cursor at top
         """
-
         print( "do_inspect >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print( f"i_object { what_object = }   {type( what_object ) = }")
-        widget              = self.text_edit
+        widget                  = self.text_edit
         widget.clear()
         #self.inspect_me     = inspect_me
-        ex_text             = self.get_wat_str( what_object )
-        cursor              = widget.textCursor()
+        ex_text                 = self.get_wat_str( what_object )
 
-        ex_text    = f"{self.inspect_name}: \n {ex_text}"
+        self.display_text( title = "need title", main_text = ex_text )
 
-        cursor.insertText( ex_text )
 
-        cursor.movePosition(QTextCursor.Start)   # .End
-        widget.setTextCursor(cursor)
-        # print( "\n\n\n><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+
+        # cursor              = widget.textCursor()
+
+        # ex_text    = f"{self.inspect_name}: \n {ex_text}"
+
+        # cursor.insertText( ex_text )
+
+        # cursor.movePosition(QTextCursor.Start)   # .End
+        # widget.setTextCursor( cursor )
+
+        # # print( "\n\n\n><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         # print( "ex_text[0:500" )
         # print( ex_text[0:500] )
 
@@ -675,9 +801,8 @@ if __name__ == '__main__':
         """ """
         msg      = wat( obj, str = True, gray = True )
         #msg      = repr( wat( obj, str = True ) )
-
         #msg      = self.get_wat_str_old(  obj )
-
+        self.last_get_wat_str_obj  = obj
         return msg
         #return  repr( wat( obj, str = True ) )
         #return  wat( obj, str = True )
@@ -686,6 +811,7 @@ if __name__ == '__main__':
 
     def get_wat_str_old( self,  obj, options_dictxxx = None ):
         """
+        older implementation when str = True  did not work
         might want to get exception info if it occurs
         """
         options_dict = {}
@@ -713,6 +839,27 @@ if __name__ == '__main__':
         output_string = captured_output.getvalue()
 
         return output_string
+
+    def display_text( self, title = "no_title_fix", main_text = "this_sis_the_main_text" ):
+        """
+        what it says, read
+            leave cursor at top
+        """
+        full_text           = f"{title}\n\n{main_text}"
+
+        widget              = self.text_edit
+        widget.clear()
+        #self.inspect_me     = inspect_me
+
+        cursor              = widget.textCursor()
+
+        #ex_text    = f"{self.inspect_name}: \n {ex_text}"
+
+        cursor.insertText( full_text )
+
+        cursor.movePosition(QTextCursor.Start)   # or .End
+        widget.setTextCursor( cursor )
+
 
     # ---------------------
     def search_down(self):
@@ -752,12 +899,11 @@ def ex_run_display_wat():
     app         = QApplication( sys.argv )  # Create the QApplication instance
     dialog      = DisplayWat( app )  # Create an instance of your custom QDialog
     #dialog.setup_go( io, globals()  )
-
-
+    a_list      = [ 1, 2, 3 ]
     go( dialog.do_eval  ,
              a_locals   = locals(),
              a_globals  = globals(),
-             msg = "dialog.do_eval from the caller at go" )   # wat_inspector.go( io, globals() )
+             msg        = "this ia arg msg dialog.do_eval from the caller at go" )   # wat_inspector.go( io, globals() )
 
     # externally wat_inspector.go( io, globals() )
     # import wat_inspector as wi
@@ -783,10 +929,10 @@ def ex_run_display_wat():
 
 # -----------------
 def ex_inspect_fail():
-    ex_name  = "ex_inspect"
-    print( f"{ex_h.begin_example( ex_name )}"
-            "\n        try to capture as a string, seems to fail "
-            "\n\n" )
+    # ex_name  = "ex_inspect"
+    # print( f"{ex_h.begin_example( ex_name )}"
+    #         "\n        try to capture as a string, seems to fail "
+    #         "\n\n" )
 
     # # ----------------------------------------
     # msg          = "  wat additiona inof"
@@ -807,7 +953,7 @@ def ex_inspect_fail():
     # a_string  = wat.str.short(  sys,   )
     # a_string  = wat.str.short(  sys,   )
 
-    ex_h.end_example( ex_name )
+    #ex_h.end_example( ex_name )
 
 #ex_inspect()
 
@@ -866,27 +1012,14 @@ if __name__ == "__main__":
 
 
 """
-__name__:
- [0;34m────────────────────────────────────────────────────────────────────────────────[0m
-[1;34mvalue:[0m [0;32m'__main__'[0m
-[1;34mtype:[0m [0;33mstr[0m
-[1;34mlen:[0m [0;31m8[0m
 
-[1mPublic attributes:[0m
-  [0;34mdef [1;32mcapitalize[0;32m()[0m [2;37m# Return a capitalized version of the string.…[0m[0m
-  [0;34mdef [1;32mcasefold[0;32m()[0m [2;37m# Return a version of the string suitable for caseless comparisons.[0m[0m
-  [0;34mdef [1;32mcenter[0;32m(width, fillchar=' ', /)[0m [2;37m# Return a centered string of length width.…[0m[0m
-  [0;34mdef [1;32mcount[0;32m(…)[0m [2;37m# S.count(sub[, start[, end]]) -> int…[0m[0m
-  [0;34mdef [1;32mencode[0;32m(encoding='utf-8', errors='strict')[0m [2;37m# Encode the string using the codec registered for encoding.…[0m[0m
-  [0;34mdef [1;32mendswith[0;32m(…)[0m [2;37m# S.endswith(suffix[, start[, end]]) -> bool…[0m[0m
-  [0;34mdef [1;32mexpandtabs[0;32m(tabsize=8)[0m [2;37m# Return a copy where all tab characters are expanded using spaces.…[0m[0m
 
-repr
 
-__name__:
- "\x1b[0;34m────────────────────────────────────────────────────────────────────────────────\x1b[0m\n\x1b[1;34mvalue:\x1b[0m \x1b[0;32m'__main__'\x1b[0m\n\x1b[1;34mtype:\x1b[0m \x1b[0;33mstr\x1b[0m\n\x1b[1;34mlen:\x1b[0m \x1b[0;31m8\x1b[0m\n\n\x1b[1mPublic attributes:\x1b[0m\n  \x1b[0;34mdef \x1b[1;32mcapitalize\x1b[0;32m()\x1b[0m \x1b[2;37m# Return a capitalized version of the string.…\x1b[0m\x1b[0m\n  \x1b[0;34mdef \x1b[1;32mcasefold\x1b[0;32m()\x1b[0m \x1b[2;37m# Return a version of the string suitable for caseless comparisons.\x1b[0m\x1b[0m\
 
-old
+---------------
+
+
+
 
 __name__:
  value: '__main__'
@@ -895,15 +1028,8 @@ len: 8
 
 Public attributes:
   def capitalize() # Return a capitalized version of the string.…
-  def casefold() # Return a version of the string suitable for caseless comparisons.
+  def casefold() # Returninfo_about a version of the string suitable for caseless comparisons.
   def center(width, fillchar=' ', /) # Return a centered string of length width.…
-
-
-
----------------
-
-
-
 
 
 

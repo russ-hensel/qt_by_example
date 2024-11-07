@@ -232,8 +232,7 @@ common_dir_items = common_dir_items  + more_common_dir_items
 if DEBUGGING:my_type       =  QSqlQueryModel
 
 
-dispatch_dict  = {}   # defined later search
-
+dispatch_dict  = {}   # defined later search -- but search seq so nee not be a dict
 
 
 
@@ -243,7 +242,6 @@ def default_msg( type_as_string ):
     msg   = f"{msg_prefix}for instance of  {type_as_string}"
 
     return msg
-
 
 # ---------------------
 def to_columns( current_str, item_list, format_list = ( "{: <30}", "{:<30}" ), indent = "    "  ):
@@ -268,7 +266,6 @@ def to_columns( current_str, item_list, format_list = ( "{: <30}", "{:<30}" ), i
     else:
         ret_str  = f"{current_str}\n{line_out}"
     return ret_str
-
 
 # ----------------------------------------
 class StreamDiverter(  ):
@@ -416,7 +413,9 @@ def  ia_obj(        a_obj,
 
     # fast case statement think want more specialized first
     for my_type, type_tuple in   dispatch_dict.items( ):
+        debug_my_type          =  my_type
         function, type_string  = type_tuple
+        print( my_type )
         # next for debugging only
         #rint( f"ia_obj debug {my_type = }, {function = }, {type_string = }, ")
         if isinstance( a_obj, my_type):
@@ -434,7 +433,7 @@ def  ia_obj(        a_obj,
     else:
         # THIS IS not really right shoudl use other args and wrte to string
         print( f"no inspect (ia_obj) found for {a_obj = } \n     {msg}")
-    return
+    return  a_str
 
 # ----------------------------------------
 def  ia_obj_old( a_obj,
@@ -500,8 +499,6 @@ def  ia_obj_old( a_obj,
                                 sty             = "",
                                 include_dir     = False,
                                 )
-
-
 
 
     # elif isinstance( a_obj, DataFrame ):
@@ -631,13 +628,11 @@ def  q_sql_query( a_obj,
                         ):
 
     """
-    do not forget help( QSqlTableModel ) works
-    Purpose:
-
 
     """
     my_type       =  QSqlQuery
     my_type_str   = "QSqlQuery"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
@@ -711,26 +706,23 @@ def  q_sql_query_model( a_obj,
                         ):
 
     """
-    do not forget help( QSqlTableModel ) works
-    Purpose:
     """
     my_type       =  QSqlQueryModel
     my_type_str   = "QSqlQueryModel"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
     if  isinstance(  a_obj, my_type  ):
-        max_items  = MAX_LIST_ITEMS
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
 
-        a_str = ""
-
-        nl_if  = "\n"
-
-        if msg is not None:
+        if msg is not None:   # !! really
             a_str   = f"\n{xin}{a_str}>>>{msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -773,13 +765,13 @@ def  q_abstract_table_model( a_obj,
                         sty             = "",
                         include_dir     = False,
                         ):
-
     """
     do not forget help( QSqlTableModel ) works
     Purpose:
     """
     my_type       =  QAbstractTableModel
     my_type_str   = "QAbstractTableModel"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
@@ -792,9 +784,9 @@ def  q_abstract_table_model( a_obj,
 
         nl_if  = "\n"
 
-        if msg is not None:
+        if msg is not None:  # !! really
             a_str   = f"\n{xin}{a_str}>>>{msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -829,7 +821,6 @@ def  q_abstract_table_model( a_obj,
 
     return a_str
 
-
 # ----------------------------------------
 def  model_indexer( a_obj,
                         msg = None,
@@ -840,26 +831,26 @@ def  model_indexer( a_obj,
                         sty             = "",
                         include_dir     = False,
                         ):
-
     """
     not doe see str method of ModelIndexer
     """
     ModelIndexer  = table_model.ModelIndexer
     my_type       =  ModelIndexer
     my_type_str   = "ModelIndexer"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
     if  isinstance(  a_obj, my_type  ):
-        max_items  = MAX_LIST_ITEMS
-        a_str = ""
-        nl_if  = "\n"
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
 
         if msg is not None:
             a_str   = f"\n{xin}{a_str}>>>{msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -923,17 +914,15 @@ def  q_sql_table_model( a_obj,
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    # if msg is None:
-    #     msg   = "for an instance of QSqlTableModel:",
+
 
     if  isinstance(  a_obj,  QSqlTableModel  ):
 
         max_items  = MAX_LIST_ITEMS
         a_str   = ""
-
-
         nl_if  = "\n"
-        if msg is not None:
+
+        if msg is not None:   # !! really
             a_str   = f"\n{xin}{a_str}>>>{msg}"
         nl_if  = ""
         a_srep  = short_str( a_obj )
@@ -1009,8 +998,6 @@ def  q_sql_table_model( a_obj,
 
     return a_str
 
-
-
 # ----------------------------------------
 def  q_sql_relational_table_model( a_obj,
                         msg = None,
@@ -1024,11 +1011,6 @@ def  q_sql_relational_table_model( a_obj,
                         ):
     """
 
-    Purpose:
-        prints information about QSqlTableWidget() q_sql_table_widget
-        see inof_about_obj
-        __dir__()     =
-        print( info_about.ia_q_sql_table_model( model, msg = None,  include_dir = True ) )
 
     """
     #rint( a_obj, type( a_obj ))
@@ -1040,15 +1022,12 @@ def  q_sql_relational_table_model( a_obj,
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = "for an instance of QSqlTableModel:",
-
     if  isinstance(  a_obj,  my_type  ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
-        nl_if  = ""
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
         if not details_only:
@@ -1060,7 +1039,6 @@ def  q_sql_relational_table_model( a_obj,
             #a_str   = f"{a_str}\n{INDENT2}str     = {str( a_obj )}"
             a_repr  = short_repr( a_obj )
             a_str   = f"{a_str}\n{xin}{INDENT2}repr         = {a_repr}"
-
 
         #a_str   = f"{a_str}\n{xin}{INDENT2}database()     = {a_obj.database() }"
 
@@ -1090,8 +1068,6 @@ def  q_sql_relational_table_model( a_obj,
 
     return a_str
 
-
-
 # ----------------------------------------
 def  q_table_widget( a_obj,
                         msg = None,
@@ -1105,36 +1081,27 @@ def  q_table_widget( a_obj,
                         ):
     """
 
-    Purpose:
-        prints information about QSqlTableWidget() q_sql_table_widget
-        see inof_about_obj
-        __dir__()     =
-        print( info_about.ia_q_sql_table_model( model, msg = None,  include_dir = True ) )
-
     """
-    print( a_obj, type( a_obj ))
+    #rint( a_obj, type( a_obj ))
     my_type       =  QTableWidget
     my_type_str   = "QTableWidget"
-
 
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = "for an instance of QSqlTableModel:",
 
     if  isinstance(  a_obj,  my_type  ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
 
-
-        nl_if  = "\n"
         if msg is not None:
             a_str   = f"\n{xin}{a_str}>>>{msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -1145,9 +1112,6 @@ def  q_table_widget( a_obj,
         #a_str   = f"{a_str}\n{INDENT2}str     = {str( a_obj )}"
         a_repr  = short_repr( a_obj )
         a_str   = f"{a_str}\n{xin}{INDENT2}repr    = {a_repr}"
-
-
-        #a_str   = f"{a_str}\n{xin}{INDENT2}database()     = {a_obj.database() }"
 
         a_str   = f"{a_str}\n{xin}{INDENT2}rowCount()     = {a_obj.rowCount() }"
         # if a_obj.rowCount( ) > 0:
@@ -1176,7 +1140,6 @@ def  q_table_widget( a_obj,
 
     return a_str
 
-
 # ----------------------------------------
 def  q_sql_table_widget( a_obj,
                         msg = None,
@@ -1190,36 +1153,27 @@ def  q_sql_table_widget( a_obj,
                         ):
     """
 
-    Purpose:
-        prints information about QSqlTableWidget() q_sql_table_widget
-        see inof_about_obj
-        __dir__()     =
-        print( info_about.ia_q_sql_table_model( model, msg = None,  include_dir = True ) )
-
     """
-    print( a_obj, type( a_obj ))
     my_type       =  QSqlTableWidget
     my_type_str   = "QSqlTableWidget"
-
 
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = "for an instance of QSqlTableModel:",
+
 
     if  isinstance(  a_obj,  my_type  ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
 
-
-        nl_if  = "\n"
         if msg is not None:
             a_str   = f"\n{xin}{a_str}>>>{msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -1230,7 +1184,6 @@ def  q_sql_table_widget( a_obj,
         #a_str   = f"{a_str}\n{INDENT2}str     = {str( a_obj )}"
         a_repr  = short_repr( a_obj )
         a_str   = f"{a_str}\n{xin}{INDENT2}repr    = {a_repr}"
-
 
         #a_str   = f"{a_str}\n{xin}{INDENT2}database()     = {a_obj.database() }"
 
@@ -1271,16 +1224,10 @@ def  q_sql_error( a_obj, msg = None,
                         include_dir  = False,
                         ):
     """
-
-    Purpose:
-         ia_qt.q_sql_error( an_error,
-                       msg          =  "now in code at: .... ",
-                       print_it     = True,
-                       include_dir  = False,    # default False
-                       )
     """
     my_type       =  QSqlError
     my_type_str   = "QSqlError"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
@@ -1288,19 +1235,16 @@ def  q_sql_error( a_obj, msg = None,
 
     if  isinstance(  a_obj, my_type  ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = msg
-        nl_if  = "\n"
-
-
-        nl_if  = ""
+        max_items   = MAX_LIST_ITEMS
+        a_str       = msg
+        nl_if       = "\n"
+        nl_if       = ""
 
         if msg is not None:
             a_str   = f"\n{xin}{a_str}>>>{msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
-
 
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
@@ -1314,7 +1258,6 @@ def  q_sql_error( a_obj, msg = None,
         a_str   = f"{a_str}\n{xin}{INDENT2}driverText()       = {a_obj.driverText() }"
         a_str   = f"{a_str}\n{xin}{INDENT2}driverText()       = {a_obj.driverText() }"
         a_str   = f"{a_str}\n{xin}{INDENT2}text()             = {a_obj.text() }"
-
 
         if include_dir:
             a_str = f"{a_str}\n{xin} {dir_info( a_obj ) }"
@@ -1342,11 +1285,10 @@ def  q_sql_database( a_obj,
                         details_only = False,
                         ):
     """
-
     #import ia_qt
     print(  ia_qt.q_sql_database( obj,
                                   msg            = "in test_db()...",
-                                 include_dir    = True ) )
+                                  include_dir    = True ) )
 
     """
     my_type       =  QSqlDatabase
@@ -1359,10 +1301,11 @@ def  q_sql_database( a_obj,
 
     if  isinstance(  a_obj, my_type ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
-        nl_if  = ""
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
+
         a_srep  = short_str( a_obj )
         if not details_only:
             a_str   = f"{xin}{a_str}for msg = {msg}"
@@ -1377,8 +1320,6 @@ def  q_sql_database( a_obj,
         a_str   = f"{a_str}\n{xin}{INDENT2}isOpen()     = {a_obj.isOpen() }"
         a_str   = f"{a_str}\n{xin}{INDENT2}tables()     = {a_obj.tables() }"
 
-
-
         a_str   = f"{a_str}\n{xin}{INDENT2}database()       = {a_obj.database() }"
 
         a_str   = f"{a_str}\n{xin}{INDENT2}databaseName()   = {a_obj.databaseName() }"
@@ -1388,7 +1329,6 @@ def  q_sql_database( a_obj,
 
         # #a_str   = f"{a_str}\n{xin}{INDENT2}bindValue  function    = {a_obj.bindValue }"
 
-
     else:
         a_str   = not_instance( msg,  my_type, my_type_str,  a_obj, xin )
 
@@ -1396,7 +1336,6 @@ def  q_sql_database( a_obj,
         print( a_str )
 
     return a_str
-
 
 # ----------------------------------------
 def  q_sql_record ( a_obj,
@@ -1442,16 +1381,19 @@ def  q_sql_record ( a_obj,
     """
     my_type       =  QSqlRecord
     my_type_str   = "QSqlRecord"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
+
     if  isinstance(  a_obj, my_type ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
-        nl_if   = ""
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
+
         a_srep  = short_str( a_obj )
 
         if not details_only:
@@ -1475,9 +1417,6 @@ def  q_sql_record ( a_obj,
         # a_str   = f"{a_str}\n{xin}{INDENT2}field( 0)       = {a_obj.field( 0 ) }"
         # a_str   = f"{a_str}\n{xin}{INDENT2}field( 1)       = {a_obj.field( 1 ) }"
 
-        # interesting ??  is null by column
-        # a_str   = f"{a_str}\n{xin}{INDENT2}isNull( 0)      = {a_obj.isNull( 0 ) }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}isNull( 0)      = {a_obj.isNull( 0 ) }"
 
         # next with differing implementations
         # #
@@ -1501,12 +1440,8 @@ def  q_sql_record ( a_obj,
 
         #a_str   = f"{a_str}\n{xin}{INDENT2}keyValues()       = {a_obj.keyValues() }"
 
-
         if include_dir:
             a_str = f"{a_str}\n{xin} {dir_info( a_obj ) }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}isOpen()        = {a_obj.isOpen() }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}tables()        = {a_obj.tables() }"
-
 
     else:
         a_str   = not_instance( msg,  my_type, my_type_str,  a_obj, xin )
@@ -1515,12 +1450,6 @@ def  q_sql_record ( a_obj,
         print( a_str )
 
     return a_str
-
-
-
-
-
-
 
 # ----------------------------------------
 def  q_sql_field ( a_obj,
@@ -1579,19 +1508,22 @@ def  q_sql_field ( a_obj,
     """
     my_type       =  QSqlField
     my_type_str   = "QSqlField"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
+
     if  isinstance(  a_obj, my_type ):
 
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
         if msg is not None:
             a_str   = f"{xin}{a_str}for msg = {msg}"
-        nl_if   = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -1612,7 +1544,6 @@ def  q_sql_field ( a_obj,
         # a_str   = f"{a_str}\n{xin}{INDENT2}isOpen()        = {a_obj.isOpen() }"
         # a_str   = f"{a_str}\n{xin}{INDENT2}tables()        = {a_obj.tables() }"
 
-
     else:
         a_str   = not_instance( msg,  my_type, my_type_str,  a_obj, xin )
 
@@ -1620,7 +1551,6 @@ def  q_sql_field ( a_obj,
         print( a_str )
 
     return a_str
-
 
 # ----------------------------------------
 def  q_box_layout( a_obj,
@@ -1638,22 +1568,22 @@ def  q_box_layout( a_obj,
     """
     my_type       =  QBoxLayout
     my_type_str   = "QBoxLayout"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = f"for an instance of {my_type}:",
-
     if  isinstance(  a_obj, my_type ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
+
         if msg is not None:
             a_str   = f"{xin}{a_str}for msg = {msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -1669,8 +1599,6 @@ def  q_box_layout( a_obj,
         a_str   = f"{a_str}\n{xin}{INDENT2}dumpObjectTree() = {a_obj.dumpObjectTree() }"
 
 
-
-
         # a_str   = f"{a_str}\n{xin}{INDENT2}findChild()          = {a_obj.findChild() }"
         #     not enough arguments
 
@@ -1679,7 +1607,6 @@ def  q_box_layout( a_obj,
 
         a_str   = f"{a_str}\n{xin}{INDENT2}geometry()          = {a_obj.geometry() }"
         a_str   = f"{a_str}\n{xin}{INDENT2}isEnabled()         = {a_obj.isEnabled() }"
-
 
         if include_dir:
             a_str = a_str + dir_info( a_obj )
@@ -1692,10 +1619,9 @@ def  q_box_layout( a_obj,
     if print_it:
         print( a_str )
 
-
     return a_str
 
-
+# dispatch_dict[ QSqlRelationalTableModel ]   = (  q_sql_relational_table_model,       "QSqlRelationalTableModel" )
 # ----------------------------------------
 def  q_line_edit( a_obj,
                         msg      = None,
@@ -1714,22 +1640,24 @@ def  q_line_edit( a_obj,
     """
     my_type       =  QLineEdit
     my_type_str   = "QLineEdit"
+
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = f"for an instance of {my_type}:",
 
     if  isinstance(  a_obj, my_type ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
+
         if msg is not None:
             a_str   = f"{xin}{a_str}for msg = {msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -1748,7 +1676,6 @@ def  q_line_edit( a_obj,
         a_str   = f"{a_str}\n{xin}{INDENT2}validator()          = {a_obj.validator() }"
         a_str   = f"{a_str}\n{xin}{INDENT2}text()               = {a_obj.text() }"
 
-
         if include_dir:
             a_str = a_str + dir_info( a_obj )
 
@@ -1760,9 +1687,7 @@ def  q_line_edit( a_obj,
     if print_it:
         print( a_str )
 
-
     return a_str
-
 
 # ----------------------------------------
 def  q_list( a_obj,
@@ -1782,22 +1707,24 @@ def  q_list( a_obj,
     """
     my_type       =  QListWidget
     my_type_str   = "QListWidget"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = f"for an instance of {my_type}:",
+
 
     if  isinstance(  a_obj, my_type ):
 
-        max_items  = MAX_LIST_ITEMS
-        a_str   = ""
-        nl_if  = "\n"
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
+
         if msg is not None:
             a_str   = f"{xin}{a_str}for msg = {msg}"
-        nl_if  = ""
+
         a_srep  = short_str( a_obj )
         a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
 
@@ -1821,11 +1748,6 @@ def  q_list( a_obj,
         a_str   = f"{a_str}\n{xin}{INDENT2}current_item.text() = {item_text}"
         # a_str   = f"{a_str}\n{xin}{INDENT2}item( 0 ).text( ) = {a_obj.item( 0 ).text( ) }"
         # a_str   = f"{a_str}\n{xin}{INDENT2}isModified()         = {a_obj.isModified() }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}maxLength()          = {a_obj.maxLength() }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}placeholderText()    = {a_obj.placeholderText() }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}validator()          = {a_obj.validator() }"
-        # a_str   = f"{a_str}\n{xin}{INDENT2}text()               = {a_obj.text() }"
-
 
         if include_dir:
             a_str = a_str + dir_info( a_obj )
@@ -1838,6 +1760,74 @@ def  q_list( a_obj,
     if print_it:
         print( a_str )
 
+    return a_str
+
+# ----------------------------------------
+def  q_text_edit( a_obj,
+                        msg      = None,
+                        *,
+                        max_len  = None,
+                        xin      = "",
+                        print_it = True,
+                        sty      = "",
+                        include_dir  = False,
+                        ):
+    """
+    print(  ia_qt.q_text_edit( obj, msg = "what " )
+    print(  ia_qt.q_text_edit( field, msg = None,  include_dir = True ) )
+    """
+    my_type       =  QTextEdit
+    my_type_str   = "QTextEdit"
+
+    if msg is None:
+        msg  = default_msg( my_type_str )
+    else:
+        msg  = f"{msg_prefix}{msg} "
+
+    if  isinstance(  a_obj, my_type ):
+
+        max_items   = MAX_LIST_ITEMS
+        a_str       = ""
+        nl_if       = "\n"
+        nl_if       = ""
+
+        if msg is not None:
+            a_str   = f"{xin}{a_str}for msg = {msg}"
+
+        a_srep  = short_str( a_obj )
+        a_str   = f"{a_str}{nl_if}{xin}{INDENT}>{a_srep}<"
+
+        a_str   = f"{a_str}\n{xin}{INDENT2}type is = { str( type(a_obj) ) }"
+        #a_str   = f"{a_str}\n{INDENT2}str     = {str( a_obj )}"
+        a_repr  = short_repr( a_obj )
+        a_str   = f"{a_str}\n{xin}{INDENT2}repr    = {a_repr}"
+
+        a_str   = f"{a_str}\n{xin}{INDENT2}toPlainText()            = {a_obj.toPlainText() }"
+        # a_str   = f"{a_str}\n{xin}{INDENT2}currentItem()      = {a_obj.currentItem() }"
+        # a_str   = f"{a_str}\n{xin}{INDENT2}item( 0 ).text( ) = {a_obj.item( 0 ).text( ) }"
+
+        # current_item = a_obj.currentItem()
+        # if current_item:
+        #     # Retrieve and show the text of the current item
+        #     item_text = current_item.text()
+        # else:
+        #      item_text = None
+
+        # a_str   = f"{a_str}\n{xin}{INDENT2}current_item.text() = {item_text}"
+        # a_str   = f"{a_str}\n{xin}{INDENT2}item( 0 ).text( ) = {a_obj.item( 0 ).text( ) }"
+        # a_str   = f"{a_str}\n{xin}{INDENT2}isModified()         = {a_obj.isModified() }"
+
+
+        if include_dir:
+            a_str = a_str + dir_info( a_obj )
+
+        # a_str   = f"{a_str}\n{xin}{INDENT2}lastInsertId()  = {a_obj.lastInsertId() }"
+
+    else:
+        a_str   = not_instance( msg,  my_type, my_type_str,  a_obj, xin )
+
+    if print_it:
+        print( a_str )
 
     return a_str
 
@@ -1859,13 +1849,14 @@ def  q_combo_box( a_obj,
     """
     my_type       =  QComboBox
     my_type_str   = "QComboBox"
+
     if msg is None:
         msg  = default_msg( my_type_str )
     else:
         msg  = f"{msg_prefix}{msg} "
 
-    if msg is None:
-        msg   = f"for an instance of {my_type}:",
+
+
 
     if  isinstance(  a_obj, my_type ):
 
@@ -1944,8 +1935,8 @@ dispatch_dict[ QSqlDatabase ]   = (  q_sql_database,     "QSqlDatabase" )
 dispatch_dict[ QSqlRecord ]     = (  q_sql_record,       "QSqlRecord" )
 dispatch_dict[ QSqlField ]      = (  q_sql_field,         "QSqlField" )
 dispatch_dict[ QLineEdit ]      = (  q_line_edit,         "QLineEdit" )
-dispatch_dict[ QComboBox ]    = (  q_combo_box,         "QComboBox" )
-
+dispatch_dict[ QComboBox ]      = (  q_combo_box,         "QComboBox" )
+dispatch_dict[ QTextEdit ]      = (  q_text_edit,         "QTextEdit" )
 
 # ----------------------------------------
 def  dir_info( a_obj, msg = "dir info:", ):
@@ -2005,4 +1996,7 @@ def  dir_info( a_obj, msg = "dir info:", ):
 
 
 
+
+
+# ---- eof
 

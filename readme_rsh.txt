@@ -1,3 +1,11 @@
+These are the developer notes and scratch pad.
+
+Maybe there is something useful here or not
+
+===============================================================
+
+
+
 
 ------------------ chat ----------------------
 can you give me the pyqt5 code for a QSqlRelationalTableModel

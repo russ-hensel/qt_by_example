@@ -75,7 +75,7 @@ import subprocess
 import sys
 from subprocess import PIPE, STDOUT, Popen, run
 
-from app_global import AppGlobal
+
 from PyQt5 import QtGui
 from PyQt5.QtCore import (QDate, QModelIndex, QSize, QSortFilterProxyModel, Qt,
                           QTimer)
@@ -109,8 +109,8 @@ from functools import partial
 # sys.path.append( r"D:\Russ\0000\python00\python3\_projects\rshlib"  )
 # sys.path.append( "../")  # not working today vscode
 # sys.path.insert( 1, "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib" )
-import ex_helpers
-import gui_qt_ext
+
+
 
 import utils_for_tabs as uft
 import wat_inspector
@@ -980,7 +980,6 @@ class QSqlQueryTab( QWidget ):
             print(row_data)
 
 
-
 #-----------------------------------------------
 class QTableWidgetTab( QWidget ):
     """
@@ -1271,8 +1270,6 @@ class QTableWidgetTab( QWidget ):
         print( f"find_row_with_text {ix_found = }")
 
         return ix_found
-
-
 
 
 # ---- new redoing work under way or even done ** ------------------------------------------------
@@ -1816,7 +1813,7 @@ class QSqlTableModelTab( QWidget ):
 
 
 #---- Master Window ===========================================================
-class QtSqlWidgetExamplesInTabs( QMainWindow ):
+class QtSqlWidgetExamples( QMainWindow ):
     def __init__(self):
         """
         Lots of widget to run and examine each in own tab
@@ -1984,7 +1981,6 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
     def _build_menu( self,  ):
         """
         what it says read:
-
         """
         menubar         = self.menuBar()
         self.menubar    = menubar
@@ -1993,6 +1989,13 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
 
         # ---- Help
         menu_help       = menubar.addMenu( "Help" )
+
+
+        action          = QAction( "README.md...", self )
+        connect_to      = partial( self.open_txt_file, "README.md" )
+        action.triggered.connect( connect_to )
+        menu_help.addAction( action )
+
 
         action          = QAction( "General Help...", self )
         connect_to      = partial( self.open_txt_file, "./docs/general_help_maybe.txt" )
@@ -2009,10 +2012,6 @@ class QtSqlWidgetExamplesInTabs( QMainWindow ):
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
-        action          = QAction( "README.md...", self )
-        connect_to      = partial( self.open_txt_file, "README.md" )
-        action.triggered.connect( connect_to )
-        menu_help.addAction( action )
 
     #----------------------------
     def not_implemented( self,   ):
@@ -2085,7 +2084,7 @@ if __name__ == "__main__":
     app         = QApplication(sys.argv)
     dialog      = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
 
-    window      = QtSqlWidgetExamplesInTabs()
+    window      = QtSqlWidgetExamples()
     window.show()
     app.exec()
 

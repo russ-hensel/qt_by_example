@@ -26,6 +26,9 @@ from PyQt5.QtWidgets import QGroupBox,     QPushButton,   QMessageBox, QCheckBox
 from functools       import partial
 import wat_inspector   # wat_setup
 
+# ---- end imports
+
+
 class MainWindow_1( QMainWindow ):
     def __init__(self):
         super().__init__()

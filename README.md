@@ -13,9 +13,19 @@ Currently the apps run but are in a fairly sad state.
 Whatch for updates and for postings here of any overall change in status.
 
 Status:
-    A bit sad, 
-    Large percentage of dead code.
-    Repo may be incomplete
+    A bit sad, but not so sad as it was.
+    Some percentage of dead code, some waiting for integration
+    Repo may be incomplete, but I think will work, let me know.
+    I am doing a lot of development on it, it is a moving target
+    that shoud be improving quite a bit untill I get into another 
+    project.
+
+To run:
+    No install, just download and run from your development environment.
+    Needs qt5 and wat
+        wat may be found at:     igrek51/wat: Deep inspection of Python objects
+                                 https://github.com/igrek51/wat
+
 
 
     

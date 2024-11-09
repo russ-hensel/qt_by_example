@@ -36,8 +36,8 @@ from PyQt5.QtWidgets import (
 
 
 INDENT        = "    "   # {INDENT}
-BEGIN_MARK_1  = "\n\n------------ "
-BEGIN_MARK_2  =  " ------------ "    # uft.
+BEGIN_MARK_1  = "\n\n ------------ "
+BEGIN_MARK_2  =     " ------------ "    # uft.
 
 
 

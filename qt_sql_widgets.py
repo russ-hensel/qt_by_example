@@ -127,9 +127,9 @@ import wat_inspector
 
 # ---- end imports
 # ---- a few parameters will be deleted
-rr_w_crud_app_title   = "russ_qsqlrelationalmodel_with_crud.py"
-rr_w_crud_db_file     = "texs_x.db"
-rr_w_crud_db_file     = ':memory:'
+# rr_w_crud_app_title   = "russ_qsqlrelationalmodel_with_crud.py"
+# rr_w_crud_db_file     = "texs_x.db"
+# rr_w_crud_db_file     = ':memory:'
 
 
 # note   = """
@@ -155,7 +155,7 @@ BEGIN_MARK_1  = uft.BEGIN_MARK_2
 BEGIN_MARK_2  = uft.BEGIN_MARK_2
 
 
-
+# -----------------------------
 def delete_db_file( file_name ):
     """
     will delete any file, but intended for db file
@@ -219,7 +219,7 @@ class SampleDB():
             delete_db_file( DB_FILE )
 
         db           = QSqlDatabase.addDatabase('QSQLITE')
-        db.setDatabaseName( DB_FILE ) # ':memory:')  # In-memory database for this example
+        db.setDatabaseName( DB_FILE )
         self.db      = db
         EXAMPLE_DB   = db   # for simple module access
         DB_OBJECT    = self
@@ -276,15 +276,16 @@ class SampleDB():
 
         query   = QSqlQuery( self.db )
 
+        # you can comment out some data if you wish
         table_data = [
             ("Alice",   25,   "Aunt"      ),
             ("Bob",     30,   "Father"    ),
             ("Charlie", 35,   "Daughter"  ),
-            ("David",   40,   "Daughter2" ),
-            ("James",   28,   "Aunt"      ),
-            ("Jim",     28,   "Son"       ),
-            ("Judy",    28,   "Sun"       ),
-            ("Jo",      29,   "God"       ),
+            # ("David",   40,   "Daughter2" ),
+            # ("James",   28,   "Aunt"      ),
+            # ("Jim",     28,   "Son"       ),
+            # ("Judy",    28,   "Sun"       ),
+            # ("Jo",      29,   "God"       ),
         ]
 
         sql  =   """INSERT INTO people (
@@ -427,7 +428,6 @@ class SampleDB():
                 book_club_id    INTEGER
               ) """
 
-        # Create the 'people' table
         query.exec_( sql )
 
     #------------
@@ -470,7 +470,6 @@ class SampleDB():
 
         query           = QSqlQuery( self.db )
 
-        # Query all people
         print("People:")
         query.exec_("SELECT id, name, age, family_relation FROM people")
         while query.next():
@@ -483,7 +482,7 @@ class SampleDB():
     #------------
     def query_print_phone( self, ):
         """
-        !!Print out the table
+        Print out the table
         """
         what    = "query_print_phone"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
@@ -1318,7 +1317,6 @@ class QSqlDatabaseTab( QWidget ):
 
         # ---- PB inspect
         widget              = QPushButton("inspect\n")
-        # widget.clicked.connect(lambda: self.print_message(widget.text()))
         connect_to        = self.inspect
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
@@ -1375,7 +1373,7 @@ class QSqlDatabaseTab( QWidget ):
 #-----------------------------------------------
 class QSqlRelationalTableModelTab( QWidget ):
     """
-
+    for widgets joining two tables
     """
     def __init__(self, ):
         """
@@ -1386,10 +1384,6 @@ class QSqlRelationalTableModelTab( QWidget ):
         self._build_gui()
 
         self.model.select()
-
-        #form = FormWidget(model, 0)
-        #form.setWindowTitle('Edit Person Record')
-        #form.show()
 
     # ------------------------------
     def _build_gui( self,   ):
@@ -1419,7 +1413,7 @@ class QSqlRelationalTableModelTab( QWidget ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
-        widget            = QPushButton( "select_\n_some" )
+        widget            = QPushButton( "select\n_some" )
         connect_to        = self.select_some
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
@@ -1457,9 +1451,7 @@ class QSqlRelationalTableModelTab( QWidget ):
             FROM people
             LEFT JOIN people_phones ON people.id = people_phones.person_id
 
-
         """
-
         model           = QSqlRelationalTableModel(self)
         self.model      = model
         # self.model          = qt_with_logging.QSqlRelationalTableModelWithLogging(
@@ -1522,8 +1514,6 @@ class QSqlRelationalTableModelTab( QWidget ):
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         view    = self.people_view
-        msg     = f"_view_clicked  "
-        print( msg )
         msg     = f"{INDENT}{view = } there is much to explore here, row, column, values"
         print( msg )
 
@@ -1561,25 +1551,16 @@ class QSqlRelationalTableModelTab( QWidget ):
     # -----------------------
     def add_record(self):
         """
-            SELECT
-                people.id,
-                people.name,
-                people.age,
-                people.family_relation,
-                people_phones.phone_number
-            FROM people
-            LEFT JOIN people_phones ON people.id = people_phones.person_id
-
-
-"""
-        what    = "add_record -- tbd"
+        what it says
+        """
+        what            = "add_record -- tbd"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
-        model     = self.model
+        msg             = "data for id  123  name  John Doe"
+        print( msg )
 
-        # Assuming `model` is your QSqlRelationalTableModel instance for the `people` table
+        model           = self.model
 
-        # Create a new empty record for the 'people' table
         new_record      = model.record()
 
         # Set values for each field in the new record
@@ -1590,14 +1571,13 @@ class QSqlRelationalTableModelTab( QWidget ):
 
         # Insert the new record at the end of the table
         if model.insertRecord(-1, new_record):
-            # Try to submit all changes to the database
             if model.submitAll():
                 print("Record inserted and changes committed to the database.")
             else:
                 print("Error committing changes:", model.lastError().text())
         else:
             print("Error inserting record:", model.lastError().text())
-        pass # for debug
+        pass
 
     # ------------------------
     def xxxx(self):
@@ -1607,17 +1587,13 @@ class QSqlRelationalTableModelTab( QWidget ):
 
         DB_OBJECT.query_data()
 
-    # ------------------------
-    def breakpoint(self):
-        """ """
-        what    = "breakpoint"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-        breakpoint()
 
     # ------------------------
     def select_all(self):
-        """ """
-        what    = "select_all greater than joe"
+        """
+        select with a sort
+        """
+        what    = "select_all"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         model        = self.model
@@ -1625,8 +1601,8 @@ class QSqlRelationalTableModelTab( QWidget ):
         print( f"for sorting {column_index = }")
         model.setSort( column_index , Qt.AscendingOrder)  # seems needs to be index no
 
-
         model.setFilter( "" )
+
         model.select()
 
     # ------------------------
@@ -1635,10 +1611,10 @@ class QSqlRelationalTableModelTab( QWidget ):
         what    = "select_some"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
-        self.model.setFilter('name < LOWER( "aaa" ) '   )  # which is greaterr
-
+        self.model.setFilter('age >  26 '   )
 
         self.model.select()
+
     # ------------------------
     def do_selections(self):
         """ """
@@ -1662,6 +1638,14 @@ class QSqlRelationalTableModelTab( QWidget ):
              #inspect_me     = self.people_model,
              a_locals       = locals(),
              a_globals      = globals(), )
+
+    # ------------------------
+    def breakpoint(self):
+        """ """
+        what    = "breakpoint"
+        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+        breakpoint()
 
     # # ------------------------
     # def inspect_ia(self):
@@ -1760,7 +1744,6 @@ class QSqlTableModelTab( QWidget ):
         model.setEditStrategy( QSqlTableModel.OnManualSubmit )
             #  OnFieldChange , OnRowChange , and OnManualSubmit .
         # model->select();
-
         #model->setHeaderData(1, Qt::Horizontal, tr("Salary"));
 
         view                    = QTableView( )
@@ -1769,7 +1752,6 @@ class QSqlTableModelTab( QWidget ):
         view.hideColumn( 0 )       # hide is hear but header on model
         #view.setSelectionBehavior( QTableView.SelectRows )
         #view.clicked.connect( self._view_clicked  )
-
 
             #  OnFieldChange , OnRowChange , and OnManualSubmit .
         # model->select();
@@ -1808,13 +1790,16 @@ class QSqlTableModelTab( QWidget ):
 
         # extract some data
         row_ix       = index.row()
-        key_ix       = 0 # may have been hidden
+        key_ix       = 0 # column may have been hidden
         key          = model.data( model.index( row_ix, key_ix ) )
 
         msg     = f"{INDENT}xtracted data {key = }   "
         print( msg )
 
-        # ---- sync up second model
+        msg     = f"{INDENT}phones are now displayed for for the person clicked on"
+        print( msg )
+
+        # ---- sync up second model with row clicked in first
         phone_model     = self.phone_model
         phone_model.setFilter( f"person_id = {key}" )
         phone_model.select()
@@ -1824,8 +1809,11 @@ class QSqlTableModelTab( QWidget ):
         """
         !!What it says
         """
-        what    = "add_record -- tbd"
+        what    = "add_record"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+        print( "not implemented")
+
 
     # -----------------------
     def delete_selected_record(self):
@@ -1865,8 +1853,11 @@ class QSqlTableModelTab( QWidget ):
         what    = "select_all"
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
+
         self.people_model.select()  # Load the data into the model
-        self.phone_model.select()   # Load the data into the model
+
+        self.phone_model.setFilter( "" )
+        self.phone_model.select()
 
     # ------------------------
     def inspect(self):
@@ -2074,15 +2065,13 @@ class QtSqlWidgetExamples( QMainWindow ):
         # ---- Help
         menu_help       = menubar.addMenu( "Help" )
 
-
         action          = QAction( "README.md...", self )
         connect_to      = partial( self.open_txt_file, "README.md" )
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
-
         action          = QAction( "General Help...", self )
-        connect_to      = partial( self.open_txt_file, "./docs/general_help_maybe.txt" )
+        connect_to      = partial( self.open_txt_file, "./docs/general_help.txt" )
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
@@ -2157,7 +2146,7 @@ if __name__ == "__main__":
     # ---- quasi constants  -- one time setup per run
     # control with comments
     DB_FILE       = "sample.db"
-    #DB_FILE       =  ':memory:'
+    DB_FILE       =  ':memory:'
 
     # next will be created and populated
     EXAMPLE_DB    = None  # populated later anyone can connect to this it is open

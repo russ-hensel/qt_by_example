@@ -5,7 +5,8 @@ Maybe there is something useful here or not
 ===============================================================
 
 
-
+how to install wat 
+    conda forge on fattony ok 
 
 ------------------ xxx ----------------------
 

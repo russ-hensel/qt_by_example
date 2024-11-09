@@ -62,7 +62,7 @@ Put all work into the tabs of WidgetExample
 # ---- imports
 
 
-#import adjust_path
+import adjust_path
 import time
 
 import wat
@@ -79,7 +79,7 @@ print( f"your python version is: {python_version()}"  )   # add to running on
 # ---- imports neq qt
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction, QSizePolicy
-from PyQt5.QtCore import QDate, Qt,  QSize
+from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5 import QtGui
 from PyQt5.QtGui import QTextDocument
@@ -159,8 +159,8 @@ sys.path.append( r"D:\Russ\0000\python00\python3\_examples"  )
 sys.path.append( r"D:\Russ\0000\python00\python3\_projects\rshlib"  )
 sys.path.append( "../")  # not working today vscode
 sys.path.insert( 1, "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib" )
-# import ex_helpers
-# import gui_qt_ext
+import ex_helpers
+import gui_qt_ext
 #import picture_viewer
 import wat
 import utils_for_tabs as uft
@@ -176,7 +176,7 @@ BEGIN_MARK_2  = uft.BEGIN_MARK_2
 
 
 
-what          = Qt.AlignCenter   # valid aligment perhaps to addWidget   layout.addWidget
+what   = Qt.AlignCenter   # valid aligment perhaps to addWidget   layout.addWidget
 #	addWidget(QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment())
 note   = """
 main work example it WidgetExamplesInTabs
@@ -1142,10 +1142,6 @@ class QTextEditTab( QWidget ) :
         # layout.addWidget(text_edit, 4, 0, 1, 3)  # Row 4, Column 0, RowSpan 1, ColumnSpan 3
         self.text_edit  = text_edit
 
-        print( f"{text_edit.minimumSize( ) =} ")
-        text_edit.setMinimumHeight( 100 )
-        print(  ia_qt.q_text_edit( text_edit, msg = "QTextEditTab.text_edit" ) )
-
         ix_row     = 0
         ix_col     = 0
         row_span   = 1
@@ -1167,132 +1163,6 @@ class QTextEditTab( QWidget ) :
 
         widget             = QLineEdit()
         self.line_edit     = widget
-
-        # ---- ssee if these are legal
-        #widget.setHeight( )
-
-        # widget.maximumHeight(…) # maximumHeight(self) -> int
-        # widget.maximumSize(…) # maximumSize(self) -> QSize
-        # widget.maximumViewportSize(…) # maximumViewportSize(self) -> QSize
-        # widget.maximumWidth(…) # maximumWidth(self) -> int
-  # def setAcceptDrops(…) # setAcceptDrops(self, on: bool)
-  # def setAcceptRichText(…) # setAcceptRichText(self, accept: bool)
-  # def setAccessibleDescription(…) # setAccessibleDescription(self, description: Optional[str])
-  # def setAccessibleName(…) # setAccessibleName(self, name: Optional[str])
-  # def setAlignment(…) # setAlignment(self, a: Union[Qt.Alignment, Qt.AlignmentFlag])
-  # def setAttribute(…) # setAttribute(self, attribute: Qt.WidgetAttribute, on: bool = True)
-  # def setAutoFillBackground(…) # setAutoFillBackground(self, enabled: bool)
-  # def setAutoFormatting(…) # setAutoFormatting(self, features: Union[QTextEdit.AutoFormatting, QTextEdit.AutoFormattingFlag])
-  # def setBackgroundRole(…) # setBackgroundRole(self, a0: QPalette.ColorRole)
-  # def setBaseSize(…) # setBaseSize(self, basew: int, baseh: int)…
-  # def setContentsMargins(…) # setContentsMargins(self, left: int, top: int, right: int, bottom: int)…
-  # def setContextMenuPolicy(…) # setContextMenuPolicy(self, policy: Qt.ContextMenuPolicy)
-  # def setCornerWidget(…) # setCornerWidget(self, widget: Optional[QWidget])
-  # def setCurrentCharFormat(…) # setCurrentCharFormat(self, format: QTextCharFormat)
-  # def setCurrentFont(…) # setCurrentFont(self, f: QFont)
-  # def setCursor(…) # setCursor(self, a0: Union[QCursor, Qt.CursorShape])
-  # def setCursorWidth(…) # setCursorWidth(self, width: int)
-  # def setDisabled(…) # setDisabled(self, a0: bool)
-  # def setDocument(…) # setDocument(self, document: Optional[QTextDocument])
-  # def setDocumentTitle(…) # setDocumentTitle(self, title: Optional[str])
-  # def setEnabled(…) # setEnabled(self, a0: bool)
-  # def setExtraSelections(…) # setExtraSelections(self, selections: Iterable[QTextEdit.ExtraSelection])
-  # def setFixedHeight(…) # setFixedHeight(self, h: int)
-  # def setFixedSize(…) # setFixedSize(self, a0: QSize)…
-  # def setFixedWidth(…) # setFixedWidth(self, w: int)
-  # def setFocus(…) # setFocus(self)…
-  # def setFocusPolicy(…) # setFocusPolicy(self, policy: Qt.FocusPolicy)
-  # def setFocusProxy(…) # setFocusProxy(self, a0: Optional[QWidget])
-  # def setFont(…) # setFont(self, a0: QFont)
-  # def setFontFamily(…) # setFontFamily(self, fontFamily: Optional[str])
-  # def setFontItalic(…) # setFontItalic(self, b: bool)
-  # def setFontPointSize(…) # setFontPointSize(self, s: float)
-  # def setFontUnderline(…) # setFontUnderline(self, b: bool)
-  # def setFontWeight(…) # setFontWeight(self, w: int)
-  # def setForegroundRole(…) # setForegroundRole(self, a0: QPalette.ColorRole)
-  # def setFrameRect(…) # setFrameRect(self, a0: QRect)
-  # def setFrameShadow(…) # setFrameShadow(self, a0: QFrame.Shadow)
-  # def setFrameShape(…) # setFrameShape(self, a0: QFrame.Shape)
-  # def setFrameStyle(…) # setFrameStyle(self, a0: int)
-  # def setGeometry(…) # setGeometry(self, a0: QRect)…
-  # def setGraphicsEffect(…) # setGraphicsEffect(self, effect: Optional[QGraphicsEffect])
-  # def setHidden(…) # setHidden(self, hidden: bool)
-  # def setHorizontalScrollBar(…) # setHorizontalScrollBar(self, scrollbar: Optional[QScrollBar])
-  # def setHorizontalScrollBarPolicy(…) # setHorizontalScrollBarPolicy(self, a0: Qt.ScrollBarPolicy)
-  # def setHtml(…) # setHtml(self, text: Optional[str])
-  # def setInputMethodHints(…) # setInputMethodHints(self, hints: Union[Qt.InputMethodHints, Qt.InputMethodHint])
-  # def setLayout(…) # setLayout(self, a0: Optional[QLayout])
-  # def setLayoutDirection(…) # setLayoutDirection(self, direction: Qt.LayoutDirection)
-  # def setLineWidth(…) # setLineWidth(self, a0: int)
-  # def setLineWrapColumnOrWidth(…) # setLineWrapColumnOrWidth(self, w: int)
-  # def setLineWrapMode(…) # setLineWrapMode(self, mode: QTextEdit.LineWrapMode)
-  # def setLocale(…) # setLocale(self, locale: QLocale)
-  # def setMarkdown(…) # setMarkdown(self, markdown: Optional[str])
-  # def setMask(…) # setMask(self, a0: QBitmap)…
-  # def setMaximumHeight(…) # setMaximumHeight(self, maxh: int)
-  # def setMaximumSize(…) # setMaximumSize(self, maxw: int, maxh: int)…
-  # def setMaximumWidth(…) # setMaximumWidth(self, maxw: int)
-  # def setMidLineWidth(…) # setMidLineWidth(self, a0: int)
-  # def setMinimumHeight(…) # setMinimumHeight(self, minh: int)
-  # def setMinimumSize(…) # setMinimumSize(self, minw: int, minh: int)…
-  # def setMinimumWidth(…) # setMinimumWidth(self, minw: int)
-  # def setMouseTracking(…) # setMouseTracking(self, enable: bool)
-  # def setObjectName(…) # setObjectName(self, name: Optional[str])
-  # def setOverwriteMode(…) # setOverwriteMode(self, overwrite: bool)
-  # def setPalette(…) # setPalette(self, a0: QPalette)
-  # def setParent(…) # setParent(self, parent: Optional[QWidget])…
-  # def setPlaceholderText(…) # setPlaceholderText(self, placeholderText: Optional[str])
-  # def setPlainText(…) # setPlainText(self, text: Optional[str])
-  # def setProperty(…) # setProperty(self, name: Optional[str], value: Any) -> bool
-  # def setReadOnly(…) # setReadOnly(self, ro: bool)
-  # def setShortcutAutoRepeat(…) # setShortcutAutoRepeat(self, id: int, enabled: bool = True)
-  # def setShortcutEnabled(…) # setShortcutEnabled(self, id: int, enabled: bool = True)
-  # def setSizeAdjustPolicy(…) # setSizeAdjustPolicy(self, policy: QAbstractScrollArea.SizeAdjustPolicy)
-  # def setSizeIncrement(…) # setSizeIncrement(self, w: int, h: int)…
-  # def setSizePolicy(…) # setSizePolicy(self, a0: QSizePolicy)…
-  # def setStatusTip(…) # setStatusTip(self, a0: Optional[str])
-  # def setStyle(…) # setStyle(self, a0: Optional[QStyle])
-  # def setStyleSheet(…) # setStyleSheet(self, styleSheet: Optional[str])
-  # def setTabChangesFocus(…) # setTabChangesFocus(self, b: bool)
-  # def setTabOrder(…) # setTabOrder(a0: Optional[QWidget], a1: Optional[QWidget])
-  # def setTabStopDistance(…) # setTabStopDistance(self, distance: float)
-  # def setTabStopWidth(…) # setTabStopWidth(self, width: int)
-  # def setTabletTracking(…) # setTabletTracking(self, enable: bool)
-  # def setText(…) # setText(self, text: Optional[str])
-  # def setTextBackgroundColor(…) # setTextBackgroundColor(self, c: Union[QColor, Qt.GlobalColor])
-  # def setTextColor(…) # setTextColor(self, c: Union[QColor, Qt.GlobalColor])
-  # def setTextCursor(…) # setTextCursor(self, cursor: QTextCursor)
-  # def setTextInteractionFlags(…) # setTextInteractionFlags(self, flags: Union[Qt.TextInteractionFlags, Qt.TextInteractionFlag])
-  # def setToolTip(…) # setToolTip(self, a0: Optional[str])
-  # def setToolTipDuration(…) # setToolTipDuration(self, msec: int)
-  # def setUndoRedoEnabled(…) # setUndoRedoEnabled(self, enable: bool)
-  # def setUpdatesEnabled(…) # setUpdatesEnabled(self, enable: bool)
-  # def setVerticalScrollBar(…) # setVerticalScrollBar(self, scrollbar: Optional[QScrollBar])
-  # def setVerticalScrollBarPolicy(…) # setVerticalScrollBarPolicy(self, a0: Qt.ScrollBarPolicy)
-  # def setViewport(…) # setViewport(self, widget: Optional[QWidget])
-  # def setViewportMargins(…) # setViewportMargins(self, left: int, top: int, right: int, bottom: int)…
-  # def setVisible(…) # setVisible(self, visible: bool)
-  # def setWhatsThis(…) # setWhatsThis(self, a0: Optional[str])
-  # def setWindowFilePath(…) # setWindowFilePath(self, filePath: Optional[str])
-  # def setWindowFlag(…) # setWindowFlag(self, a0: Qt.WindowType, on: bool = True)
-  # def setWindowFlags(…) # setWindowFlags(self, type: Union[Qt.WindowFlags, Qt.WindowType])
-  # def setWindowIcon(…) # setWindowIcon(self, icon: QIcon)
-  # def setWindowIconText(…) # setWindowIconText(self, a0: Optional[str])
-  # def setWindowModality(…) # setWindowModality(self, windowModality: Qt.WindowModality)
-  # def setWindowModified(…) # setWindowModified(self, a0: bool)
-  # def setWindowOpacity(…) # setWindowOpacity(self, level: float)
-  # def setWindowRole(…) # setWindowRole(self, a0: Optional[str])
-  # def setWindowState(…) # setWindowState(self, state: Union[Qt.WindowStates, Qt.WindowState])
-  # def setWindowTitle(…) # setWindowTitle(self, a0: Optional[str])
-  # def setWordWrapMode(…) # setWordWrapMode(self, policy: QTextOption.WrapMode)
-  # def setupViewport(…) # setupViewport(self, viewport: Optional[QWidget])
-
-  # def sizeHint(…) # sizeHint(self) -> QSize
-  # def sizeIncrement(…) # sizeIncrement(self) -> QSize
-        #widget.minimumHeight(  ) # minimumHeight(self) -> int
-        #QSize( 100, 500  )
-
-
         widget.setPlaceholderText("Enter search text")
         layout.addWidget( widget, ix_row, ix_col, row_span,  col_span )
 
@@ -1451,6 +1321,33 @@ class QTextEditTab( QWidget ) :
         text_edit.setTextCursor(cursor)
         return  all_text
 
+        ex_text   = 1 * (
+
+        """
+        More than 20 years have passed since I authored the Python
+Essential Reference. At that time, Python was a much smaller
+language and it came with a useful set of batteries in its standard
+library. It was something that could mostly fit in your brain. The
+Essential Reference reflected that era. It was a small book that you
+could take with you to write some Python code on a desert island or
+inside a secret vault. Over the three subsequent revisions, the
+Essential Reference stuck with this vision of being a compact but
+complete language reference—because if you’re going to code in
+Python on vacation, why not use all of it?
+Today, more than a decade since the publication of the last
+edition, the Python world is much different. No longer a niche
+language, Python has become one of the most popular
+programming languages in the world. Python programmers also
+have a wealth of information at their fingertips in the form of
+advanced editors, IDEs, notebooks, web pages, and more. In fact,
+there’s probably little need to consult a reference book when almost
+any reference material you might want can be conjured to appear
+before your eyes with the touch of a few keys.
+If anything, the ease of information retrieval and the scale of the
+        """ )
+
+        cursor = text_edit.textCursor()
+        cursor.insertText( ex_text )
 
     # ----
     def set_text_ver_1(self,  ):
@@ -1491,12 +1388,12 @@ before your eyes with the touch of a few keys.
 
         self.set_text( a_string )
     # ----------
-    def set_textxxx(self, a_string ):
+    def set_text(self, a_string ):
         """
         """
         text_edit       = self.text_edit
         text_edit.clear()
-        cursor          = text_edit.textCursor()
+        cursor = text_edit.textCursor()
         cursor.insertText(a_string)
 
     # ----
@@ -1724,7 +1621,7 @@ at the cursor ----<<""")
         print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
         # make some locals for inspection
-        local_self            = self
+        my_tab_widget = self
         #parent_window = self.parent( ).parent( ).parent().parent()
         local_self_text_edit  = self.text_edit
         wat_inspector.go(
@@ -2499,6 +2396,7 @@ class SmallerWidgetTab( QWidget ) :
 
         QMessageBox.information( self, "Deput_in_clipboardlete Ok", "detail_text_model Record deleted successfully.")
 
+
     # ------------------------------------
     def inspect( self ):
         """
@@ -2516,9 +2414,9 @@ class SmallerWidgetTab( QWidget ) :
 
         print( f"{str( self.cbox_ex_1.isChecked()) = }" )
 
-        my_tab_widget           = self
-        parent_window           = self.parent( ).parent( ).parent().parent()
-        a_qwidget_to_inspect    = QWidget()
+        my_tab_widget = self
+        parent_window = self.parent( ).parent( ).parent().parent()
+        a_qwidget_to_inspect   = QWidget()
 
         wat_inspector.go(
              msg            = "self.cbox_ex_1 from inspect method",
@@ -2539,7 +2437,7 @@ class SmallerWidgetTab( QWidget ) :
 
 
 # ---- main window ===================================================================
-class QtWidgetExamples( QMainWindow ):
+class QtWidgetExamplesInTabs( QMainWindow ):
     def __init__(self):
         """
         window with many widgets, placed with regular layouts
@@ -2689,13 +2587,8 @@ class QtWidgetExamples( QMainWindow ):
         # ---- Help
         menu_help       = menubar.addMenu( "Help" )
 
-        action          = QAction( "README.md...", self )
-        connect_to      = partial( self.open_txt_file, "README.md" )
-        action.triggered.connect( connect_to )
-        menu_help.addAction( action )
-
         action          = QAction( "General Help...", self )
-        connect_to      = partial( self.open_txt_file, "./docs/general_help.txt" )
+        connect_to      = self.open_general_help
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
@@ -2703,20 +2596,6 @@ class QtWidgetExamples( QMainWindow ):
         connect_to      = self.open_tab_help
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
-
-        action          = QAction( "Developer Notes...", self )
-        connect_to      = partial( self.open_txt_file, "readme_rsh.txt" )
-        action.triggered.connect( connect_to )
-        menu_help.addAction( action )
-
-
-
-
-
-
-
-
-
 
     #----------------------------
     def not_implemented( self,   ):
@@ -2783,7 +2662,7 @@ class QtWidgetExamples( QMainWindow ):
         what it says, read it
         """
 
-        #print(f"on_tab_changed from { self.current_tab_index = } to {index = }")
+        print(f"on_tab_changed from { self.current_tab_index = } to {index = }")
         self.current_tab_index   = index
         self.tab_page_info()
 
@@ -3188,34 +3067,14 @@ class QtWidgetExamples( QMainWindow ):
         else:
             return True
 
-    #-------
-    def open_tab_help( self,   ):
-        """
-        what it says read:
-        """
-        tab_title           = self.tab_widget.tabText( self.tab_widget.currentIndex())
-        doc_name            = self.tab_help_dict.get( tab_title, "no_specific_help.txt")
-        doc_name            = f"{self.doc_dir}{doc_name}"
-        print( f"{doc_name = }")
-
-        self.open_txt_file( doc_name )
-
-    #-------
-    def open_txt_file( self, file_name  ):
-        """
-        what it says read
-        """
-
-        proc               = subprocess.Popen( [ TEXT_EDITOR, file_name ] )
-
 # --------------------
 if __name__ == "__main__":
 
-    TEXT_EDITOR     = "xed"
-    app             = QApplication(sys.argv)
-    dialog          = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
+    app     = QApplication(sys.argv)
+    dialog  = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
 
-    window          = QtWidgetExamples()
+
+    window  = QtWidgetExamplesInTabs()
     window.show()
     #sys.exit(
     app.exec()

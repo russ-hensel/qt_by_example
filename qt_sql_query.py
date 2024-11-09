@@ -1,23 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed May 22 10:52:28 2024
+this code is not part of the wat_inspector but belongs in stuffdb
 
-@author: russ
-"""
-
-
-
-"""
-look in twitter
-
-import sqlite3 as lite
-
-
-table
-
-have some sort of data dict that draws for sql lite dict and is perhaps
-enhanced by some aux table or tables
 
 
 """

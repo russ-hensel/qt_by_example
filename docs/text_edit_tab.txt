@@ -1,0 +1,15 @@
+help for the text edit tab
+
+
+
+
+
+
+This is a text edit tab with buttons that show some of the things you can do including
+searching up and down in the text.
+
+Button lables should give some clue as to what they do.  See the code, and perhaps
+at some time there will be documentation here.
+
+
+An of course it has the usual inspect and breakpoint features

@@ -62,8 +62,12 @@ You can call wat.modifiers / foo with the following modifiers:
 
 # ---- Imports
 
-#import adjust_path
 
+# at the top of the file wat_inspector change the following:
+
+TEXT_EDITOR       = r"xed"  # ADJUST FOR YOUR SYSTEM
+
+# to the editor of your choice.
 
 # ---- imports neq qt
 
@@ -489,8 +493,8 @@ if __name__ == '__main__':
         what it says read:
 
         """
-        doc_name            =   "watt_inspector_help.txt"
-        ex_editor          = r"xed"
+        doc_name           = "watt_inspector_help.txt"
+        ex_editor          = TEXT_EDITOR
         proc               = subprocess.Popen( [ ex_editor, doc_name ] )
 
     # ------------------------------------------
@@ -503,8 +507,7 @@ if __name__ == '__main__':
         try:
             result   = eval( code, self.globals,   self.locals )
 
-        except Exception as an_except:   #  or( E1, E2 )
-
+        except Exception as an_except:
             msg     = f"a_except         >>{an_except}<<  type  >>{type( an_except)}<<"
             print( msg )
 
@@ -520,8 +523,8 @@ if __name__ == '__main__':
 
         if do_wat:
             main_text   = self.get_wat_str(  result )
-            # self.inspect_object( result  )
             title        = f"Eval -> {code}"
+
         else:
             title       = f"Eval -> {code}"
             main_text   = s_trace
@@ -558,8 +561,8 @@ if __name__ == '__main__':
         widget              = self.text_edit
         widget.clear()
         debug               = get_traceback_list()
-        main_text             = "\n".join( get_traceback_list() )
-        title                = "Where in the code are you:"
+        main_text           = "\n".join( get_traceback_list() )
+        title               = "Where in the code are you:"
 
         self.display_text( title = title, main_text= main_text )
 
@@ -569,8 +572,10 @@ if __name__ == '__main__':
                     a_globals      = None,
                     msg            = "no message" ):
         """
-        what it says, read?
+        what it says.
         """
+        self.show()
+
         if inspect_me is None:
             #msg    = f"argument inspect_me {inspect_me} is deleted and will be ignored"
             msg    = f"no message from caller "
@@ -584,7 +589,7 @@ if __name__ == '__main__':
     # ------------------------------------------
     def setup( self, inspect_me = None,  a_locals = None,  a_globals = None ):
         """
-        what it says, read?
+        what it says.
         """
         #self.inspect_me      = inspect_me
         # self.inspect_arg     = inspect_me  # later extend to list
@@ -613,9 +618,6 @@ if __name__ == '__main__':
                 index_to_select = 0
                 widget.setCurrentRow(index_to_select)
 
-        # self.what( )
-        #self.do_inspect()
-
     # ------------------------------------------
     def do_inspect_clicked_global( self, item  ):
         """
@@ -642,14 +644,10 @@ if __name__ == '__main__':
         main_text     = self.get_wat_str( i_object )
         self.display_text( title = title, main_text = main_text )
 
-
-        #self.do_inspect( i_object )
-
-
     # ------------------------------------------
     def do_inspect_clicked_local( self, item  ):
         """
-        what it says, read?
+        what it says.
         """
         widget              = self.local_widget
         row = widget.row( item )
@@ -733,8 +731,9 @@ if __name__ == '__main__':
         """
         read it
         import  wat_inspector    """
-        file_name  = "./wat_inspector_out.txt"
-        proc = Popen( [ "xed" , file_name ] )
+        file_name           = "./wat_inspector_out.txt"
+        ex_editor           = TEXT_EDITOR
+        proc                = subprocess.Popen( [ ex_editor, file_name ] )
 
     # ------------------------------------------
     def what( self ):

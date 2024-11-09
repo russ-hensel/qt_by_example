@@ -15,7 +15,7 @@ Another version is for Qt widgets that are not oriented around SQL
 ----QTSql
 
 ----Purpose/Functionality
-
+----Tracing the code
 ----QtWidgets
 
 ----QtWidgets Old
@@ -25,6 +25,12 @@ Another version is for Qt widgets that are not oriented around SQL
 
 ----Purpose/Functionality--------------------------------------------------------------------------
 
+This application in intended to show how to use Qt widgets largely through
+a running application, the code behind it, and some documentation ( like this file ).
+
+Most of the widgets have some visual aspect, but expecially for the sql widgets
+they also have some important non visual aspects.  The code should illustrate
+both.
 
 Use of widges involves several different programming aspects:
 
@@ -101,6 +107,32 @@ Typical Tab Functionality:
     where the name of the function ( in the tab ) is: print_db
     this should make it easy to find the code.
 
+----Tracing the code
+
+    Each tabpage is its own object typically only 300 to 600 lines, and divided into
+    many methods.
+
+    When you interact watch the gui, and check the console.
+
+    If you wonder why the tab page looks the way it does see _build_gui()
+
+    The coding style is on the verbose side to make things clear, the formatting is
+    non-standard, run black or something on it if you want. ( you need not tell me how wrong I am )
+
+    I have tried to be consistent in naming so that function describe what they do, or
+    what triggered them.
+
+    Name attempt to be consisten so onece you learn your way around one tab it should
+    help with other tabs.
+
+    When you interact watch the gui, and check the console.
+
+    Methods often execute something like:
+
+        what    = "rebuild_db"
+        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+
+        where what is the name of the method, should make finding code easy.
 
 ----Code Style--------------------------------------------------------------------------
 

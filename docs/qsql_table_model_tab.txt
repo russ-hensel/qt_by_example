@@ -1,26 +1,46 @@
-just some data in qsql_table_model
 
 
-see also Qt CheatSheet - BD_USD_SSD_WIKI
-http://bulldog/mediawiki/index.php/Qt_CheatSheet#QSqlTableView
+This tab is related to working with a single table at a time, and coorination
+between tables by using multiple qt widgets.
 
-this has a one to many relation in the data and the views when clicke on try to coordinate them
 
-you can see a bunch of setup for the QSqlTable model and view some of which it the same
-as other Widgets
-
-righ now acccess is by ix_col and ix_row, but there mry be records or whole rows hidden in here
-time and exploration will tell
+----------------------- Table of Contents -----------------
 
 
 
-this has 2 models and 2 views thru 2 related tables
+----Purpose/Functionality
 
-we have some inspection and some actions if you click on the top view
-
-
-there is a lot more to do here, like add and delete records
+---- Work still to do
 
 
-the sample db should be used on all tabs and have its own tab
-to make the samples easier to use
+
+--------------------------------------------------------
+
+---- Purpose/Functionality --------------------------------------------------------------------------
+
+With the widgets on this tab we can do full select and update cycles on single tables at a time
+or coordiant actions on multiple tables by using multiple widgets.
+
+The code is found in QSqlTableModelTab and focus on the use of QSqlTableModel and QTableView
+
+    * <select_all> selects all the records in both tables
+
+    * Clicking on a row in the people table  widget   causes a reselect in the people_phones widget
+        this is somewhat like a join of the two tables
+
+    *Inspect <inspect>
+        the usual
+
+    *Breakpoint <breakpoint>
+        the usual
+
+
+---- Work still to do  --------------------------------------------------------------------------
+
+    *Add, Update, and delete functionality
+
+
+
+
+
+----eof --------------------------------------------

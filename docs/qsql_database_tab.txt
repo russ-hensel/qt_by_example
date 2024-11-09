@@ -1,16 +1,59 @@
 
 
-The application uses just one database.
-This tab relates to that database without widgets....
+This tab is related to building the datbase used by the other tabs.
+
+
+----------------------- Table of Contents -----------------
+
+
+----Purpose/Functionality
+
+
+
+--------------------------------------------------------
+
+----Purpose/Functionality--------------------------------------------------------------------------
+
+From this tab you can rebuild the database from scratch, and print out the data ( to the console ).
+Also you can do the usual inspection and breakpoint.
+
+The code for this tab is found in QSqlDatabaseTab and SampleDB.  The tab focus on the use of
+QSqlDatabase and QSqlQuery
+
+The tables in brief ( for more detail see the sql in SampleDB )
+
+    people
+        rows of people and some of their properties
+
+    people_ohones
+        the phone numbes of people, to be joined to people
+
+    book_clubs -- work in progress
+        the book clubs that people belong to
+
 
 
 Functionality
 
-    *Print out the data in all the tables.
-
     * Rebuild the db from scratch (  also done every time the application
-        is started )
+        is started ) <rebuild_db>
 
-    * Inspect
+    *Print out the data in all the tables. <print_db>
 
-    * Breakpoint
+    *Inspect
+        the usual
+
+    *Breakpoint
+        the usual
+
+
+
+
+
+
+
+
+
+
+
+----eof --------------------------------------------

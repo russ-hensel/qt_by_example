@@ -999,7 +999,7 @@ def  q_sql_table_model( a_obj,
     return a_str
 
 # ----------------------------------------
-def  q_sql_relational_table_model( a_obj,
+def  q_sql_relational_table_modelxxxxx( a_obj,
                         msg = None,
                         *,
                         max_len  = None,
@@ -1917,10 +1917,7 @@ def  q_combo_box( a_obj,
     if print_it:
         print( a_str )
 
-
     return a_str
-
-
 
 
 

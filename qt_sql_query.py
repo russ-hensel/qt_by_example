@@ -185,7 +185,6 @@ class QueryBuilder(    ):
             self._sql        =  f"{self._sql} \n    GROUP BY { group_columns }"
 
 
-
         if self.sql_having:
             self._sql        = f"{self._sql}\n    HAVING {self.sql_having} "
 

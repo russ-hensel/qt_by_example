@@ -2,30 +2,17 @@
 
 """"
 Purpose:
-    object inspector
-   /mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/wat_inspector.py
-   /home/russ/Desktop/Disks ( gnome-disks ).desktop
-   /boot
+    object inspector based on wat
+    but running in a qt window
+
 
 Status:
-    add check box for wat style
-    button for original object
-    get layout better
-    append to wat.txt
+    draft but useful
 
+    some todos
 
-    !! search ddlist but editable
-    !! fix eval esp 2
-    !! add to eval
-    !! add a text help
-
-
-See Also:
-
-
-Search for the following in the code below:
-
-    def ex_        for the beginning of an example
+        improve layout
+        clean code
 
 
     ...
@@ -56,208 +43,134 @@ You can call wat.modifiers / foo with the following modifiers:
 
 
 
-
-
 """
 
-# ---- Imports
+# ---- imports
 
-
-# at the top of the file wat_inspector change the following:
-
-TEXT_EDITOR       = r"xed"  # ADJUST FOR YOUR SYSTEM
-
-# to the editor of your choice.
-
-# ---- imports neq qt
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction, QDialog
-from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtGui import QTextDocument
-
-from PyQt5 import QtGui
-
-from PyQt5.QtCore  import  (
-    QTimer,
-    QDate,
-    Qt,
-    QModelIndex,
-    QDateTime,
-  )
-
-# layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-    )
-
-# widgets -- small
-from PyQt5.QtWidgets import (
-    QButtonGroup,
-    QComboBox,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QMessageBox,
-    QPushButton,
-    QRadioButton,
-    QTabWidget,
-    QTextEdit,
-    QWidget,
-    QCheckBox,
-    )
-
-
-# widgets biger
-from PyQt5.QtWidgets import (
-    QGroupBox,
-    QAction,
-    QMenu,
-    QApplication,
-    QMainWindow,
-    QMessageBox,
-    QTableView,
-    QDateEdit,
-    QTableWidgetItem,
-    QTableWidget,
-    )
-
-# sql
-from PyQt5.QtSql import (
-    QSqlDatabase,
-    QSqlTableModel,
-    QSqlQuery
-    )
-
-import subprocess
-from   subprocess import run
-from   subprocess import Popen, PIPE, STDOUT
-
+import dis
 import io
 import pprint
-from   pprint import pprint as pp
+import subprocess
 import sys
-import dis
-
-#import make_qt_object
-from   subprocess import Popen
 import traceback
-
+from functools import partial
+from pprint import pprint as pp
+from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
-import ia_qt
+from PyQt5 import QtGui
+from PyQt5.QtCore import QDate, QDateTime, QModelIndex, Qt, QTimer
+from PyQt5.QtGui import QTextCursor, QTextDocument
+# sql
+from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+# widgets biger
+# widgets -- small
+# layouts
+from PyQt5.QtWidgets import (QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDateEdit,
+                             QDialog,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
-# import ex_helpers
-# import ex_helpers as ex_h
+import info_about
+import info_about_qt as io_qt
 
-import io_qt
+# ---- module instances
 
-wat_app        = None
-go             = None    # dialog.setup_go
-display_wat    = None
+a_wat_inspector         = None
+go                      = None    # dialog.setup_go
+display_wat             = None
+testing                 = True
 
-testing        = True
 
+# ---- a few parameters for you
+
+TEXT_EDITOR    = "xed"
+
+# -----------------------
+def get_traceback_list( msg = "get_traceback_list", print_it = True ):
+    """
+    get_traceback_list()
+
+    """
+    stop_text = "main.py"
+
+    #stop_text  File "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/debug_util.py", line 171, in call_tbl
+
+    keep = True
+    short_list  = [">>>>>>>>>>>>>see what inspector instead get_traceback_list<<<<<<<<<<<<<<<<<<<<<<"]
+    for i_item in reversed( traceback.format_stack() ):
+
+        if keep:
+            short_list.append( i_item )
+
+            if stop_text in i_item:
+                print( "stop ---------------------------------------")
+                keep = False
+    short_list.append( msg )
+    short_list.append( ">>>>>>>>>>>>>get_traceback_list<<<<<<<<<<<<<<<<<<<<<<" )
+
+    short_list    = list( reversed( short_list ) )
+    if print_it:
+        for i_item in short_list:
+            print( i_item )
+
+    return short_list
 
 # ------------------------------------
-class DisplayWat( QDialog ):
+class WatWindow( QDialog  ):
     """
-import sys
-from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QVBoxLayout
-
-# Your custom QDialog class
-class MyDialog(QDialog):
-    def __init__(self):
-        super().__init__()
-
-        self.setWindowTitle("Main Dialog Window")
-
-        # Add a label to the dialog
-        label = QLabel("This is the main dialog window.")
-        layout = QVBoxLayout()
-        layout.addWidget(label)
-        self.setLayout(layout)
-
-# Main function to run the dialog
-if __name__ == '__main__':
-    app = QApplication(sys.argv)  # Create the QApplication instance
-
-    dialog = MyDialog()  # Create an instance of your custom QDialog
-    dialog.show()  # Show the dialog as the main window
-
-    sys.exit(app.exec_())  # Run the application's event loop
-
-
+    window for the wat inspector
     """
     # ------------------------------------------
     def __init__(self,  app,  parent = None ):
         """
-        Args:
-            app app to run dialog
-
-        Returns:
-            None.
-
+        the usual
         """
-        global    display_wat
-
-        global    wat_app
-        global    go
-
-        self.last_get_wat_str_obj  = None
-
-        if display_wat:
-            return
-
-        self.app       = app
-
         super().__init__( parent )
 
-        display_wat = self
-        wat_app     = app
-        go          = self.setup_go
-
-
-        self.parent         = parent  # parent may be a function use parent_window
-        self.parent_window  = parent
+        self._build_gui()
 
         msg   = "Wat inspector"
         self.setWindowTitle( msg  )
-        self.inspect_name   = None
+
         qt_xpos             = 50
         qt_ypos             = 50
         qt_width            = 1400
         qt_height           = 800
-        self.tab_help_dictxxxxx   = { }
         self.setGeometry(  qt_xpos,
                            qt_ypos ,
                            qt_width,
                            qt_height  )
-
-
-        # ---- info_about
-        self.info_about     = io_qt.InfoAbout( )
-
-        an_inspector   = io_qt.InfoAboutQLineEdit(  )
-        self.info_about.add_inspector( an_inspector )
-
-        an_inspector   = io_qt.InfoAboutList(  )
-        self.info_about.add_inspector( an_inspector )
-
-        an_inspector   = io_qt.InfoAboutQTextEdit(  )
-        self.info_about.add_inspector( an_inspector )
-
-        self._build_gui()
-        self.last_position = 0  # for search
 
     # ------------------------------------------
     def _build_gui( self, ):
         """
         what it says, read?
         """
+        # self._build_menu() some issues here
+
         layout          = QGridLayout( self )
         self.layout     = layout
         ix_row          = 0
@@ -265,14 +178,11 @@ if __name__ == '__main__':
         row_span        = 1
         col_span        = 1
 
-
         # ---- msg_label
         row_span        = 1
         col_span        = 4
-        widget          = QLabel("msg goes here ")
+        widget          = QLabel( "msg goes here " )
         self.msg_label  = widget
-        #widget.setLayoutDirection( Qt.RightToLeft )
-            # Qt.LeftToRight )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
         # # ----
@@ -292,19 +202,10 @@ if __name__ == '__main__':
         # widget.toggled.connect( self.cbox_clicked )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-        # # ---- QCheckBox
-        # ix_col         += 1
-        # widget          =  QCheckBox("tbd")
-        # #self.cbox_ex_1  = widget
-        # #widget.animal   = "Cat"   # monkey patch ??
-        # widget.setChecked(True)
-        # # widget.toggled.connect( self.cbox_clicked )
-        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
-
-        # ---- Info
+        # ---- Cust Inspect
         # ix_row         += 1
         ix_col         += 1
-        widget          = QPushButton( "testing Info" )
+        widget          = QPushButton( "Cust Inspect" )
         widget.clicked.connect(         self.do_info_about )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
@@ -331,24 +232,6 @@ if __name__ == '__main__':
         #     layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
 
-        # # ---- eval2
-        # ix_row          += 1
-        # ix_col          = 0
-        # widget          =  QPushButton( "Eval 2" )
-        # #widget.clicked.connect(         self.do_eval )
-        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
-
-        # #ix_row         += 1
-        # ix_col             += 1
-        # widget              =  QLineEdit( " 2 + 2 " )
-        # self.eval_widget_2  = widget
-        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
-
-        # row_span            = 1
-        # col_span            = 2
-        # ix_row              += 1
-        # ix_col              = 0
-
         #row_span            = 1
         col_span            = 2
         ix_row              += 1
@@ -357,6 +240,7 @@ if __name__ == '__main__':
         widget              = QLabel( "Locals" )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
+        # ---- Globals
         #row_span            = 1
         col_span            = 2
         #ix_row              += 1
@@ -365,7 +249,6 @@ if __name__ == '__main__':
         widget              = QLabel( "Globals" )
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-        # ---- locals
         #row_span            = 1
         col_span            = 2
         ix_row              += 1
@@ -409,15 +292,11 @@ if __name__ == '__main__':
         self.text_edit      = text_edit
         layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
 
-
         # ---- bottom and buttons
-
-
         ix_row                  += 1
         ix_col                  = 0
         button_layout           = QHBoxLayout()
         layout.addLayout( button_layout, ix_row, ix_col    )
-
 
         widget                  = QLineEdit()
         self.line_edit          = widget
@@ -446,24 +325,66 @@ if __name__ == '__main__':
         button_layout           = QHBoxLayout()
         layout.addLayout( button_layout, ix_row, ix_col    )
 
-        widget                  = QLineEdit()
+        # ---- Filters
+        widget                  = QComboBox()
         self.filter_widget      = widget
-        widget.setPlaceholderText( "Enter filter text" )
+        #widget.setPlaceholderText( "Enter filter text" )
         button_layout.addWidget( widget, )
+        widget.setEditable( True )
+        values    =  [ "def", "class"]
+        for value in values:
+            #item = QListWidgetItem( value )
+            widget.addItem( value )
 
-        # ---- Filter
-        widget                  = QPushButton("Filter")
+        widget                  = QPushButton("Filter BoL")
         #self.down_button        = widget
         widget.clicked.connect( self.filter )
         button_layout.addWidget( widget,   )
 
-
-        # ---- next button layout
+        # ---- next bottom layout
         ix_row                  += 1
         ix_col                  = 0
         button_layout           = QHBoxLayout()
         layout.addLayout( button_layout, ix_row, ix_col    )
 
+        # ---- QListWidget
+        widget                  = QComboBox(    )
+        self.filter_widget_sil  = widget
+        #widget.setGeometry( 50, 50, 200, 200 )
+        # widget.setPlaceholderText( "Enter filter text" )
+        button_layout.addWidget( widget, )
+        widget.setEditable( True )
+        values    =  [ "height",
+                       "width",
+                       "size",
+                       "action",
+                       "event",
+                       "index",
+                       "count"
+                      ]
+        for value in values:
+            #item = QListWidgetItem( value )
+            widget.addItem( value )
+        # widget.addItem('Zero')
+        # widget.addItem('One')
+
+
+        # widget                  = QLineEdit()
+        # self.filter_widget      = widget
+        # widget.setPlaceholderText( "Enter filter text" )
+        # button_layout.addWidget( widget, )
+
+        # ---- "Filter SIL"
+        widget                  = QPushButton("Filter SiL")
+        #self.down_button        = widget
+        widget.clicked.connect( self.filter_sil )
+        button_layout.addWidget( widget,   )
+
+        # ---- another button layout
+        ix_row                  += 1
+        ix_col                  = 0
+        button_layout           = QHBoxLayout()
+        layout.addLayout( button_layout, ix_row, ix_col    )
 
         a_widget                = QPushButton("Save to File")
         self.save_button        = a_widget
@@ -482,10 +403,37 @@ if __name__ == '__main__':
 
         a_widget                = QPushButton("OK")
         self.save_button        = a_widget
-        a_widget.clicked.connect(         self.accept )
+        a_widget.clicked.connect(   self.do_ok )
         button_layout.addWidget( a_widget )
 
+    # ------------------------------------
+    def _build_menu( self,  ):
+        """
+        what it say
+            may not be able to have a menu bar on this type of widget
+        """
+        menubar         = self.menuBar()
+        self.menubar    = menubar
 
+        # a_menu.addSeparator()
+
+        # ---- Help
+        menu_help       = menubar.addMenu( "Help" )
+
+        action          = QAction( "README.md...", self )
+        connect_to      = partial( self.open_txt_file, "README.md" )
+        action.triggered.connect( connect_to )
+        menu_help.addAction( action )
+
+        action          = QAction( "General Help...", self )
+        connect_to      = partial( self.open_txt_file, "watt_inspector_help.txt" )
+        action.triggered.connect( connect_to )
+        menu_help.addAction( action )
+
+        action          = QAction( "Developer Notes...", self )
+        connect_to      = partial( self.open_txt_file, "readme_rsh.txt" )
+        action.triggered.connect( connect_to )
+        menu_help.addAction( action )
 
     #-------
     def open_general_help( self,   ):
@@ -540,7 +488,8 @@ if __name__ == '__main__':
 
         # self.display_text( title = "info_about", main_text = main_text )
 
-        main_text   = self.info_about.get_info( self.last_get_wat_str_obj , msg = "what about it " )
+        #main_text   = self.info_about.get_info( self.last_get_wat_str_obj , msg = "what about it " )
+        main_text   = info_about.get( self.last_get_wat_str_obj , msg = "what about it " )
 
         self.display_text( title = "info_about", main_text = main_text )
 
@@ -567,34 +516,36 @@ if __name__ == '__main__':
         self.display_text( title = title, main_text= main_text )
 
     # ------------------------------------------
-    def setup_go( self, inspect_me = None,
+    def setup_go(   self,
+                    *,
                     a_locals       = None,
                     a_globals      = None,
                     msg            = "no message" ):
         """
         what it says.
         """
-        self.show()
+        print( f"setup_go with {msg = } " )
 
-        if inspect_me is None:
-            #msg    = f"argument inspect_me {inspect_me} is deleted and will be ignored"
-            msg    = f"no message from caller "
-            print( msg )
         self.msg_label.setText( msg )
         self.setup( None,  a_locals, a_globals   )
         #self.do_inspect( inspect_me )
         self.show()
-        self.app.exec_()
+        # print( "next app exec can we see if already running?")
+        # self.app.exec_()
+        # print( "after  app exec can we see if already running?")
 
     # ------------------------------------------
     def setup( self, inspect_me = None,  a_locals = None,  a_globals = None ):
         """
         what it says.
         """
-        #self.inspect_me      = inspect_me
-        # self.inspect_arg     = inspect_me  # later extend to list
+
+        a_locals             =     {a_key: a_value for a_key, a_value in sorted( a_locals.items(),  key = lambda item: item[0]) }
+        a_globals            =     {a_key: a_value for a_key, a_value in sorted( a_globals.items(), key = lambda item: item[0]) }
+
         self.locals          = a_locals
         self.globals         = a_globals
+
         # pp( self.objects )
         # print( self.objects )
         # print( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" )
@@ -612,6 +563,7 @@ if __name__ == '__main__':
             widget     = self.global_widget
             widget.clear()
             values    =  [ i_key for i_key in a_globals.keys() ]
+
             for value in values:
                 item = QListWidgetItem( value )
                 widget.addItem( item )
@@ -628,7 +580,6 @@ if __name__ == '__main__':
 
         text               = item.text()
         i_object           = self.globals[ text ]
-
 
         print( "\n-------clicked")
         #print( f"{ type(i_key) = } { i_key = }")
@@ -654,21 +605,35 @@ if __name__ == '__main__':
 
         text               = item.text()
         i_object           = self.locals[ text ]
-        # print( "\n-------clicked")
-        # #print( f"{ type(i_key) = } { i_key = }")
-        # print( f"{text} {type(i_object) = } { i_object = }")
-        # print( f"do_inspect_clicked i_object { i_object = }   {type(i_object) = }")
-        # self._inspect_me    = i_object
-        # self.inspect_name   = text     # or pass as args use nonen...
-
-        # print(f"Clicked row: {row}, text: {text}")
-        # widget              = self.text_edit
-        # widget.clear()
-        # self.do_inspect( i_object )
 
         title         = f"Local -> {text}"
         main_text     = self.get_wat_str( i_object )
         self.display_text( title = title, main_text = main_text )
+
+
+    # ---------------------
+    def filter_sil( self ):
+        """
+        filter the lines based on text at start:
+            ignore blank space
+            case insensitive
+        """
+        #print( self.filter_widget_sil.currentText() )
+
+        filter_text = self.filter_widget_sil.currentText().casefold()
+        all_text    = self.text_edit.toPlainText()
+        splits      = all_text.split( "\n" )
+
+        new_lines   = []
+
+        for i_split in splits:
+            i_test    = i_split.strip()
+            if  filter_text   in  i_test.casefold():
+                new_lines.append( i_split )
+
+        #rint( new_lines )
+        new_text       = "\n".join( new_lines )
+        self.display_text( f"Results filtered on {filter_text}", new_text )
 
     # ---------------------
     def filter( self ):
@@ -677,13 +642,11 @@ if __name__ == '__main__':
             ignore blank space
             case insensitive
         """
-        filter_text = self.filter_widget.text().casefold()
+        filter_text = self.filter_widget.currentText().casefold()
         all_text    = self.text_edit.toPlainText()
         splits      = all_text.split( "\n" )
 
         new_lines   = []
-
-        #print( splits )
 
         for i_split in splits:
             i_test    = i_split.strip()
@@ -692,24 +655,23 @@ if __name__ == '__main__':
 
         #rint( new_lines )
         new_text       = "\n".join( new_lines )
-        self.display_text( f"results filtered on {filter_text}", new_text )
+        self.display_text( f"Results filtered on {filter_text}", new_text )
 
     #  --------
     def copy_all_text( self, text_edit ):
         """
         what it says
-        from chat, test?
+            copy into clipboard
         """
         # Save current cursor position
         cursor = text_edit.textCursor()
         original_position = cursor.position()
 
-        # Select all text and copy to the clipboard
         text_edit.selectAll()
-        text_edit.copy()   # think goe to clipboard
+        text_edit.copy()   # goed to clipboard
         all_text = self.text_edit.toPlainText()
 
-        # Restore cursor to its original position
+        # Restore cursor
         cursor.setPosition(original_position)
         text_edit.setTextCursor(cursor)
         return  all_text
@@ -735,12 +697,6 @@ if __name__ == '__main__':
         ex_editor           = TEXT_EDITOR
         proc                = subprocess.Popen( [ ex_editor, file_name ] )
 
-    # ------------------------------------------
-    def what( self ):
-        print( """" Inspect the passed object """ )
-        self.inspect_object( self.inspect_arg  )
-
-
 
     # ------------------------------------------
     def inspect_object( self, an_object  ):
@@ -758,86 +714,21 @@ if __name__ == '__main__':
         cursor              = widget.textCursor()
 
         ex_text    = f"inspect_object { '' }: \n {ex_text}"
-
         cursor.insertText( ex_text )
 
         cursor.movePosition(QTextCursor.Start)   # .End
         widget.setTextCursor(cursor)
 
-
-    # ------------------------------------------
-    def do_inspectxxxx( self, what_object  ):
-        """
-        what it says, read?
-        leave cursor at top
-        """
-        print( "do_inspect >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print( f"i_object { what_object = }   {type( what_object ) = }")
-        widget                  = self.text_edit
-        widget.clear()
-        #self.inspect_me     = inspect_me
-        ex_text                 = self.get_wat_str( what_object )
-
-        self.display_text( title = "need title", main_text = ex_text )
-
-
-
-        # cursor              = widget.textCursor()
-
-        # ex_text    = f"{self.inspect_name}: \n {ex_text}"
-
-        # cursor.insertText( ex_text )
-
-        # cursor.movePosition(QTextCursor.Start)   # .End
-        # widget.setTextCursor( cursor )
-
-        # # print( "\n\n\n><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        # print( "ex_text[0:500" )
-        # print( ex_text[0:500] )
-
+    # --------------------------
     def get_wat_str( self,  obj, options_dict = None ):
-
-        """ """
+        """
+        get the string from wat
+        """
         msg      = wat( obj, str = True, gray = True )
-        #msg      = repr( wat( obj, str = True ) )
-        #msg      = self.get_wat_str_old(  obj )
+
         self.last_get_wat_str_obj  = obj
+
         return msg
-        #return  repr( wat( obj, str = True ) )
-        #return  wat( obj, str = True )
-        #return  self.get_wat_str_old(  obj )
-
-
-    def get_wat_str_old( self,  obj, options_dictxxx = None ):
-        """
-        older implementation when str = True  did not work
-        might want to get exception info if it occurs
-        """
-        options_dict = {}
-        if True:
-        #if options_dict:
-            print( "options_dict implement me")
-            #options_dict["code"] =  True
-            options_dict["caller"] =  True
-
-        captured_output     = io.StringIO()
-        original_stdout     = sys.stdout
-
-        try:
-            sys.stdout      = captured_output
-            #wat( obj, short = True )
-            #wat( obj, all   = True )
-            # wat( obj, code  = True, short = True )
-            # wat( obj, code  = True, caller = True ) ng
-            #wat( obj, **{ "code": True } )
-            wat( obj, )
-        finally:
-
-            sys.stdout = original_stdout
-
-        output_string = captured_output.getvalue()
-
-        return output_string
 
     def display_text( self, title = "no_title_fix", main_text = "this_sis_the_main_text" ):
         """
@@ -852,17 +743,17 @@ if __name__ == '__main__':
 
         cursor              = widget.textCursor()
 
-        #ex_text    = f"{self.inspect_name}: \n {ex_text}"
-
         cursor.insertText( full_text )
 
         cursor.movePosition(QTextCursor.Start)   # or .End
         widget.setTextCursor( cursor )
 
-
     # ---------------------
     def search_down(self):
-        """ """
+        """
+        search for text
+            case insensitive
+        """
         search_text = self.line_edit.text()
         if search_text:
             cursor = self.text_edit.textCursor()
@@ -890,121 +781,97 @@ if __name__ == '__main__':
                 # Reset position if start is reached and no match
                 self.last_position = self.text_edit.document().characterCount()
 
+    #-------
+    def open_txt_file( self, file_name  ):
+        """
+        what it says
+        """
+        proc               = subprocess.Popen( [ TEXT_EDITOR, file_name ] )
 
-# -----------------
-def ex_run_display_wat():
-    ex_name  = "ex_run_display_wat"
+    def do_ok( self ):
+        """
+        close out window
+        """
+        self.accept()
 
-    app         = QApplication( sys.argv )  # Create the QApplication instance
-    dialog      = DisplayWat( app )  # Create an instance of your custom QDialog
-    #dialog.setup_go( io, globals()  )
-    a_list      = [ 1, 2, 3 ]
-    go( dialog.do_eval  ,
-             a_locals   = locals(),
-             a_globals  = globals(),
-             msg        = "this ia arg msg dialog.do_eval from the caller at go" )   # wat_inspector.go( io, globals() )
-
-    # externally wat_inspector.go( io, globals() )
-    # import wat_inspector as wi
-
-    # io inspected object, globals, a dict of objects
-    #dialog.show()  # Show the dialog as the main window
-    #app.exec_()
-
-    # #dialog  = DisplayWat()  # Create an instance of your custom QDialog
-    # dialog.setup( io, globals()  )
-    # dialog.do_inspect(   )
-    # dialog.show()  # Show the dialog as the main window
-    # app.exec_()
-    # ---- run some more
-    #dialog.setup_go( sys, locals()  )
-
-    #dialog.setup_go( ex_helpers, None  )
-
-
-
-
-
-
-# -----------------
-def ex_inspect_fail():
-    # ex_name  = "ex_inspect"
-    # print( f"{ex_h.begin_example( ex_name )}"
-    #         "\n        try to capture as a string, seems to fail "
-    #         "\n\n" )
-
-    # # ----------------------------------------
-    # msg          = "  wat additiona inof"
-    # code_string  = '  wat   '
-    # ret  = ex_h.eval_and_print( msg          = msg,
-    #                                   code         = code_string,
-    #                                   as_locals    = locals(),
-    #                                   as_globals   = globals(), )
-
-    # a_string  = wat.str.short(  sys,   )
-    # print( f"{a_string = }")
-
-    # a_string  = wat.str.short( str = True,  sys,   )
-    # print( f"{a_string = }")
-
-    ret  = wat.short.str( wat )
-    print( ret )
-    # a_string  = wat.str.short(  sys,   )
-    # a_string  = wat.str.short(  sys,   )
-
-    #ex_h.end_example( ex_name )
-
-#ex_inspect()
-
-
-#pprint.pprint( traceback.format_stack() )
-def get_traceback_list( msg = "get_traceback_list", print_it = True ):
+# ------------------------------------
+class WatInspector(   ):
     """
-    debug_util.get_traceback_list()
-
-    Returns:
-        short_list (TYPE): DESCRIPTION.
 
     """
-    stop_text = "main.py"
-
-    #stop_text  File "/mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/debug_util.py", line 171, in call_tbl
-
-    keep = True
-    short_list  = [">>>>>>>>>>>>>see what inspector instead get_traceback_list<<<<<<<<<<<<<<<<<<<<<<"]
-    for i_item in reversed( traceback.format_stack() ):
-
-        #print( i_item )
-
-        if keep:
-            short_list.append( i_item )
-
-            if stop_text in i_item:
-                print( "stop ---------------------------------------")
-                keep = False
-    short_list.append( msg )
-    short_list.append( ">>>>>>>>>>>>>get_traceback_list<<<<<<<<<<<<<<<<<<<<<<" )
-
-    short_list    = list( reversed( short_list ) )
-    if print_it:
-        for i_item in short_list:
-            print( i_item )
+    # ------------------------------------------
+    def __init__(self,  app,  parent = None ):
+        """
 
 
-    return short_list
+        """
+        global    display_wat
+
+        global    app_for_wat
+
+        global    go
+        global    a_wat_inspector
+
+        a_wat_inspector            = self
+        go                         = self.create_window
+
+        self.last_get_wat_str_obj  = None
+
+        # if display_wat:
+        #     return
+
+        self.app            = app
+
+        # super().__init__( parent )
+
+        # display_wat         = self
+        # wat_app             = app
+        # go                  = self.setup_go
+
+        self.wat_window     = None    # not sure which kind to use
+        self.parent         = parent  # parent may be a function use parent_window
+        self.parent_window  = parent
 
 
-def call_tbl():
-    for i_item in get_traceback_list():
-        print( i_item )
+
+    def create_window( self,
+                              a_locals   = None,
+                              a_globals  = None,
+                              msg        = None ):
+
+        """ """
+        self.window    = WatWindow( self.app )  # is necessary ??
+        # self.window.show( )
+        self.window.setup_go(  a_locals   = a_locals,
+                               a_globals    = a_globals,
+                               msg        = msg, )
+
+        self.app.exec_()
+
+# -----------------
+def run_display_wat():
+    """
+    example run/sanity test
+    """
+
+    app         = QApplication(  [] )  # Create the QApplication instance
+
+    a_wat_inspector  = WatInspector( app  )
+
+    a_local_list    = [ 1,2,3,5 ]
+
+    a_wat_inspector.create_window(
+              a_locals   = locals(),
+              a_globals  = globals(),
+              msg        = "my message" )
+
 
 
 # --------------------
 if __name__ == "__main__":
     #----- for running examples
-    ex_run_display_wat()
-# --------------------
-    #call_tbl()
+    run_display_wat()
+
 
 # ---- eof
 
@@ -1012,26 +879,10 @@ if __name__ == "__main__":
 
 """
 
+Scratch text:
 
 
-
----------------
-
-
-
-
-__name__:
- value: '__main__'
-type: str
-len: 8
-
-Public attributes:
-  def capitalize() # Return a capitalized version of the string.…
-  def casefold() # Returninfo_about a version of the string suitable for caseless comparisons.
-  def center(width, fillchar=' ', /) # Return a centered string of length width.…
-
-
-
+-
 
 
 """

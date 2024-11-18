@@ -2,11 +2,137 @@ These are the developer notes and scratch pad.
 
 Maybe there is something useful here or not
 
+Table of Contents
+
+---- How these examples are constructed.
+---- Work in the pipeline
+
+=================================================
+
+
+---- How these examples are constructed.
+        Note:
+            I am in the middle of a lot of refactoring, these notes are sometime
+            a bit insperational, not all of the work is complete yet.
+
+    The "runable" apps here are
+
+
+       qt_widgets.py
+
+
+        Individual tabs are now all in ( or being moved into ) their own modules
+            like:
+                tab_combo_box.py
+                .... they all begin with tab_
+
+        utilities that help eveything run are in:
+
+            utils_for_tabs as uft.py
+            parameters.y
+
+
+    the main window for an app, like QtWidgetExamples, QMainWindow and
+    its gui is largely base on a QTabWidget.  This widget then
+    is used as a container for all the tabs in all the modules.
+
+    You can use the application itself as a tutorial on how a window
+    with tabpages might be implemented.
+
+
+
+    The wat-inspector applications.
+
+        All the qt examples use the wat-inspector so you can use any one
+        of them as a tutorial on how to use the wat-inspector.
+
+        Additionally there are 2 simpler apps that might be a better
+        place to start if it is only the wat inspector that interests
+        you.
+
+            qt_wat.py
+            qt_wat_app.py
+
+    Couple of other modules I am woking into wat-inspector.py:
+
+        info_about.py
+        info_about_qt.py
+
+            they do some custom inspection of some classes -- may becoume useful
+            in the future.  They are linked to a button that might be called <cust inspect>
+
+
+    wat_inspector.py is the module with the inspector code it is use by
+
+
+
+/mnt/WIN_D/Russ/0000/python00/python3/_projects/qt_by_example/info_about.py
+
+
+
+
 ===============================================================
 
 
-how to install wat 
-    conda forge on fattony ok 
+---- Work in the pipeline
+
+    see general help for each app
+
+
+        break examples into their own tabs
+
+add this to icons
+p.yusukekamiyamane - Free stock icons + pixel fonts
+https://p.yusukekamiyamane.com/
+
+
+wat ideas
+
+        compose into eval from inspection results  -- context menu?
+        have ddl as memory to entries
+
+
+        smooth off edges of gui on what alread have
+
+        pass in a script
+        break on exit
+
+
+
+    io_qt
+
+        continue migration expansion
+
+qt_exammple ideas
+
+        to many for here, perhaps in helps
+
+When you call self.accept() on a QDialog, it closes the dialog, but it also means that the dialog instance cannot be reused directly to open it again. To open the dialog multiple times, you generally have two options:
+
+    Create a New Instance Each Time: This is the simplest approach. Every time you want to show the dialog, you create a new instance of it.
+
+def open_dialog(self):
+    dialog = MyDialog(self)
+    if dialog.exec():
+        # Process the result if needed
+        print("Dialog accepted.")
+
+Use QDialog::hide() Instead of QDialog::accept(): If you want to reuse the same instance of the dialog, call self.hide() instead of self.accept() to close it. Then, you can reopen it by calling self.show() or self.exec() again.
+
+    # Inside the dialog class
+    def close_dialog(self):
+        self.hide()  # Instead of self.accept()
+
+    # Reopen the dialog
+    dialog.show()  # Or dialog.exec() to reopen modally
+
+In many cases, option 1 is simpler and more reliable because it ensures a fresh instance every time. However, if the dialog has a lot of complex setup that you want to preserve, option 2 can work well with minor adjustments.
+
+
+
+
+how to install wat
+    conda forge on fattony ok
 
 ------------------ xxx ----------------------
 

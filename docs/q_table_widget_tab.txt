@@ -1,0 +1,25 @@
+
+
+
+Status:  at last doc update much was not working.
+
+
+This tab is related to QTableWidget, not an SQL widget, but
+a two dimentional table for user interaction.  It may be used
+for any data inclusing SQL data, but the data needs to be moved
+in and out "manually"
+
+
+
+
+
+----------------------- Table of Contents -----------------
+
+
+----Purpose/Functionality
+----Ideas for Improvement
+
+
+--------------------------------------------------------
+
+----Purpose/Functionality--------------------------------------------------------------------------

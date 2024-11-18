@@ -1,15 +1,24 @@
 
-
+        !! make eval a combobox   with self. ..... ?
 
 The Wat Inspector:
     A version of wat with a gui for running with pyqt5.
 
 
-==== Why
+----------------------- Table of Contents -----------------
+
+
+---- Purpose/Functionality
+---- Why
+---- How
+---- Ask a ChatBot
+---- Work still to do
+
+---- Why ----------------------------------------
 
 This application inspects object using the wat libary.
 
-==== How:
+---- How ----------------------------------------
 
 You can choose object to inspect in a number of ways:
 
@@ -38,6 +47,11 @@ The text edit control is open for you to plop around in cut paste... whatever.
 
     * <Filter> uses the text to its left and filters out all line that do not begin with
                 that text.  Spaces at the beginning of the lines are ignored as is capitialization.
+
+                def
+                def set
+                def show
+                def get
 
     * <Save to File> the text is saved to "wat_inspector_out.txt"
 
@@ -73,8 +87,21 @@ The text edit control is open for you to plop around in cut paste... whatever.
     * qt_sql_widgets.py
 
 
-==== Author:
+---- Author ----------------------------------------
 
     https://github.com/russ-hensel/qt_by_example
 
-# ================ eof ============
+---- Ask a ChatBot --------------------------------------------------------------------------
+
+           How to I use introspection in python
+.
+
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+    Lots, indluding this section
+
+
+
+---- eof

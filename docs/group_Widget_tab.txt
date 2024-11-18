@@ -1,5 +1,0 @@
-
-Group boxes ar just boxes in which other widgets can be placed for grouping
-
-
-One issue here is to use a style sheet to control the appearance of the groupbox

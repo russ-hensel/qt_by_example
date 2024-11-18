@@ -3,43 +3,39 @@
 """
 Created on Sun Nov  3 11:44:12 2024
 
-@author: russ
 
-seperator_tab.SeperatorTab
 
 """
 # ---- tof
-# widgets -- small
-from PyQt5.QtWidgets import (
-    QButtonGroup,
-    QComboBox,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QMessageBox,
-    QPushButton,
-    QRadioButton,
-    QTabWidget,
-    QTextEdit,
-    QWidget,
-    QCheckBox,
-    )
+from PyQt5.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QGridLayout,
+                             QHBoxLayout, QLabel, QLineEdit, QListWidget,
+                             QListWidgetItem, QMessageBox, QPushButton,
+                             QRadioButton, QTabWidget, QTextEdit, QVBoxLayout,
+                             QWidget)
 
-# layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-    )
-
-
+from PyQt5.QtGui import QColor, QPalette
 
 INDENT        = "    "   # {INDENT}
 BEGIN_MARK_1  = "\n\n ------------ "
 BEGIN_MARK_2  =     " ------------ "    # uft.
 
 
+# for now lets get app globals here
+
+EXAMPLE_DB     = None
+DB_OBJECT      = None
+PARAMETERS     = None
+TEXT_EDITOR    = None
+
+
+
+
+def print_func_header( what ):
+        """
+        what it says
+        """
+        #what    = "fix_me"
+        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
 
 #-----------------------------------------------
 class SeperatorTab( QWidget ):
@@ -58,27 +54,29 @@ class SeperatorTab( QWidget ):
     # ------------------------------
     def _build_gui( self,   ):
         """
-
+        the usual
         """
-        tab_page       = self
+        tab_page        = self
 
-        layout        = QVBoxLayout( tab_page )
-        self.layout   = layout
+        layout          = QVBoxLayout( tab_page )
+        self.layout     = layout
 
         widget  = QLabel( self.msg )
         layout.addWidget( widget )
 
-
-# ------------------------
-def utf_breakpointxxxx( ):
+# --------------------------
+class ColoredFiller(QWidget):
     """
-    utils_for_tabs.utf_breakpoint()
-    odd name because breakpoint is more or less resered
+    M Fitzpatrick's book,  is source
+    ColoredFiller('red')
+    colored so you can see it, used as a filler object
     """
-    what    = "breakpoint"
-    print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
-    breakpoint()
-
+    def __init__(self, color):
+        super().__init__()
+        self.setAutoFillBackground(True)
+        palette = self.palette()
+        palette.setColor( QPalette.Window, QColor(color))
+        self.setPalette(palette)
 
 
 

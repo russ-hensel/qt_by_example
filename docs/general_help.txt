@@ -1,40 +1,39 @@
 
 
 This application is intended to demo/document code working with
-Qt Sql Widgets and closely related objects.
-
-Another version is for Qt widgets that are not oriented around SQL
+Qt Widgets, Qt Sql Widgets, and closely related objects.
 
 
 ----------------------- Table of Contents -----------------
 
+---- GUI
 
+---- Help
 
-----GUI
+---- QTSql
 
-----QTSql
+---- Purpose/Functionality
+---- Tracing the code
+---- QtWidgets
 
-----Purpose/Functionality
-----Tracing the code
-----QtWidgets
-
-----QtWidgets Old
-----Code Style
+---- QtWidgets Old
+---- Code Style
+---- Parameters
 
 --------------------------------------------------------
 
 ----Purpose/Functionality--------------------------------------------------------------------------
 
 This application in intended to show how to use Qt widgets largely through
-a running application, the code behind it, and some documentation ( like this file ).
+a running application, inspectiong the code behind it, and some documentation ( like this file ).
 
-Most of the widgets have some visual aspect, but expecially for the sql widgets
+Most of the widgets have some visual aspect, but especially for the sql widgets
 they also have some important non visual aspects.  The code should illustrate
 both.
 
-Use of widges involves several different programming aspects:
+Use of widgets involves several different programming aspects:
 
-    Widget creatation and the setting of widget properties.  These
+    Widget creation and the setting of widget properties.  These
     properties govern widget appearance and behavior.
 
     Connection widget events to actions
@@ -50,13 +49,13 @@ The widgets have been divided into group that are shown on an individual
 tab.  Some tabs illustrate more than one type of widget.  In some cases
 a single widget may be shown on more than one tab.
 
-Each tab is itself a descandant of QWidget and coded in its own class.
+Each tab is itself a descendant of QWidget and coded in its own class.
 Hopefully this keep the code for a single widget in a fairly small easy
 to understand space.
 
 Of course to illustrate the use of widgets we need to use some widget
 to "hold" our illustrations.  This code may also be of use.  For example
-the construstion of tabs is illustrated by the framework of this application
+the construction of tabs is illustrated by the framework of this application
 
 Individual tabs ( sometime as their own classes extended from QWidget )
 illustrating the use of some   widgets.
@@ -67,15 +66,14 @@ There are also other helper classes defined, use find to find where used.
 
 ----GUI--------------------------------------------------------------------------
 
-
 Each topic gets its own tab which is coded in its own object
 to make examination of the code easier than if this whole thing
 was in one giant namespace.
 
-Each Tab has ist own help file, this this the General Help for all
+Each Tab has its own help file, this this the General Help for all
 the tabs.
 
-I doubt this application will ever be "finished".  Seperator
+I doubt this application will ever be "finished".  Separator
 tabs, from left to right, indicate how finished a tab is:
 
     Done:   done for now
@@ -84,10 +82,14 @@ tabs, from left to right, indicate how finished a tab is:
     PHold:  a place holder just an idea so fa
 
 
+When you interact with the application a lot of what happens is sent
+to your python console.  Try to size and position the application
+so you can see the output to the console.
+
 Typical Tab Functionality:
 
-    Usually a tab displays some widgets of intereest and some buttons
-    to interact with underlying objects.  The buttons are often labled
+    Usually a tab displays some widgets of interest and some buttons
+    to interact with underlying objects.  The buttons are often labeled
     with the name of the function they call, this is a bit ugly but
     makes it easier to find the code called by the button.
 
@@ -107,7 +109,23 @@ Typical Tab Functionality:
     where the name of the function ( in the tab ) is: print_db
     this should make it easy to find the code.
 
-----Tracing the code
+---- Help ------------------------
+
+    From the menu in the upper left of each window are submenus for
+    access to help
+
+        .... General Help ... this document
+        .... CurrentTab Help ... help about the tabpage that is open
+
+            Readme.MD
+            Developer Notes
+
+    A feature of tthe current tab Help is the section called:
+        Ask a ChatBot -- these are questions that a chatbot can be
+                         asked to give you further insight
+
+
+---- Tracing the code
 
     Each tabpage is its own object typically only 300 to 600 lines, and divided into
     many methods.
@@ -115,24 +133,31 @@ Typical Tab Functionality:
     When you interact watch the gui, and check the console.
 
     If you wonder why the tab page looks the way it does see _build_gui()
+        in other words to see how the object is built see:  _build_gui for the object
 
     The coding style is on the verbose side to make things clear, the formatting is
-    non-standard, run black or something on it if you want. ( you need not tell me how wrong I am )
+    nonstandard, run black or something on it if you want. ( you need not tell me how wrong I am )
 
     I have tried to be consistent in naming so that function describe what they do, or
     what triggered them.
 
-    Name attempt to be consisten so onece you learn your way around one tab it should
+    Name attempt to be consistent so once you learn your way around one tab it should
     help with other tabs.
 
-    When you interact watch the gui, and check the console.
+    Generally there are methods that are run when:
+        You push a button
+        You click or right click an object
+
+        see the individual help for each object
+
+    Other methods have name that are pretty good giveaways as to what they do.
 
     Methods often execute something like:
 
-        what    = "rebuild_db"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+        print_func_header( "mutate" )
+        where this argument is the name of the method, should make finding code easy.
 
-        where what is the name of the method, should make finding code easy.
+
 
 ----Code Style--------------------------------------------------------------------------
 
@@ -153,7 +178,7 @@ About QT SQL Widgets
     That is the database is accessed trough some sort of object ( the ORM )
     and often viewed through another object the view.
 
-    So for example the TableModel is an ORM to a single talbe and
+    So for example the TableModel is an ORM to a single table and
     the TableView is a widget that makes the TableModel visible
 
     see:
@@ -161,7 +186,7 @@ About QT SQL Widgets
 
 
 
-!! need to build these indicies into this help.
+!! need to build these indices into this help.
 
 
 by use Choosing a widget
@@ -209,6 +234,12 @@ by widget
 
         QSqlTableModel
 
+
+---- Parameters
+    Some aspects of the program are controlled by a module called parameters ( parameters.py )
+    For now the documentation of the parameters is in the code of the module.
+
+    It is eary in this process much is broken
 
 
 

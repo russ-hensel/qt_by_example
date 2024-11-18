@@ -1,7 +1,17 @@
 # qt_by_example
 
 The plan for this is to have a small number of applications that illustrate the
-use of many of qt's widgets.
+use of many of qt's widgets.  It grew out of my efforts to learn qt.  I use it
+as a place to first test out code I think I understand and then experiment a bit
+with it.  It may be useful to have two versions, one close to this distribution
+and one for expermentations.
+
+This repo currently contains a version of wat ( see... ) that runs as a GUI
+application.  This is used by other Qt by example apps, but is used by them.
+You may be interested in it even if you are not interested in the rest of this
+repo.  It does run in qt, so you need to have qt installed.  You do not
+need to run it in a qt app of your own, but you can if you wish.  I will
+try to add some material in the wiki.
 
 The applications should be simple and contain code that is closely linked to the
 appearance of the widgets.

@@ -8,7 +8,7 @@ Purpose:
 
 Status:
     draft but useful
-
+    also see help
     some todos
 
         improve layout
@@ -17,7 +17,7 @@ Status:
 
     ...
 
-Reference:
+References:
 
 wat-inspector · PyPI
 https://pypi.org/project/wat-inspector/
@@ -106,7 +106,22 @@ testing                 = True
 
 # ---- a few parameters for you
 
-TEXT_EDITOR    = "xed"
+try:
+    import parameters
+    my_parameters = parameters.Parameters()
+
+
+except:
+    my_parameters = None
+
+if my_parameters is None:
+
+    TEXT_EDITOR    = "gedit"
+
+else:
+    TEXT_EDITOR    = my_parameters.text_editor
+
+
 
 # -----------------------
 def get_traceback_list( msg = "get_traceback_list", print_it = True ):
@@ -155,10 +170,20 @@ class WatWindow( QDialog  ):
         msg   = "Wat inspector"
         self.setWindowTitle( msg  )
 
-        qt_xpos             = 50
-        qt_ypos             = 50
-        qt_width            = 1400
-        qt_height           = 800
+        if my_parameters is None:
+            qt_xpos             = 50
+            qt_ypos             = 50
+            qt_width            = 1200
+            qt_height           = 600
+
+        else:
+            qt_xpos             = my_parameters.wat_qt_xpos
+            qt_ypos             = my_parameters.wat_qt_ypos
+            qt_width            = my_parameters.wat_qt_width
+            qt_height           = my_parameters.wat_qt_height
+
+
+
         self.setGeometry(  qt_xpos,
                            qt_ypos ,
                            qt_width,

@@ -1,4 +1,10 @@
 
+how are table widget and table model different
+
+
+how about a chart of relationships
+
+
 
 
 Status:  at last doc update much was not working.

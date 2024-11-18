@@ -158,15 +158,14 @@ class QGroupBoxTab( QWidget ) :
         button_layout = layout # needs fixing
 
         # ---- PB inspect
-        widget = QPushButton("inspect\n")
+        widget          = QPushButton("inspect\n")
         widget.clicked.connect( self.inspect    )
-        clear_button = widget
+        clear_button    = widget
         button_layout.addWidget( widget,   )
 
         # ---- PB breakpoint
         widget = QPushButton("breakpoint\n")
         widget.clicked.connect( self.breakpoint    )
-        clear_button = widget
         button_layout.addWidget( widget,   )
 
     # ---------------------------

@@ -24,6 +24,9 @@ This show objects ( so far lables ) layed out using a QGridLayot
 
             QGridLayot
 
+---- Discussion
+
+
 This shows loops being used to layout lables which indicate their own row column position.
 
 The last row of buttons is a box layout inside the larger grid layout

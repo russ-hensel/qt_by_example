@@ -15,15 +15,16 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction
 
 #import qt_wat_app.py
 import wat_inspector
-import wat_inspector_2
+
 
 
 def wat_setup():
     """ """
-    TEXT_EDITOR     = "xed"
-    app             = QApplication( sys.argv )
-    dialog          = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
-    a_wat_function()
+
+    app                 = QApplication( sys.argv )
+    a_wat_inspector     = wat_inspector.WatInspector( app )
+
+    #a_wat_function()
     print( "end function 1")
 
 
@@ -35,37 +36,37 @@ def a_wat_function():
     something_local   = 1
     a_local_list      = [1,2,3,4]
     wat_inspector.go(
-         msg            = "inspect from a_function",
-         a_locals       = locals(),
-         a_globals      = globals(), )
+          msg            = "inspect from a_function",
+          a_locals       = locals(),
+          a_globals      = globals(), )
     print( "end a_wat_function")
     #app.exec()
     return
 
 
-def wat_setup_2():
-    """ """
-    TEXT_EDITOR     = "xed"
-    app             = QApplication( sys.argv )
-    dialog          = wat_inspector_2.WatInspector( app )
-    #a_wat_function()
-    print( "end wat_setup_2 ")
+# def wat_setup_2():
+#     """ """
+#     TEXT_EDITOR     = "xed"
+#     app             = QApplication( sys.argv )
+#     dialog          = wat_inspector_2.WatInspector( app )
+#     #a_wat_function()
+#     print( "end wat_setup_2 ")
 
 
-def a_wat_function_2():
-    """ """
-    print( "start" )
-    time.sleep( .1 )
-    #app.exec()
-    something_local   = 1
-    a_local_list      = [1,2,3,4]
-    wat_inspector_2.go(
-         msg            = "inspect from a_function",
-         a_locals       = locals(),
-         a_globals      = globals(), )
-    print( "a_wat_function_2 end")
-    #app.exec()
-    return
+# def a_wat_function_2():
+#     """ """
+#     print( "start" )
+#     time.sleep( .1 )
+#     #app.exec()
+#     something_local   = 1
+#     a_local_list      = [1,2,3,4]
+#     wat_inspector_2.go(
+#          msg            = "inspect from a_function",
+#          a_locals       = locals(),
+#          a_globals      = globals(), )
+#     print( "a_wat_function_2 end")
+#     #app.exec()
+#     return
 
 
 
@@ -78,8 +79,8 @@ if __name__ == "__main__":
     # a_wat_function()
 
 
-    wat_setup_2()
-    a_wat_function_2()
+    wat_setup()
+    a_wat_function()
 
 
     # #a_function()   TEXT_EDITOR     = "xed"

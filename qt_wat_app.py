@@ -29,7 +29,7 @@ import wat_inspector   # wat_setup
 # ---- end imports
 
 
-class MainWindow_1( QMainWindow ):
+class MainWindow( QMainWindow ):
     def __init__(self):
         super().__init__()
 
@@ -37,7 +37,7 @@ class MainWindow_1( QMainWindow ):
         self.setWindowTitle("QMainWindow")
 
 
-        # Create central widget and grid layout
+
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         layout = QGridLayout()
@@ -69,9 +69,10 @@ class MainWindow_1( QMainWindow ):
         widget.clicked.connect( self.call_wat_inspector )
         layout.addWidget( widget, 0, 2 )
 
-        widget   = QPushButton("call_wat_inspector twice")
-        widget.clicked.connect( self.call_wat_inspector_twice )
-        layout.addWidget( widget, 0, 3 )
+        # bug here
+        # widget   = QPushButton("call_wat_inspector twice")
+        # widget.clicked.connect( self.call_wat_inspector_twice )
+        # layout.addWidget( widget, 0, 3 )
 
 
         layout.addWidget(label1, 1, 0)
@@ -95,7 +96,6 @@ class MainWindow_1( QMainWindow ):
 
         wat_inspector.go(
              msg            = "call_wat_inspector",
-             inspect_me     = self,
              a_locals       = locals(),
              a_globals      = globals(), )
 
@@ -122,19 +122,21 @@ class MainWindow_1( QMainWindow ):
         #      a_locals       = locals(),
         #      a_globals      = globals(), )
 
-    # -------------------------------
-    def call_wat_inspector_again(self,  ):
+    # # -------------------------------
+    # def call_wat_inspector_again(self,  ):
 
-        print( "call wat_inspector_again ")
-        wat_inspector.go(
-             msg            = "call_wat_inspector 2",
-             #inspect_me     = self,
-             a_locals       = locals(),
-             a_globals      = globals(), )
+    #     print( "call wat_inspector_again ")
+    #     wat_inspector.go(
+    #          msg            = "call_wat_inspector 2",
+    #          #inspect_me     = self,
+    #          a_locals       = locals(),
+    #          a_globals      = globals(), )
 
+# ---- run
 
-app         = QApplication(sys.argv)
-dialog      = wat_inspector.DisplayWat( app )  # wat_setup
-window = MainWindow_1()
+app                 = QApplication( [] )
+a_wat_inspector     = wat_inspector.WatInspector( app )
+# dialog      = wat_inspector.DisplayWat( app )  # wat_setup
+window = MainWindow()
 window.show()
 sys.exit(app.exec())

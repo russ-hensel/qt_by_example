@@ -517,7 +517,7 @@ def main():
     app                 = QApplication(sys.argv)
     #dialog          = wat_inspector.DisplayWat( app )  # Create an instance of your custom QDialog
     a_wat_inspector  = wat_inspector.WatInspector( app )
-    window          = QtWidgetExamples()
+    window          =  QtWidgetExamples()
     window.show()
     #sys.exit(
     app.exec()

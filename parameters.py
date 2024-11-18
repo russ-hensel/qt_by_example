@@ -216,9 +216,15 @@ class Parameters( ):
 
         # control initial size and position with:
         self.qt_width           = 1200
-        self.qt_height          = 200
+        self.qt_height          = 500
         self.qt_xpos            = 10
         self.qt_ypos            = 10
+
+        self.wat_qt_width           = 1000
+        self.wat_qt_height          = 400
+        self.wat_qt_xpos            = 10
+        self.wat_qt_ypos            = 10
+
 
         self.text_editor        = "gedit"
 #        self.text_editor        = "xed"

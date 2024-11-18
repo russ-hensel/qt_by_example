@@ -14,8 +14,8 @@ if __name__ == "__main__":
 
 import time
 import wat
-import wat_inspector
 
+import wat_inspector
 
 
 # ---- imports neq qt

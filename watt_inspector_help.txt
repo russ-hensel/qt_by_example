@@ -1,5 +1,5 @@
 
-        !! make eval a combobox   with self. ..... ?
+
 
 The Wat Inspector:
     A version of wat with a gui for running with pyqt5.
@@ -93,7 +93,7 @@ The text edit control is open for you to plop around in cut paste... whatever.
 
 ---- Ask a ChatBot --------------------------------------------------------------------------
 
-           How to I use introspection in python
+    How can I use introspection in python?
 .
 
 
@@ -101,7 +101,9 @@ The text edit control is open for you to plop around in cut paste... whatever.
 ---- Work still to do --------------------------------------------------------------------------
 
     Lots, indluding this section
-
+        !! make eval a combobox   with self. ..... ?
+    button for help
+    button for source
 
 
 ---- eof

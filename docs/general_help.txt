@@ -16,6 +16,8 @@ Qt Widgets, Qt Sql Widgets, and closely related objects.
 ---- Tracing the code
 ---- QtWidgets
 
+---- qt_sql_widges -- work in pipeline
+
 ---- QtWidgets Old
 ---- Code Style
 ---- Parameters
@@ -156,6 +158,34 @@ Typical Tab Functionality:
 
         print_func_header( "mutate" )
         where this argument is the name of the method, should make finding code easy.
+
+---- qt_sql_widges -- work in pipeline
+
+        * still need to extract all tabs to their own modules
+        * lots of code in old modules needs to be refactored in
+        * still a lot of general cleanup
+
+---- qt_widges -- work in pipeline
+
+        * widget coverage is low
+        * still need to extract all tabs to their own modules
+
+==== Widgets -- move me
+
+
+        QSqlDatabase     non visual widget for database connections
+                QSqlDatabase tab
+                    in SampleDB object
+
+        QSqlTableModel
+        QTableView        used to view  QSqlTableModel
+                QSqlTableModel tab
+
+        QSqlRelationalTableModel
+             QTableView  use to view QSqlRelationalTableModel
+
+
+
 
 
 

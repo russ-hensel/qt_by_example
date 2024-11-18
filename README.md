@@ -52,7 +52,7 @@ To run:
         * qt_wat.pya_wat_function
         * qt_wat_app.py    
         
-
+Lot more info coming to the Wiki soon, some even there now.
 
 And yes i should learn github markup
 

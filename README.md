@@ -13,6 +13,11 @@ Wat in a QT GUI:
 
 This repo currently contains a version of wat ( see qt_wat.py and qt_wat_app.py ) 
 that runs wat as a GUI application.  
+
+    wat -- check it out:
+    igrek51/wat: Deep inspection of Python objects
+    https://github.com/igrek51/wat
+    
 This is used a lot by other Qt by example apps.
 You may be interested in it even if you are not interested in the rest of this
 repo.  It does run in qt, so you need to have qt installed.  You do not
@@ -46,8 +51,9 @@ To run:
                                  https://github.com/igrek51/wat
 
     Try running 
-        * qt_widgets.py
-        * qt_sql_widgets.py
+        * qt_widgets.py        -- qt widgets of vaious types
+        * qt_sql_widgets.py    -- qt widgets using sql 
+        * qt_fitz_book.py      -- code based on book by M. Fitzpatric 
         for wat alone
         * qt_wat.pya_wat_function
         * qt_wat_app.py    

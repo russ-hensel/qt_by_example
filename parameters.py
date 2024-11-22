@@ -155,19 +155,7 @@ class Parameters( ):
         #     #self.gui_style          = "linux"
 
     #
-    # -------
-    def __init__( self, ):
-        """
-        Init for instance, usually not modified, except perhaps debug stuff
-        ( if any )... but use plus_test_mode()
-        may be down in listing because it should not be messed with.
-        """
-        #AppGlobal.parameters       = self   # register as a global
-        self.mode_default()
-        self.running_on_tweaks()
-        self.choose_mode()
 
-        #rint( self ) # for debugging
 
     # ------->> default mode, always call
     def mode_default( self ):
@@ -220,16 +208,10 @@ class Parameters( ):
         self.qt_xpos            = 10
         self.qt_ypos            = 10
 
-        self.wat_qt_width           = 1000
-        self.wat_qt_height          = 400
-        self.wat_qt_xpos            = 10
-        self.wat_qt_ypos            = 10
-
-
-        self.text_editor        = "gedit"
-#        self.text_editor        = "xed"
-
-
+        self.wat_qt_width       = 1000
+        self.wat_qt_height      = 400
+        self.wat_qt_xpos        = 10
+        self.wat_qt_ypos        = 10
 
         # qt_xpos     = 10
         # qt_ypos     = 10
@@ -246,14 +228,13 @@ class Parameters( ):
 
 
         self.icon               = r"./images/icon_red.png"    # icon for running app
-
+        self.icon               = r"./icons/icons/binocular.png"
 
         # self.id_color           = "blue"                # to id the app - not implemented yet
 
 
-
-        # self.bg_color_frame     = "yellow"   # "black"  # "#F0F0F0"
-            #    "#F0F0F0" seems to be a default light gray "gray" is darker
+        self.text_editor        = "gedit"
+#        self.text_editor        = "xed"
 
         # ---- logging
         self.pylogging_fn       = "./logs/app.py_log"   # file name for the python logging
@@ -261,25 +242,25 @@ class Parameters( ):
         self.logging_level      = logging.INFO
         #self.logging_level      = logging.INFO
 
-        self.logger_id          = "qtex"         # id of app in logging file
+        self.logger_id          = "qt_ex"         # id of app in logging file
 
         self.gui_text_log_fn    = None   # for edit window if None then no logging
         self.gui_text_log_fn    = "./logs/gui_log.log"
 
         self.log_gui_text       = False # this is for gui_ext message area
                                              # goes to normal log file  not special one
+        # ---- database
 
         self.db_type            = "QSQLITE"
             # the type of database, so far we only support sqllite
         self.db_file_name        = "sample.db"   #  = "sample.db"   =  ":memory:"
-        self.db_file_name        = ":memory"   #  = "sample.db"   =  ":memory:"
+        self.db_file_name        = ":memory:"     #  = "sample.db"   =  ":memory:"
+        self.db_file_name        = "/tmp/ramdisk/qt_sql.db"
+
         # this is the name of a program: its executable with path info.
         # to be used in opening an external editor
+        #self.db_file_name        = "sample2.db"   #  = "sample.db"   =  ":memory:"
 
-
-        # # if we are writing scratch files to run in a shell or similar.
-        # self.scratch_bat       =  r"scratch.bat"   # rel filename
-        # self.scratch_py        =  r"scratch.py"    # rel filename
 
         # control button for editing the readme file
         self.readme_fn          = "readme_rsh.txt"   # or None to suppress in gui
@@ -291,9 +272,18 @@ class Parameters( ):
         self.help_path     =  "./docs"
             # path leading to all docs and help
 
-        #self.help_file       =  "http://www.opencircuits.com/Python_Smart_ClipBoard"
+    # -------
+    def __init__( self, ):
+        """
+        Init for instance, usually not modified, except perhaps debug stuff
+        ( if any )... but use plus_test_mode()
+        may be down in listing because it should not be messed with.
+        """
+        self.mode_default()
+        self.running_on_tweaks()
+        self.choose_mode()
 
-
+        #rint( self ) # for debugging
     # ---------------------
     def to_columns( self, current_str, item_list, format_list = [ "{: <30}", "{:<30}" ], indent = "    "  ):
         """
@@ -314,12 +304,56 @@ class Parameters( ):
         not complete, add as needed -- compare across applications and code above
         """
         # new_indented    = "\n    "   # but it nice to have some whitespace to see ...
-        a_str = "this is the new str\n "
-        a_str   = f"{a_str}>>>>>>>>>>* Parameters (some) *<<<<<<<<<<<<"
 
 
-
+        a_str   = ""
+        a_str   = ">>>>>>>>>>* Parameters *<<<<<<<<<<<<"
+        a_str   = self.to_columns( a_str, ["db_file_name",
+                                           f"{self.db_file_name}" ] )
+        a_str   = self.to_columns( a_str, ["db_type",
+                                           f"{self.db_type}" ] )
+        a_str   = self.to_columns( a_str, ["gui_text_log_fn",
+                                           f"{self.gui_text_log_fn}" ] )
+        a_str   = self.to_columns( a_str, ["help_fn",
+                                           f"{self.help_fn}" ] )
+        a_str   = self.to_columns( a_str, ["help_path",
+                                           f"{self.help_path}" ] )
+        a_str   = self.to_columns( a_str, ["icon",
+                                           f"{self.icon}" ] )
+        a_str   = self.to_columns( a_str, ["log_gui_text",
+                                           f"{self.log_gui_text}" ] )
+        a_str   = self.to_columns( a_str, ["logger_id",
+                                           f"{self.logger_id}" ] )
+        a_str   = self.to_columns( a_str, ["logging_level",
+                                           f"{self.logging_level}" ] )
+        a_str   = self.to_columns( a_str, ["minimun_useful",
+                                           f"{self.minimun_useful}" ] )
+        a_str   = self.to_columns( a_str, ["mode",
+                                           f"{self.mode}" ] )
+        a_str   = self.to_columns( a_str, ["pylogging_fn",
+                                           f"{self.pylogging_fn}" ] )
+        a_str   = self.to_columns( a_str, ["qt_height",
+                                           f"{self.qt_height}" ] )
+        a_str   = self.to_columns( a_str, ["qt_width",
+                                           f"{self.qt_width}" ] )
+        a_str   = self.to_columns( a_str, ["qt_xpos",
+                                           f"{self.qt_xpos}" ] )
+        a_str   = self.to_columns( a_str, ["qt_ypos",
+                                           f"{self.qt_ypos}" ] )
+        a_str   = self.to_columns( a_str, ["readme_fn",
+                                           f"{self.readme_fn}" ] )
+        a_str   = self.to_columns( a_str, ["text_editor",
+                                           f"{self.text_editor}" ] )
+        a_str   = self.to_columns( a_str, ["wat_qt_height",
+                                           f"{self.wat_qt_height}" ] )
+        a_str   = self.to_columns( a_str, ["wat_qt_width",
+                                           f"{self.wat_qt_width}" ] )
+        a_str   = self.to_columns( a_str, ["wat_qt_xpos",
+                                           f"{self.wat_qt_xpos}" ] )
+        a_str   = self.to_columns( a_str, ["wat_qt_ypos",
+                                           f"{self.wat_qt_ypos}" ] )
         return a_str
+
 
 
 

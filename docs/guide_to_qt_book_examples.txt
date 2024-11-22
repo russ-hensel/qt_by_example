@@ -1,0 +1,30 @@
+
+
+
+A little experiment with the code related to :
+
+
+Create GUI Applications with Python & Qt5 (5th Edition, PyQt5): The hands-on guide to making apps with Python: Fitzpatrick, Dr Martin: 9798831846126: Amazon.com: Books
+https://www.amazon.com/Create-Applications-Python-PyQt5-hands/dp/B0B287MRPN
+
+ 
+
+Martin Fitzpatrick – Python tutorials, projects and books
+https://blog.martinfitzpatrick.com/
+
+Contact
+https://martinfitzpatrick.com/contact
+
+Python GUIs Forum - The Python GUIs Community
+https://forum.pythonguis.com/
+
+Martin Fitzpatrick – Python tutorials, projects and books
+https://blog.martinfitzpatrick.com/2/
+
+DiffCast: Hands-free Python Screencast Creator
+https://blog.martinfitzpatrick.com/diffcast-python-screencast-creator/
+
+Martin Fitzpatrick, Python GUI Developer - Available for hire
+https://www.pythonguis.com/hire/
+
+

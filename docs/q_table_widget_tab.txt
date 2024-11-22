@@ -10,10 +10,10 @@ how about a chart of relationships
 Status:  at last doc update much was not working.
 
 
-This tab is related to QTableWidget, not an SQL widget, but
-a two dimentional table for user interaction.  It may be used
-for any data inclusing SQL data, but the data needs to be moved
-in and out "manually"
+    This tab is related to QTableWidget, not an SQL widget, but
+    a two dimentional table for user interaction.  It may be used
+    for any data inclusing SQL data, but the data needs to be moved
+    in and out "manually"
 
 
 
@@ -26,6 +26,28 @@ in and out "manually"
 ----Ideas for Improvement
 
 
---------------------------------------------------------
+------------------------- Contents -------------------------------
 
 ----Purpose/Functionality--------------------------------------------------------------------------
+
+
+........Widgets included:
+
+        No visual widgets but uses...
+
+---- Inte4ractions
+
+
+
+---- Ask a ChatBot --------------------------------------------------------------------------
+
+        I have a .......
+
+
+---- Work still to do --------------------------------------------------------------------------
+
+        Lots, indluding this section
+
+
+
+# ---- eof

@@ -22,6 +22,10 @@ Qt Widgets, Qt Sql Widgets, and closely related objects.
 ---- Code Style
 ---- Parameters
 
+---- Author and Credits
+
+
+
 --------------------------------------------------------
 
 ----Purpose/Functionality--------------------------------------------------------------------------
@@ -333,10 +337,29 @@ Reading the code:
             Try them, and read the docs for more information.
 
 
+---- Author and Credits
 
 
+        My Repositories
+        https://github.com/russ-hensel?tab=repositories
 
 
+        Icons may be sourced from:
+
+            fugue-icons · PyPI
+            https://pypi.org/project/fugue-icons/
+
+            p.yusukekamiyamane - Free stock icons + pixel fonts
+            https://p.yusukekamiyamane.com/
+
+            Hi, I’m Yusuke Kamiyamane. Freelance designer, developer and factotum based in Tokyo, Japan.
+
+            
+            Contact information
+
+            Bonheur Un 202, 3-1-64, Midori-cho, Koganei-shi, Tokyo, 184-0003, Japan
+            +81 90 2940 5661 (Japanese)
+            p@yusukekamiyamane.com
 
 
 ================= eof ===============

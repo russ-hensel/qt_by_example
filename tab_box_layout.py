@@ -157,6 +157,14 @@ end of chat
 tab_box_layout.py
 
 """
+# --------------------
+if __name__ == "__main__":
+    #----- run the full app
+    import qt_widgets
+    qt_widgets.main( )
+# --------------------
+
+
 
 import time
 
@@ -248,7 +256,12 @@ import parameters
 
 
 # ---- end imports
+INDENT          = uft.INDENT
+INDENT          = uft.BEGIN_MARK_1
+INDENT          = uft.BEGIN_MARK_2
+#INDENT          = qt_sql_widgets.
 
+print_func_header =  uft.print_func_header
 
 #  --------
 class QBoxLayoutTab( QWidget ) :
@@ -304,13 +317,11 @@ class QBoxLayoutTab( QWidget ) :
         # ---- PB inspect
         widget = QPushButton("inspect\n")
         widget.clicked.connect( self.inspect    )
-        clear_button = widget
         button_layout.addWidget( widget,   )
 
         # ---- PB breakpoint
         widget = QPushButton("breakpoint\n")
         widget.clicked.connect( self.breakpoint    )
-        clear_button = widget
         button_layout.addWidget( widget,   )
 
     #-----------------------------------------------
@@ -318,7 +329,7 @@ class QBoxLayoutTab( QWidget ) :
         """
         deletes and adds but position may change
         """
-        qt_widgets.print_func_header( "remove_add_widget_layout_tab" )
+        print_func_header( "remove_add_widget_layout_tab" )
 
         print( "replace widget is better may need delete later ")
         self.widget_ix             += 1
@@ -334,7 +345,7 @@ class QBoxLayoutTab( QWidget ) :
         """
         deletes and adds but position may change
         """
-        qt_widgets.print_func_header( "replace_widget_layout_tab" )
+        print_func_header( "replace_widget_layout_tab" )
 
         widget                      = self.widget_temp
         self.widget_ix             += 1
@@ -345,8 +356,7 @@ class QBoxLayoutTab( QWidget ) :
         self.replace_layout_widget( self.layout_tab_layout_a, widget, widget_new )
         self.widget_temp            = widget_new
 
-        # print( f"{widget}")
-        # print( f"{widget_new}")
+
 
     # -----------------------------
     def replace_layout_widget( self, layout, widget, widget_new ):
@@ -355,7 +365,7 @@ class QBoxLayoutTab( QWidget ) :
         will be a problem if widget is not found in layout
 
         """
-        qt_widgets.print_func_header( "replace_layout_widget" )
+        print_func_header( "replace_layout_widget" )
 
         index               = layout.indexOf( widget )
         print( f"widget at {index}")
@@ -364,7 +374,7 @@ class QBoxLayoutTab( QWidget ) :
 
         # see if this is causing a problem
         if widget_to_remove:
-            widget_to_remove.deleteLat
+            widget_to_remove.deleteLater()
 
     # -----------------------
     def build_gui_sub(self, layout ):
@@ -376,12 +386,12 @@ class QBoxLayoutTab( QWidget ) :
         """
         the usual
         """
-        qt_widgets.print_func_header( "inspect" )
+        print_func_header( "inspect" )
 
         # make some locals for inspection
         my_tab_widget           = self
         #parent_window = self.parent( ).parent( ).parent().parent()
-        local_self_text_edit    = self.text_edit
+
         wat_inspector.go(
              msg            = "inspect ",
              a_locals       = locals(),
@@ -393,6 +403,10 @@ class QBoxLayoutTab( QWidget ) :
         each tab gets its own function so we break in that
         tabs code
         """
-        qt_widgets.print_func_header( "breakpoint" )
+        print_func_header( "breakpoint" )
 
         breakpoint()
+
+
+
+# ---- eof

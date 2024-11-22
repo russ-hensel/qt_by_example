@@ -14,7 +14,6 @@ Status:
         improve layout
         clean code
 
-
     ...
 
 References:
@@ -93,6 +92,10 @@ from PyQt5.QtWidgets import (QAction,
                              QVBoxLayout,
                              QWidget)
 
+
+
+import inspect
+
 import info_about
 import info_about_qt as io_qt
 
@@ -110,7 +113,6 @@ try:
     import parameters
     my_parameters = parameters.Parameters()
 
-
 except:
     my_parameters = None
 
@@ -120,7 +122,6 @@ if my_parameters is None:
 
 else:
     TEXT_EDITOR    = my_parameters.text_editor
-
 
 
 # -----------------------
@@ -182,12 +183,12 @@ class WatWindow( QDialog  ):
             qt_width            = my_parameters.wat_qt_width
             qt_height           = my_parameters.wat_qt_height
 
-
-
         self.setGeometry(  qt_xpos,
                            qt_ypos ,
                            qt_width,
                            qt_height  )
+
+        self.last_position = 0
 
     # ------------------------------------------
     def _build_gui( self, ):
@@ -196,132 +197,85 @@ class WatWindow( QDialog  ):
         """
         # self._build_menu() some issues here
 
-        layout          = QGridLayout( self )
+        layout          = QVBoxLayout( self )
         self.layout     = layout
-        ix_row          = 0
-        ix_col          = 0
-        row_span        = 1
-        col_span        = 1
+
+        row_layout      = QHBoxLayout(   )
+        layout.addLayout( row_layout )
 
         # ---- msg_label
-        row_span        = 1
-        col_span        = 4
         widget          = QLabel( "msg goes here " )
         self.msg_label  = widget
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
-
-        # # ----
-        # ix_col       += 1
-        # widget        = QPushButton( "What" )
-        # widget.clicked.connect(  self.what )
-        # # widget.toggled.connect( self.cbox_clicked )
-        # layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,  )
 
         # ----
-        ix_row          += 1
-        ix_col          = 0
-        col_span        = 1
-        #ix_col       += 1
+        row_layout      = QHBoxLayout(   )
+        layout.addLayout( row_layout )
+
         widget        = QPushButton( "Where" )
         widget.clicked.connect(  self.do_where_am_i )
-        # widget.toggled.connect( self.cbox_clicked )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
         # ---- Cust Inspect
-        # ix_row         += 1
-        ix_col         += 1
         widget          = QPushButton( "Cust Inspect" )
         widget.clicked.connect(         self.do_info_about )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
+
+        # ---- Obj Help
+        widget          = QPushButton( "Obj Help" )
+        widget.clicked.connect(         self.do_type_help )
+        row_layout.addWidget( widget,   )
+
+        # ---- Obj Help
+        widget          = QPushButton( "Obj Source" )
+        widget.clicked.connect(         self.get_source_code )
+        row_layout.addWidget( widget,   )
 
         # ---- eval
-        # ix_row         += 1
-        ix_col         += 1
         widget          = QPushButton( "Eval" )
         widget.clicked.connect(         self.do_eval )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
-        #ix_row         += 1
-        ix_col             += 1
         widget              =  QLineEdit( " 1 + 1 " )
         self.eval_widget    = widget
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
-        # if testing:
-        #     #row_span            = 1
-        #     col_span            = 1
-        #     ix_row              += 1
-        #     ix_col              = 0
-        #     widget              = QPushButton( "Test" )
-        #     widget.clicked.connect(         self.do_test )
-        #     layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
-
-
-        #row_span            = 1
-        col_span            = 2
-        ix_row              += 1
-        ix_col              = 0
+        row_layout      = QHBoxLayout()
+        layout.addLayout( row_layout )
 
         widget              = QLabel( "Locals" )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
         # ---- Globals
-        #row_span            = 1
-        col_span            = 2
-        #ix_row              += 1
-        ix_col              += 2
-
         widget              = QLabel( "Globals" )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
-        #row_span            = 1
-        col_span            = 2
-        ix_row              += 1
-        ix_col              = 0
+
         widget              = QListWidget(    )
         self.local_widget   = widget
         #widget.setGeometry( 50, 50, 200, 200 )
         widget.itemClicked.connect( self.do_inspect_clicked_local )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
         # ---- globals
-        #row_span            = 1
-        col_span            = 2
-        #ix_row              += 1
-        ix_col              += 2
         widget              = QListWidget(    )
         self.global_widget  = widget
         #widget.setGeometry( 50, 50, 200, 200 )
         widget.itemClicked.connect( self.do_inspect_clicked_global )
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        row_layout.addWidget( widget,   )
 
-        #widget.itemClicked.connect( self.activate_clicked_command )
 
-        # values    =  [ "one", "two"]
-        # for value in values:
-        #     item = QListWidgetItem( value )
-        #     widget.addItem( item )
+        row_layout      = QHBoxLayout()
+        layout.addLayout( row_layout )
 
-        # ix_row        = 1
-        # ix_col        = 0
-        # row_span      = 2
-        # col_span      = 1
-        # ---- text_edit
-        ix_row              += 1
-        ix_col              = 0
-        col_span            = 4
-        # Create QTextEdit widget
-        text_edit           = QTextEdit()
-        widget              = text_edit
-        # layout.addWidget(text_edit, 4, 0, 1, 3)  # Row 4, Column 0, RowSpan 1, ColumnSpan 3
-        self.text_edit      = text_edit
-        layout.addWidget( widget, ix_row, ix_col, row_span, col_span )
+        # ---- text edit
+        widget           = QTextEdit()
+        self.text_edit      = widget
+        row_layout.addWidget( widget,   )
 
         # ---- bottom and buttons
-        ix_row                  += 1
-        ix_col                  = 0
         button_layout           = QHBoxLayout()
-        layout.addLayout( button_layout, ix_row, ix_col    )
+        layout.addLayout( button_layout,    )
 
         widget                  = QLineEdit()
         self.line_edit          = widget
@@ -339,16 +293,12 @@ class WatWindow( QDialog  ):
         widget.clicked.connect(self.search_up)
         button_layout.addWidget( widget,   )
 
-        ix_row                  += 1
-        ix_col                  = 0
         button_layout           = QHBoxLayout()
-        layout.addLayout( button_layout, ix_row, ix_col    )
+        layout.addLayout( button_layout,     )
 
         # ---- next bottom layout
-        ix_row                  += 1
-        ix_col                  = 0
         button_layout           = QHBoxLayout()
-        layout.addLayout( button_layout, ix_row, ix_col    )
+        layout.addLayout( button_layout,      )
 
         # ---- Filters
         widget                  = QComboBox()
@@ -367,10 +317,8 @@ class WatWindow( QDialog  ):
         button_layout.addWidget( widget,   )
 
         # ---- next bottom layout
-        ix_row                  += 1
-        ix_col                  = 0
         button_layout           = QHBoxLayout()
-        layout.addLayout( button_layout, ix_row, ix_col    )
+        layout.addLayout( button_layout,    )
 
         # ---- QListWidget
         widget                  = QComboBox(    )
@@ -390,14 +338,6 @@ class WatWindow( QDialog  ):
         for value in values:
             #item = QListWidgetItem( value )
             widget.addItem( value )
-        # widget.addItem('Zero')
-        # widget.addItem('One')
-
-
-        # widget                  = QLineEdit()
-        # self.filter_widget      = widget
-        # widget.setPlaceholderText( "Enter filter text" )
-        # button_layout.addWidget( widget, )
 
         # ---- "Filter SIL"
         widget                  = QPushButton("Filter SiL")
@@ -406,12 +346,10 @@ class WatWindow( QDialog  ):
         button_layout.addWidget( widget,   )
 
         # ---- another button layout
-        ix_row                  += 1
-        ix_col                  = 0
         button_layout           = QHBoxLayout()
-        layout.addLayout( button_layout, ix_row, ix_col    )
+        layout.addLayout( button_layout,     )
 
-        a_widget                = QPushButton("Save to File")
+        a_widget                = QPushButton("Append to File")
         self.save_button        = a_widget
         a_widget.clicked.connect(         self.write_file )
         button_layout.addWidget( a_widget )
@@ -464,7 +402,6 @@ class WatWindow( QDialog  ):
     def open_general_help( self,   ):
         """
         what it says read:
-
         """
         doc_name           = "watt_inspector_help.txt"
         ex_editor          = TEXT_EDITOR
@@ -476,9 +413,9 @@ class WatWindow( QDialog  ):
         what it says, read?
         """
         do_wat      = True
-        code        =  self.eval_widget.text()
+        code        = self.eval_widget.text()
         try:
-            result   = eval( code, self.globals,   self.locals )
+            result   = eval( code, self.globals, self.locals )
 
         except Exception as an_except:
             msg     = f"a_except         >>{an_except}<<  type  >>{type( an_except)}<<"
@@ -507,22 +444,85 @@ class WatWindow( QDialog  ):
     # ------------------------------------------
     def do_info_about( self ):
         """
+        what it says
         """
-        #ia_qt.self.last_get_wat_str_obj
-        # main_text   = ia_qt.ia_obj( self.last_get_wat_str_obj , msg = "what about it " )
-
-        # self.display_text( title = "info_about", main_text = main_text )
-
         #main_text   = self.info_about.get_info( self.last_get_wat_str_obj , msg = "what about it " )
-        main_text   = info_about.get( self.last_get_wat_str_obj , msg = "what about it " )
+        main_text   = info_about.get( self.last_get_wat_str_obj, msg = "what about it " )
 
         self.display_text( title = "info_about", main_text = main_text )
+
+    # ------------------------------------------
+    def get_source_code( self, ):
+        """
+        It does not work for built-in functions, classes, or objects defined interactively.
+        Dynamic Objects: If the object is dynamically created
+        (e.g., using exec or lambda), inspect.getsource() might not work.
+        """
+        # or consider ( or both? )
+        self.get_source_code_eval()
+        return
+
+        # --- return above ?
+        try:
+            # Retrieve the source code of the object
+            obj_type     = type( self.last_get_wat_str_obj )
+            source_code  = inspect.getsource( obj_type )
+
+        except Exception as e:
+            source_code  =   f"Could not retrieve source { obj_type = } code due to exception {e = }"
+
+        self.display_text( title = "Source Code", main_text = source_code )
+
+    # ------------------------------------------
+    def get_source_code_eval( self, ):
+        """
+        suggested by chat that it might work were direct code fails,
+        seems a bit dubious
+        """
+        try:
+            # Retrieve the source code of the object
+            obj_type     = type( self.last_get_wat_str_obj )
+            code         = "inspect.getsource( obj_type ) "
+            source_code  = eval( code, globals(), locals() )
+
+        except Exception as e:
+            source_code  =   f"Could not retrieve source { obj_type = } code due to exception {e = }"
+
+        self.display_text( title = "Source Code", main_text = source_code )
+
+    # ------------------------------------------
+    def do_type_help( self ):
+        """
+        """
+        help_text     = self.get_help_as_string( self.last_get_wat_str_obj )
+
+        self.display_text( title = "Object Help", main_text = help_text )
+
+    # ------------------------------------------
+    def get_help_as_string( self, obj ):
+        """
+        what it says
+        """
+        obj_type = type(obj)
+
+        try:
+            # Capture the help output
+            help_output    = io.StringIO()
+            sys.stdout     = help_output  # Redirect stdout to capture help()
+            help( obj_type )
+            help_text      = help_output.getvalue()
+        except:
+            pass
+            help_text   = "Sorry we got an exception "
+        finally:
+            sys.stdout = sys.__stdout__
+
+        return help_text
 
     # ------------------------------------------
     def do_test( self ):
         """
         """
-        #ia_qt.self.last_get_wat_str_obj
         main_text   = self.info_about.get_info( self.last_get_wat_str_obj , msg = "what about it " )
 
         self.display_text( title = "info_about", main_text = main_text )
@@ -549,7 +549,7 @@ class WatWindow( QDialog  ):
         """
         what it says.
         """
-        print( f"setup_go with {msg = } " )
+        #rint( f"setup_go with {msg = } " )
 
         self.msg_label.setText( msg )
         self.setup( None,  a_locals, a_globals   )
@@ -564,20 +564,19 @@ class WatWindow( QDialog  ):
         """
         what it says.
         """
+        a_locals             =  {a_key: a_value for a_key, a_value in sorted(
+                                 a_locals.items(),  key = lambda item: item[0]) }
 
-        a_locals             =     {a_key: a_value for a_key, a_value in sorted( a_locals.items(),  key = lambda item: item[0]) }
-        a_globals            =     {a_key: a_value for a_key, a_value in sorted( a_globals.items(), key = lambda item: item[0]) }
+        a_globals            =  {a_key: a_value for a_key, a_value in sorted(
+                                 a_globals.items(), key = lambda item: item[0]) }
 
         self.locals          = a_locals
         self.globals         = a_globals
 
-        # pp( self.objects )
-        # print( self.objects )
-        # print( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" )
         if a_locals:
             widget      = self.local_widget
             widget.clear()
-            values      =  [ i_key for i_key in a_locals.keys() ]
+            values      = [ i_key for i_key in a_locals.keys() ]
             for value in values:
                 item = QListWidgetItem( value )
                 widget.addItem( item )
@@ -585,9 +584,9 @@ class WatWindow( QDialog  ):
                 widget.setCurrentRow( index_to_select )
 
         if a_globals:
-            widget     = self.global_widget
+            widget      = self.global_widget
             widget.clear()
-            values    =  [ i_key for i_key in a_globals.keys() ]
+            values      = [ i_key for i_key in a_globals.keys() ]
 
             for value in values:
                 item = QListWidgetItem( value )
@@ -598,24 +597,14 @@ class WatWindow( QDialog  ):
     # ------------------------------------------
     def do_inspect_clicked_global( self, item  ):
         """
-        what it says, read?
+        what it says
         """
         widget              = self.global_widget
-        row = widget.row( item )
+        # row                 = widget.row( item )
 
         text               = item.text()
         i_object           = self.globals[ text ]
 
-        print( "\n-------clicked")
-        #print( f"{ type(i_key) = } { i_key = }")
-        print( f"{text} {type(i_object) = } { i_object = }")
-        print( f"do_inspect_clicked i_object { i_object = }   {type(i_object) = }")
-        #self._inspect_me    = i_object
-        #self.inspect_name   = text     # or pass as args use nonen...
-
-        #print(f"do_inspect_clicked_global Clicked row: {row}, text: {text}")
-        # widget              = self.text_edit
-        # widget.clear()
         title         = f"Global -> {text}"
         main_text     = self.get_wat_str( i_object )
         self.display_text( title = title, main_text = main_text )
@@ -634,7 +623,6 @@ class WatWindow( QDialog  ):
         title         = f"Local -> {text}"
         main_text     = self.get_wat_str( i_object )
         self.display_text( title = title, main_text = main_text )
-
 
     # ---------------------
     def filter_sil( self ):
@@ -717,11 +705,10 @@ class WatWindow( QDialog  ):
     def edit_file( self,   ):
         """
         read it
-        import  wat_inspector    """
+        """
         file_name           = "./wat_inspector_out.txt"
         ex_editor           = TEXT_EDITOR
         proc                = subprocess.Popen( [ ex_editor, file_name ] )
-
 
     # ------------------------------------------
     def inspect_object( self, an_object  ):
@@ -729,8 +716,7 @@ class WatWindow( QDialog  ):
         what it says, read?
         output result to text_edit widget
         """
-
-        print( "inspect_object >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        #rint( "inspect_object >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         #print( f"i_object { self.inspect_me = }   {type( self.inspect_me ) = }")
         widget              = self.text_edit
         widget.clear()
@@ -782,7 +768,7 @@ class WatWindow( QDialog  ):
         search_text = self.line_edit.text()
         if search_text:
             cursor = self.text_edit.textCursor()
-            cursor.setPosition(self.last_position)
+            cursor.setPosition( self.last_position )
             found = self.text_edit.find(search_text)
 
             if found:
@@ -828,37 +814,24 @@ class WatInspector(   ):
     def __init__(self,  app,  parent = None ):
         """
 
-
         """
         global    display_wat
-
         global    app_for_wat
-
         global    go
         global    a_wat_inspector
 
-        a_wat_inspector            = self
-        go                         = self.create_window
+        a_wat_inspector      = self
+        go                   = self.create_window
 
         self.last_get_wat_str_obj  = None
 
-        # if display_wat:
-        #     return
-
         self.app            = app
-
-        # super().__init__( parent )
-
-        # display_wat         = self
-        # wat_app             = app
-        # go                  = self.setup_go
 
         self.wat_window     = None    # not sure which kind to use
         self.parent         = parent  # parent may be a function use parent_window
         self.parent_window  = parent
 
-
-
+    # --------------------------
     def create_window( self,
                               a_locals   = None,
                               a_globals  = None,
@@ -889,8 +862,6 @@ def run_display_wat():
               a_locals   = locals(),
               a_globals  = globals(),
               msg        = "my message" )
-
-
 
 # --------------------
 if __name__ == "__main__":

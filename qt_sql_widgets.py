@@ -95,6 +95,7 @@ import wat_inspector
 
 import tab_q_sql_relational_model_1
 import tab_q_sql_relational_model_2
+import tab_q_sql_relational_model_3
 import tab_table_model
 import tab_qsql_table_model
 import tab_qsql_database
@@ -187,7 +188,7 @@ class SampleDB():
         """
         if self.db is not None:
             self.db.close()
-            self.db    = None  # or delete
+            self.db    = None  # or delete?
 
         if DB_FILE    !=  ':memory:':
             # delete for a fresh start
@@ -199,6 +200,9 @@ class SampleDB():
         self.db         = db
         uft.EXAMPLE_DB  = db   # for simple module access
         uft.DB_OBJECT   = self
+
+        debug_item      = uft.DB_OBJECT
+
         if not db.open():
             print("SampleDB Error: Unable to establish a database connection.")
             return False
@@ -249,16 +253,30 @@ class SampleDB():
         """
         print_func_header( "populate_people_table" )
 
-        # a bit of straight sql lite
-        sql_con    = lite.connect( DB_FILE )
-        #conn       = sqlite3.connect("example.db")
-        cursor     = sql_con.cursor()
-        # Insert a row with a specific starting ID
-        cursor.execute("INSERT INTO people (id, name) VALUES (?, ?)", (1000, "Initial Entry"))
-        # cursor.commit()
-        sql_con.commit()
+        if False:
+            # a bit of straight sql lite -- this does not work for in memory?
+            sql_con    = lite.connect( DB_FILE )
+            #conn       = sqlite3.connect("example.db")
+            cursor     = sql_con.cursor()
+            # Insert a row with a specific starting ID
+            cursor.execute("INSERT INTO people (id, name) VALUES (?, ?)", (1000, "Initial Entry"))
+            # cursor.commit()
+            sql_con.commit()
 
-        print( "people table initialized to starting id of 1000")
+            print( "people table initialized to starting id of 1000")
+
+        if True:
+
+            query       = QSqlQuery( self.db )
+            sql  =   """INSERT INTO people (
+                    id,
+                    name,
+                    age,
+                    family_relation )
+                VALUES ( 1000, "initial", 0, 0 )
+            """
+            query.prepare( sql )
+            query.exec_()
 
         query       = QSqlQuery( self.db )
 
@@ -530,12 +548,6 @@ class KeyGen():
         return self.ix_keys
 
 
-# print( "!! next not completed")
-
-
-# ---- new redoing work under way or even done ** ------------------------------------------------
-
-
 #---- Master Window ===========================================================
 class QtSqlWidgetExamples( QMainWindow ):
     def __init__(self):
@@ -547,7 +559,8 @@ class QtSqlWidgetExamples( QMainWindow ):
 
         my_parameters   = parameters.Parameters()
         self.parameters = my_parameters
-
+        uft.parameters  = my_parameters
+        uft.main_window = self
         qt_xpos         = my_parameters.qt_xpos
         qt_ypos         = my_parameters.qt_ypos
         qt_width        = my_parameters.qt_width
@@ -561,27 +574,16 @@ class QtSqlWidgetExamples( QMainWindow ):
         # !! still needs work
         global DB_FILE
 
-        DB_FILE          = my_parameters.db_file_name
-
-
-    # global TEXT_EDITOR
-    # global DB_FILE
-
-
-    # TEXT_EDITOR   = "xed"
-
-
-
+        DB_FILE             = my_parameters.db_file_name
+        uft.TEXT_EDITOR     = my_parameters.text_editor
 
         self._build_menu()
-        self.doc_dir             = "./docs/"
+        self.doc_dir        = "./docs/"
         self.create_db()
 
         self._build_gui()
 
         self.table_model_filter = None   # will be used to hide unhide
-
-        return
 
     #------------------------------
     def _build_gui( self ):
@@ -590,8 +592,8 @@ class QtSqlWidgetExamples( QMainWindow ):
         """
         self.setWindowTitle( "QtSqlWidgetExamplesInTabs" )
 
-        self.setWindowIcon( QtGui.QIcon( './designer.png' ) )  # cannot get this to work
-
+        # self.setWindowIcon( QtGui.QIcon( './designer.png' ) )  # cannot get this to work
+        self.setWindowIcon( QtGui.QIcon( self.parameters.icon  )   )
         central_widget          = QWidget()
         self.setCentralWidget(central_widget)
 
@@ -623,7 +625,7 @@ class QtSqlWidgetExamples( QMainWindow ):
 
         # ---- QTableWidgetTab
         tab      =  tab_q_table_widget.QTableWidgetTab()
-        title    = "QTableWidget\n"
+        title    = "QTableWidget\nMostly Broken"
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "q_table_widget_tab.txt"
 
@@ -664,18 +666,21 @@ class QtSqlWidgetExamples( QMainWindow ):
 
         # ---- QSqlRelationalTableModelTab_2
         tab      = tab_q_sql_relational_model_2.QSqlRelationalTableModelTab_2()
-        title    = "QSqlRelationalTableMode_2\n"
+        title    = "QSqlRelationalTableModel_2\n"
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "qsql_relational_table_model_tab_2.txt"
 
+        # ---- QSqlRelationalTableModelTab_2
+        tab      = tab_q_sql_relational_model_3.QSqlRelationalTableModelTab_3()
+        title    = "QSqlRelationalTableModel_3\n"
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "qsql_relational_table_model_tab_3.txt"
         # tab      = uft.SeperatorTab()
         # title    = "Tab\nPlanned>>"
         # self.tab_widget.addTab( tab, title  )
 
 
         print( "later tabs are messing up the db beware")
-
-
 
         # tab      = QTableWidgetTab()
         # title    = "QTableWidgetTab"
@@ -763,6 +768,12 @@ class QtSqlWidgetExamples( QMainWindow ):
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
+
+        action          = QAction( "Display Parmss...", self )
+        #connect_to      = partial( self.open_txt_file, "readme_rsh.txt" )
+        action.triggered.connect( self.show_parameters  )
+        menu_help.addAction( action )
+
     #----------------------------
     def not_implemented( self,   ):
         """
@@ -774,11 +785,8 @@ class QtSqlWidgetExamples( QMainWindow ):
     def create_db( self,   ):
         """
         what it says read:
-
         """
         self.sample_db          =  SampleDB()
-
-    #     proc               = subprocess.Popen( [ ex_editor, doc_name ] )
 
     #-------
     def open_tab_help( self,   ):
@@ -789,7 +797,6 @@ class QtSqlWidgetExamples( QMainWindow ):
         doc_name            = self.tab_help_dict.get( tab_title, "no_specific_help.txt")
         doc_name            = f"{self.doc_dir}{doc_name}"
         #rint( f"{doc_name = }")
-        ex_editor          = r"xed"
 
         self.open_txt_file( doc_name )
 
@@ -799,6 +806,17 @@ class QtSqlWidgetExamples( QMainWindow ):
         what it says read
         """
         proc               = subprocess.Popen( [ uft.TEXT_EDITOR, file_name ] )
+
+
+    # -----------------------
+    def show_parameters(self):
+        """
+        what it says,
+        """
+        uft.show_parameters( )
+
+
+
 
 def main():
     # ---- run and a few parameters

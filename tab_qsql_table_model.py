@@ -17,8 +17,6 @@ if __name__ == "__main__":
 
 import time
 
-
-
 # ---- imports neq qt
 
 from PyQt5.QtGui import QColor, QPalette
@@ -111,7 +109,6 @@ import qt_sql_widgets
 
 
 
-EXAMPLE_DB      = uft.EXAMPLE_DB
 INDENT          = uft.INDENT
 INDENT          = uft.BEGIN_MARK_1
 INDENT          = uft.BEGIN_MARK_2
@@ -162,6 +159,13 @@ class QSqlTableModelTab( QWidget ):
         connect_to          = self.select_all
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
+
+        # ---- PB get_selected_rows
+        widget              = QPushButton("get_selected_rows\n")
+        widget.clicked.connect( self.get_selected_rows )
+        button_layout.addWidget( widget )
+
+
 
         # # ---- PB get_data_from_model
         # widget              = QPushButton("get_data\n_from_model")
@@ -227,6 +231,26 @@ class QSqlTableModelTab( QWidget ):
         # model->select();
        #  model.setHeaderData(2, Qt.Horizontal, "Age*" ) # QtHorizontal in c
         #model->setHeaderData(1, Qt::Horizontal, tr("Salary"));
+
+    # ------------------------
+    def get_selected_rows(self, index,   ):
+        """ """
+        print_func_header( "get_selected_rows" )
+
+        from PyQt5.QtWidgets import QTableView, QAbstractItemView
+        from PyQt5.QtCore import Qt
+
+        view            = self.people_view
+        # Assuming `view` is your QTableView
+        selection_model = view.selectionModel()
+        if selection_model:
+            selected_indexes = selection_model.selectedRows()  # Get the selected rows
+
+            # Iterate over the selected rows
+            for index in selected_indexes:
+                row = index.row()  # Get the row number
+                print(f"Selected row: {row = }")
+
 
     # ------------------------
     def _people_view_clicked(self, index,   ):

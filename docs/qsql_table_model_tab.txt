@@ -60,6 +60,14 @@ The code is found in QSqlTableModelTab and focus on the use of QSqlTableModel an
 
 
 
+    I have 
+        view                    = QTableView( )
+ 
+        view.setSelectionBehavior( QTableView.SelectRows )
+     from a program how do i get the selected rows
+
+
+
     Buttons:
 
         * <select_all> selects all the records in both tables

@@ -100,17 +100,17 @@ from   functools  import partial
 
 import wat_inspector
 import wat
+
 import utils_for_tabs as uft
 import qt_widgets
 import parameters
 import qt_table_model
 
+
+
 # ---- end imports
 
 
-
-EXAMPLE_DB      = uft.EXAMPLE_DB
-DB_OBJECT       = uft.DB_OBJECT
 
 
 INDENT          = uft.INDENT
@@ -175,7 +175,7 @@ class QSqlQueryTab( QWidget ):
         """
         print_func_header( "loop_with_qsqlquery" )
 
-        query = QSqlQuery( "SELECT name, age FROM people", EXAMPLE_DB )
+        query = QSqlQuery( "SELECT name, age FROM people", uft.EXAMPLE_DB )
         # print( '!! may need query = QSqlQuery()
         #        query.exec_("SELECT name, age FROM people"  ' ) # Execute the query '
         # if not query.exec_( sql ):
@@ -194,15 +194,6 @@ class QSqlQueryTab( QWidget ):
             print(row_data)
 
     # ------------------------
-    def breakpoint(self):
-        """
-        the usual
-        """
-        print_func_header( "breakpoint" )
-
-        breakpoint()
-
-    # ------------------------
     def inspect(self):
         """
         the usual
@@ -210,7 +201,7 @@ class QSqlQueryTab( QWidget ):
         print_func_header( "inspect" )
 
         # make some locals for inspection
-        the_global_db   = DB_OBJECT
+        the_global_db   = uft.DB_OBJECT
         # parent_window = self.parent( ).parent( ).parent().parent()
         # a_db          = parent_window.sample_db
         # model         = self.people_model
@@ -219,3 +210,12 @@ class QSqlQueryTab( QWidget ):
              msg            = "inspect...",
              a_locals       = locals(),
              a_globals      = globals(), )
+
+    # ------------------------
+    def breakpoint(self):
+        """
+        the usual
+        """
+        print_func_header( "breakpoint" )
+
+        breakpoint()

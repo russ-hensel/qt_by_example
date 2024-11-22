@@ -169,28 +169,25 @@ class TableModelTab( QWidget ):
 
         #-------------
         widget          = QPushButton( "table_model_\ntab_populate" )
-        a_widget        = widget
         widget.clicked.connect( lambda: self.table_model_tab_populate() )
         button_layout.addWidget( widget )
 
         #-------------
         widget = QPushButton("table_model_\ntab_get_data")
         widget.clicked.connect(lambda: self.table_model_tab_get_data( ) )
-        a_widget        = widget
         #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
         button_layout.addWidget( widget )
 
-        #-------------
-        widget = QPushButton("hide/\nunhide")
-        widget.clicked.connect(lambda: self.table_model_hide_unhide( ) )
-        a_widget        = widget
-        #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
-        button_layout.addWidget( widget )
+        # #-------------!! revisit
+        # widget = QPushButton("hide/\nunhide")
+        # widget.clicked.connect(lambda: self.table_model_hide_unhide( ) )
+        # a_widget        = widget
+        # #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
+        # button_layout.addWidget( widget )
 
         #-------------
         widget = QPushButton("hide/\nunhide column")
         widget.clicked.connect(lambda: self.table_model_toggle_hide_column( ) )
-        a_widget        = widget
         #widget.clicked.connect( lambda: self.widget_clicked( a_widget ) )
         button_layout.addWidget( widget )
 
@@ -216,7 +213,7 @@ class TableModelTab( QWidget ):
             seems ok
         populates a row at a time
         """
-        qt_widgets.print_func_header( "table_model_tab_populate" )
+        print_func_header( "table_model_tab_populate" )
 
         model      = self.table_model
         #print( f" add_to_model_all_subjects {photo_id = } , {table = }, {table_id = },  {info =} "  )
@@ -240,8 +237,9 @@ class TableModelTab( QWidget ):
         """
         once filter applied not sure how to remove
         this is messed up might want to start over with chat
+        !! revisit
         """
-        qt_widgets.print_func_header( "table_model_hide_unhide !! fix me " )
+        print_func_header( "table_model_hide_unhide !! fix me " )
 
         if self.table_model_filter:
             self.table_model_filter   = FilterProxyModelHideRows( )
@@ -252,7 +250,7 @@ class TableModelTab( QWidget ):
         what it says,
         index comes from table view
         """
-        qt_widgets.print_func_header( "double_clicked" )
+        print_func_header( "double_clicked" )
 
         model    = self.table_model
         row      = index.row()
@@ -265,7 +263,7 @@ class TableModelTab( QWidget ):
         what it says,
         index comes from table view
         """
-        qt_widgets.print_func_header( "clicked" )
+        print_func_header( "clicked" )
 
 
         model    = self.table_model
@@ -279,7 +277,7 @@ class TableModelTab( QWidget ):
     def select_row(self, row_index ):
          """Select a specific row."""
 
-         qt_widgets.print_func_header( "select_row" )
+         print_func_header( "select_row" )
 
 
          # Get the selection model from the view
@@ -297,7 +295,7 @@ class TableModelTab( QWidget ):
         Select a specific column.
         may want to test and hook up
         """
-        qt_widgets.print_func_header( "select_column" )
+        print_func_header( "select_column" )
 
         # Get the selection model from the view
         selection_model = self.table_view.selectionModel()
@@ -314,7 +312,7 @@ class TableModelTab( QWidget ):
         """
         we actually use the view
         """
-        qt_widgets.print_func_header( "table_model_toggle_hide_column" )
+        print_func_header( "table_model_toggle_hide_column" )
 
 
         self.table_model_is_hidden  = not self.table_model_is_hidden
@@ -556,6 +554,6 @@ class TableModelTab( QWidget ):
         each tab gets its own function so we break in that
         tabs code
         """
-        qt_widgets.print_func_header( "breakpoint" )
+        print_func_header( "breakpoint" )
 
         breakpoint()

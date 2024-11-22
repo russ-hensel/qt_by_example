@@ -25,7 +25,10 @@ from PyQt5.QtCore  import  (
     Qt,
     QModelIndex,
     QDateTime,
+    QAbstractTableModel,
+    pyqtSlot,
   )
+
 
 # layouts
 from PyQt5.QtWidgets import (
@@ -359,12 +362,13 @@ class InfoAboutBase(   ):
     def get_info( self,
                     inspect_me,
                     *,
-                    msg      = None,
-                    max_len  = None,
-                    xin      = "",
-                    print_it = True,
-                    sty      = "",
-                    include_dir  = False,  ):
+                    msg             = None,
+                    max_len         = None,
+                    xin             = "",
+                    print_it        = True,
+                    sty             = "",
+                    include_dir     = False,
+                    details_only    = False, ):
         """ """
         self.reset()
 
@@ -375,7 +379,7 @@ class InfoAboutBase(   ):
         self.print_it       = print_it
         self.sty            = sty
         self.include_dir    = include_dir
-
+        self.details_only   = details_only
         self.fix_msg( )
 
         self.begin_info()
@@ -410,28 +414,28 @@ class InfoAboutBase(   ):
             return
 
         #msg       = f"directory (non standard items) for object of type {type( a_obj ) = }"
-        msg       = f"directory (non standard items):"
+        #msg       = f"directory (non standard items):"
         #print( msg )
 
         the_dir         = self.inspect_me.__dir__()
         reduced_dir     = [ i_dir  for   i_dir in the_dir if i_dir not in common_dir_items ]
         reduced_dir.sort()
-        current_str = ""
+        current_str     = ""
         for i_dir in reduced_dir:
 
-                # clean it up a bit ??
-                #print( i_dir )
-                a_atter     =   getattr( self.inspect_me, i_dir, None )
-                # if a_atter.startswith( "<built-in method" ):
-                #     a_atter  = "method"
-                # if a_atter.startswith( "<built-in method" ):
-                #     a_atter  = "method"
+            # clean it up a bit ??
+            #print( i_dir )
+            a_atter     =   getattr( self.inspect_me, i_dir, None )
+            # if a_atter.startswith( "<built-in method" ):
+            #     a_atter  = "method"
+            # if a_atter.startswith( "<built-in method" ):
+            #     a_atter  = "method"
 
-                #print( f"{i_dir= } .... {a_atter = }", flush = True )
-                # to_columns( current_str, item_list, format_list = ( "{: <30}", "{:<30}" ), indent = "    "  ):
+            #print( f"{i_dir= } .... {a_atter = }", flush = True )
+            # to_columns( current_str, item_list, format_list = ( "{: <30}", "{:<30}" ), indent = "    "  ):
 
-                current_str = to_columns(  [ str( i_dir ), str( a_atter) ] )
-                self.add_line( current_str )
+            current_str = to_columns(  [ str( i_dir ), str( a_atter) ] )
+            self.add_line( current_str )
 
     # -----------------------
     def add_line( self, i_line ):
@@ -540,6 +544,10 @@ class InfoAboutQSqlRecord( QSqlRecord  ):
     #----------- init -----------
     def __init__(self,   ):
 
+        """
+        look at relationaltable see if some stuff should be moved here
+        """
+
         super( ).__init__(     )
         self.my_class    = str
 
@@ -645,9 +653,6 @@ class InfoAboutQComboBox ( InfoAboutBase  ):
 
         self.add_line(  f"{self.xin}{INDENT2}{obj.count() = }       " )
         self.add_line(  f"{self.xin}{INDENT2}{obj.maxVisibleItems() = }       " )
-
-
-
 
 
 
@@ -811,7 +816,8 @@ class InfoAboutTableModel( InfoAboutBase  ):
                 self.add_line(  f"{self.xin}{INDENT2} and more lines not listed...... " )
                 break
 
-            for ix_col  in range( 3 ):   # should figure out a column count
+            # check for max ??
+            for ix_col  in range( column_count ):   # should figure out a column count
                 index     = model.index( ix_row,   ix_col   )
                 data      = model.data( index )
                 msg       = f"for {ix_row = } {ix_col = } {index = } {data = }"
@@ -828,34 +834,63 @@ class InfoAboutQSqlRelationalTableModel( InfoAboutBase  ):
         super( ).__init__(     )
         self.my_class    = QSqlRelationalTableModel
 
-    # --------------------------
-    def have_info_forxxx( self, a_obj ):
-
-        have_info  = isinstance(  a_obj, QSqlRelationalTableModel  )
-        return have_info
-
     #-------------------------
     def custom_info( self ):
         """
         gen the custom lines
         """
         model           = self.inspect_me
-        self.add_line(  "custom_info for a QSqlRelationalTableModel" )
+        self.add_line(  "Custom_info for a QSqlRelationalTableModel" )
 
-        self.add_line(  f"{self.xin}{INDENT2}rowCount()     = {model.rowCount() }" )
-
+        # we can get counts and the get ix from name an vise versa also the data
         row_count       = model.rowCount()
         column_count    = model.columnCount()
+
+        self.add_line(  f"{self.xin}{INDENT2}For the model " )
+        self.add_line(  f"{self.xin}{INDENT2}  {model.rowCount() = } {model.columnCount() = } " )
+
         for ix_row in range( row_count ):
-            if ix_row > MAX_LIST_ITEMS:
-                self.add_line(  f"{self.xin}{INDENT2} and more lines not listed...... " )
+            if ix_row > 3* MAX_LIST_ITEMS:
+                self.add_line(  f"{self.xin}{INDENT2} and more rows not listed...... " )
                 break
 
-            for ix_col  in range( 3 ):   # should figure out a column count
-                index     = model.index( ix_row,   ix_col   )
-                data      = model.data( index )
-                msg       = f"for {ix_row = } {ix_col = }  {data = }"
-                self.add_line(  f"{self.xin}{INDENT2} {msg}" )
+            print( "" ) # marker for new row
+            c_names         = []
+            for ix_col  in range( column_count ):   # should figure out a column count
+                index       = model.index( ix_row,   ix_col   )
+                data        = model.data( index )
+                #field       = model.fieldIndex( ix_col )  # f
+                c_header    = model.headerData( ix_col, Qt.Horizontal)
+                    # russ not sure this is accurate all the time look at record next mith text
+                field       = model.fieldIndex( c_header )  # may be error in some cases
+                        # If you're working with a QSqlRelationalTableModel that has relations set, the column name
+                        # returned will reflect the field name from the base table, not the related table.
+                #field       = model.fieldIndex( c_header )  # might work
+                c_names.append( c_header )
+                msg       = f"for model {ix_row = } {ix_col = } {c_header = } { field = }  {data = }"
+                self.add_line(  f"{self.xin}{INDENT2}{msg}" )
+
+        # self.add_line(  "Custom_info for a QSqlRelationalTableModel" )
+        # for ix_col in range(model.columnCount()):
+        #     header   = model.headerData( ix_col, Qt.Horizontal)
+        #     self.add_line(f"{self.xin}{INDENT2} Column {ix_col}: {header}")
+
+        self.add_line(  f"{self.xin}{INDENT2}For a record .. anything new here -- columns differ " )
+        # grabbed fromtab_qsl relational  --- does record have a column count?
+        new_record      = model.record()
+        c_names         = []
+        max_col         = new_record.count()
+        for ix_col in range( max_col ):    # seems ok to index past end
+            i_name     = new_record.fieldName( ix_col )
+            c_names.append( i_name )
+            self.add_line( f"{self.xin}{INDENT2}{ix_col = }:     {new_record.fieldName( ix_col ) = } " )
+                # chat says still works afteer heder may be changed
+        #c_names      = [ "name", "phone_number", "xxx"]
+        for i_name in c_names:
+            self.add_line( f"{self.xin}{INDENT2}{i_name = }:  {new_record.indexOf( i_name ) = } " )
+
+        # print( "did this get left off ?" )
+        # print( f'{ model.fieldIndex( "person_id") = }' )
 
 # ---- main
 # --------------------

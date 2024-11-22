@@ -1,4 +1,4 @@
-
+QSqlDatabase
 
 This tab is related to building the datbase used by the other tabs.
 
@@ -7,6 +7,11 @@ This tab is related to building the datbase used by the other tabs.
 
 
 ----Purpose/Functionality
+........Widgets included
+
+---- Discussion
+---- Ask a ChatBot
+---- Work still to do
 
 
 
@@ -27,43 +32,45 @@ The tables in brief ( for more detail see the sql in SampleDB )
 
     people_ohones
         the phone numbes of people, to be joined to people
+        this is a one (people) to many ( people_phones ) join.
 
     book_clubs -- work in progress
         the book clubs that people belong to
+        the plan is for this to be a many to many join
 
+    To help distinguish the id's of the various tables I have
+    tried to build them in widely seperated numeric ranges
 
+Buttons
 
-Functionality
+    *<rebuild_db>
+        Rebuild the db from scratch (  also done every time the application
+        is started )
+        The database may be in memory ( fast ) or on disk ( where you can inspect
+        it with other utilties -- very useful )
 
-    * Rebuild the db from scratch (  also done every time the application
-        is started ) <rebuild_db>
+    *<print_db>
+        Print out the data in all the tables.
 
-    *Print out the data in all the tables. <print_db>
-
-    *Inspect
+    *<nspect>
         the usual
 
-    *Breakpoint
+    *<breakpoint>
         the usual
 
 
 
-........Widget included:
+........Widgets included:
 
-            QGridLayot
+        No visual widgets but uses...
 
-This shows loops being used to layout lables which indicate their own row column position.
 
-The last row of buttons is a box layout inside the larger grid layout
+
 
 
 ---- Ask a ChatBot --------------------------------------------------------------------------
 
-            I have a QGridLayot. How to I add and remove widgets from it?
-.
-            I have a QGridLayot. What signals is this widget set up to emit and what arguments are emitted for each signal?
-
-            I have a QGridLayot. What can I do to change its visual appearance?
+            I have a .......
 
 
 ---- Work still to do --------------------------------------------------------------------------
@@ -72,7 +79,6 @@ The last row of buttons is a box layout inside the larger grid layout
 
 
 
----- eof
 
 
 

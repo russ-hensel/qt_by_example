@@ -111,8 +111,7 @@ import qt_table_model
 # ---- end imports
 
 
-EXAMPLE_DB      = uft.EXAMPLE_DB
-DB_OBJECT       = uft.DB_OBJECT
+
 
 
 INDENT          = uft.INDENT
@@ -180,30 +179,29 @@ class QSqlDatabaseTab( QWidget ):
         """ """
         print_func_header( "print_db" )
 
-        DB_OBJECT.query_print_people()
-        DB_OBJECT.query_print_phone()
-        DB_OBJECT.query_print_people_phone()
+        uft.DB_OBJECT.query_print_people()
+        uft.DB_OBJECT.query_print_phone()
+        uft.DB_OBJECT.query_print_people_phone()
 
     # ------------------------
     def rebuild_db(self):
         """ """
         print_func_header( "rebuild_db" )
 
-        DB_OBJECT.reset()
+        uft.DB_OBJECT.reset()
 
     # ------------------------
     def inspect(self):
         """ """
         print_func_header( "inspect" )
         # make some locals for inspection
-        the_global_db    = DB_OBJECT
+        the_global_db    = uft.DB_OBJECT
         # parent_window = self.parent( ).parent( ).parent().parent()
         # a_db          = parent_window.sample_db
         # model         = self.people_model
         # view          = self.people_view
         wat_inspector.go(
              msg            = "see the_global_db",
-             inspect_me     = the_global_db,
              a_locals       = locals(),
              a_globals      = globals(), )
 

@@ -104,10 +104,6 @@ import qt_table_model
 # ---- end imports
 
 
-EXAMPLE_DB      = uft.EXAMPLE_DB
-DB_OBJECT       = uft.DB_OBJECT
-
-
 INDENT          = uft.INDENT
 INDENT          = uft.BEGIN_MARK_1
 INDENT          = uft.BEGIN_MARK_2
@@ -198,7 +194,7 @@ class QTableWidgetTab( QWidget ):
         button_layout.addWidget(a_widget)
 
         # delete or remove a row
-        a_widget           = QPushButton("set_size")
+        a_widget           = QPushButton("set_size\n")
         self.add_button    = a_widget
         a_widget.clicked.connect(self.set_size)
         button_layout.addWidget(a_widget)
@@ -210,13 +206,13 @@ class QTableWidgetTab( QWidget ):
         button_layout.addWidget(a_widget)
 
         # ---- search
-        a_widget           = QPushButton( "search" )
+        a_widget           = QPushButton( "search\n" )
         self.add_button    = a_widget
         a_widget.clicked.connect( self.search )
         button_layout.addWidget(a_widget)
 
         # ---- find_row_with_text
-        a_widget           = QPushButton( "find_row_with_text" )
+        a_widget           = QPushButton( "find_row_\nwith_text" )
         self.add_button    = a_widget
         a_widget.clicked.connect( self.find_row_with_text )
         button_layout.addWidget(a_widget)
@@ -317,15 +313,16 @@ class QTableWidgetTab( QWidget ):
         print_func_header( "remove_row_current" )
 
         row_position = self.table_widget.currentRow()
-        self.table_widget.removeRow(row_position)
+        self.table_widget.removeRow( row_position )
 
     # ------------------------------
     def set_size(self):
         """
         read it
         """
-        self.table_widget_1.horizontalHeader().setStretchLastSection(True)
-        self.table_widget_1.horizontalHeader().setSectionResizeMode(
+        table   = self.table_widget
+        table.horizontalHeader().setStretchLastSection(True)
+        table.horizontalHeader().setSectionResizeMode(
             QHeaderView.Stretch)
 
     # ------------------------------
@@ -336,8 +333,7 @@ class QTableWidgetTab( QWidget ):
         print_func_header( "sort")
 
         # !! more research on args
-        self.table_widget.sortItems (  1 , Qt.AscendingOrder  )
-
+        self.table_widget.sortItems ( 1, Qt.AscendingOrder  )
 
     # ------------------------------
     def search(self, search_for   = "1," ):
@@ -350,7 +346,7 @@ class QTableWidgetTab( QWidget ):
         search_for   = "1,"
         msg          = f"search {search_for = }"
         print( msg )
-        a_widget    =    self.table_widget_1
+        a_widget    =    self.table_widget
         # Clear current selection.
         a_widget.setCurrentItem( None )
 
@@ -378,8 +374,7 @@ class QTableWidgetTab( QWidget ):
         """
         print_func_header( "find_row_with_text" )
 
-
-        table               = self.table_widget_1
+        table               = self.table_widget
         ix_col_searched     = 2
         ix_found            = None
         target_text   = "Cell (2, 2)"
@@ -395,6 +390,7 @@ class QTableWidgetTab( QWidget ):
     #----------------------------
     def find_row_with_text_in_column(self, ):
         """
+        !! revisit  -- seems not to be connected
         might be faster
         might be wrong depending on how matching works
         from chat
@@ -402,14 +398,13 @@ class QTableWidgetTab( QWidget ):
         """
         print_func_header( "find_row_with_text_in_column" )
 
-
-        table               = self.table_widget_1
+        table               = self.table_widget
 
         ix_col_searched     = 2
         ix_found            = None
-        target_text     = "xyz"
+        target_text         = "xyz"
 
-        matching_items = table_widget.findItems(target_text, QtCore.Qt.MatchExactly )
+        matching_items      = table.findItems(target_text, QtCore.Qt.MatchExactly )
         for item in matching_items:
             if item.column() == column:
                 ix_found            =  item.row()
@@ -435,7 +430,7 @@ class QTableWidgetTab( QWidget ):
         print_func_header( "inspect" )
 
         # make some locals for inspection
-        the_global_db   = DB_OBJECT
+
         # parent_window = self.parent( ).parent( ).parent().parent()
         # a_db          = parent_window.sample_db
         # model         = self.people_model

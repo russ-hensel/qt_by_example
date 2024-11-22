@@ -105,9 +105,6 @@ import parameters
 # ---- end imports
 
 
-EXAMPLE_DB      = uft.EXAMPLE_DB
-DB_OBJECT       = uft.DB_OBJECT
-
 
 INDENT          = uft.INDENT
 INDENT          = uft.BEGIN_MARK_1

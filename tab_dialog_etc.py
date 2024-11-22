@@ -248,5 +248,4 @@ class DialogEtcTab( QWidget ) :
         breakpoint()
 
 
-
-
+# ---- eof

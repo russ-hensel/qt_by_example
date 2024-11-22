@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
-tab_groupbox.py
-
+from:
+/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/basic/widgets_list.py
+  widgets_list.py
 """
+
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
-    import qt_widgets
-    qt_widgets.main( )
+    import qt_fitz_book
+    qt_fitz_book.main()
 # --------------------
 
-import time
 
+import time
 
 # ---- imports neq qt
 
@@ -40,6 +41,29 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     )
+
+from PyQt5.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QComboBox,
+    QDateEdit,
+    QDateTimeEdit,
+    QDial,
+    QDoubleSpinBox,
+    QFontComboBox,
+    QLabel,
+    QLCDNumber,
+    QLineEdit,
+    QMainWindow,
+    QProgressBar,
+    QPushButton,
+    QRadioButton,
+    QSlider,
+    QSpinBox,
+    QTimeEdit,
+)
+
+
 
 # widgets -- small
 from PyQt5.QtWidgets import (
@@ -99,82 +123,71 @@ import wat
 import utils_for_tabs as uft
 import qt_widgets
 import parameters
+
+
 # ---- end imports
 
-
-
-
-
-INDENT          = uft.INDENT
-INDENT          = uft.BEGIN_MARK_1
-INDENT          = uft.BEGIN_MARK_2
-#INDENT          = qt_sql_widgets.
-
-print_func_header =  uft.print_func_header
-
+print_func_header   = uft.print_func_header
 
 #  --------
-class QGroupBoxTab( QWidget ) :
+class Fitz_1_Tab( QWidget ) :
     def __init__(self):
         """
         some content from and there may be more
         /mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/gui_qt_ext.py
-        tab_groupbox.py
+        tab_misc_widgets.py
         """
         super().__init__()
         self._build_gui()
+        self.mutate_ix   = 0
 
+    # -------------------------------
     def _build_gui(self,   ):
         """
-        build the gui
+        layouts
+            a vbox for main layout
+            h_box for or each row of buttons
         """
         tab_page      = self
         layout        = QVBoxLayout( tab_page )
-        # ---- QGroupBox
-        #groupbox   = QGroupBox()  # no title
-        groupbox   = QGroupBox( "QGroupBox 1" )   # version with title
 
-        groupbox.setStyleSheet("""
-            QGroupBox {
-                border: 2px solid blue;
-                border-radius: 10px;
-                margin-top: 15px;
-            }
+        widgets = [
+            QCheckBox,
+            QComboBox,
+            QDateEdit,
+            QDateTimeEdit,
+            QDial,
+            QDoubleSpinBox,
+            QFontComboBox,
+            QLCDNumber,
+            QLabel,
+            QLineEdit,
+            QProgressBar,
+            QPushButton,
+            QRadioButton,
+            QSlider,
+            QSpinBox,
+            QTimeEdit,
+        ]
 
-            QGroupBox::title {
-                subcontrol-origin: margin;
-                subcontrol-position: top center;
-                padding: 0 3px;
-                background-color: white;
-            }
-        """)
+        self.widgets_list   = widgets   # for inspection later
 
-        layout.addWidget( groupbox )
-        layout_b     = QHBoxLayout( groupbox  )
+        for w in widgets:
+            layout.addWidget(w())
 
-        self.build_gui_in_groupbox( layout_b )
-
-        button_layout = layout # needs fixing
+        # ---- new row, standard buttons
+        button_layout = QHBoxLayout(   )
+        layout.addLayout( button_layout,  )
 
         # ---- PB inspect
-        widget          = QPushButton("inspect\n")
+        widget = QPushButton("inspect\n")
         widget.clicked.connect( self.inspect    )
-        clear_button    = widget
         button_layout.addWidget( widget,   )
 
         # ---- PB breakpoint
         widget = QPushButton("breakpoint\n")
         widget.clicked.connect( self.breakpoint    )
         button_layout.addWidget( widget,   )
-
-    # ---------------------------
-    def build_gui_in_groupbox( self, layout ):
-        """
-        this is a bit of gui built inside another groupbos = QGroupBox()
-        """
-        widget = QPushButton("do_nothing\n")
-        #widget.clicked.connect(  self.show_values  )
-        layout.addWidget( widget )
 
     # ------------------------
     def inspect(self):
@@ -183,12 +196,9 @@ class QGroupBoxTab( QWidget ) :
         """
         print_func_header( "inspect" )
 
-        # make some locals for inspection
-        my_tab_widget = self
-        #parent_window = self.parent( ).parent( ).parent().parent()
-
+        self_widgets_list   = self.widgets_list
         wat_inspector.go(
-             msg            = "self.text_edit from inspect method",
+             msg            = "see self_widgets_list",
              a_locals       = locals(),
              a_globals      = globals(), )
 
@@ -201,6 +211,3 @@ class QGroupBoxTab( QWidget ) :
         print_func_header( "breakpoint" )
 
         breakpoint()
-
-
-# ---- eof

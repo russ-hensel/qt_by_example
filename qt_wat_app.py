@@ -14,17 +14,26 @@ qt_wat_app.py
 """
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QPushButton, QLineEdit, QLabel
-from PyQt5 import QtGui
+from functools import partial
 
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication,  QMainWindow
-from PyQt5.QtWidgets import QGridLayout,   QVBoxLayout,   QButtonGroup
-from PyQt5.QtWidgets import QWidget,       QLineEdit,     QLabel,      QTextEdit
-from PyQt5.QtWidgets import QGroupBox,     QPushButton,   QMessageBox, QCheckBox, QRadioButton, QComboBox
+from PyQt5.QtWidgets import (QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QGridLayout,
+                             QGroupBox,
+                             QLabel,
+                             QLineEdit,
+                             QMainWindow,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
-from functools       import partial
-import wat_inspector   # wat_setup
+import wat_inspector  # wat_setup
 
 # ---- end imports
 

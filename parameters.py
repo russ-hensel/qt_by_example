@@ -13,8 +13,8 @@ if __name__ == "__main__":
 # --------------------
 
 
-import os
 import logging
+import os
 import sys
 
 # ---- local imports

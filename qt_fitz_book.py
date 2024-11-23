@@ -26,56 +26,79 @@ Examples of
 
 # ---- imports
 
-from platform import python_version
 import inspect
 import os
+import sqlite3 as lite
 import subprocess
 import sys
+from functools import partial
+from platform import python_version
 from subprocess import PIPE, STDOUT, Popen, run
-import sqlite3 as lite
 
 #from app_global import AppGlobal
 from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate, QModelIndex, QSize, QSortFilterProxyModel, Qt,
+from PyQt5.QtCore import (QDate,
+                          QModelIndex,
+                          QSize,
+                          QSortFilterProxyModel,
+                          Qt,
                           QTimer)
 # sql
-from PyQt5.QtSql import (QSqlDatabase, QSqlQuery, QSqlQueryModel, QSqlRelation,
-                         QSqlRelationalDelegate, QSqlRelationalTableModel,
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlField,
+                         QSqlQuery,
+                         QSqlQueryModel,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
                          QSqlTableModel)
 
+from PyQt5.QtWidgets import (QAbstractItemView,
+                             QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDataWidgetMapper,
+                             QDateEdit,
+                             QDialog,
+                             QDoubleSpinBox,
+                             QFormLayout,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QHeaderView,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QSpinBox,
+                             QStyledItemDelegate,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
-from PyQt5.QtSql import QSqlRecord, QSqlField
-
-
-
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication,
-                             QButtonGroup, QCheckBox, QComboBox,
-                             QDataWidgetMapper, QDateEdit, QDialog,
-                             QDoubleSpinBox, QFormLayout, QGridLayout,
-                             QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-                             QLineEdit, QListWidget, QListWidgetItem,
-                             QMainWindow, QMenu, QMessageBox, QPushButton,
-                             QRadioButton, QSpinBox, QStyledItemDelegate,
-                             QTableView, QTableWidget, QTableWidgetItem,
-                             QTabWidget, QTextEdit, QVBoxLayout, QWidget, QHeaderView)
-
-
-
-import sys
-
-from functools import partial
-
-
-import utils_for_tabs as uft
 import parameters
 import qt_table_model
-
-import wat_inspector
-
-
 import tab_fitz_1
 import tab_fitz_2
 import tab_fitz_3
+import tab_fitz_4
+import tab_fitz_5
+import tab_fitz_6
+import utils_for_tabs as uft
+import wat_inspector
+
 # ---- end imports
 
 
@@ -132,7 +155,7 @@ class QtBookExamples( QMainWindow ):
         """
         main gui build method -- for some sub layout use other methods
         """
-        self.setWindowTitle( "QtWidgetExamples" )
+        self.setWindowTitle( "QtBookExamples" )
 
         #self.setWindowIcon( QtGui.QIcon('clipboard_b_red_gimp.ico') )
         self.setWindowIcon( QtGui.QIcon( './designer.png' ) )  # cannot get this to work
@@ -181,43 +204,30 @@ class QtBookExamples( QMainWindow ):
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "fitz_3_tab.txt"
 
+        title    = "ToDo\nList"
+        tab      = tab_fitz_4.Fitz_4_Tab()
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "fitz_4_tab.txt"
 
-        # title    = "QComboBox\n"
-        # tab      = tab_combo_box.QComboBoxTab()
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "combo_box_widget_tab.txt"
+        title    = "Graph\nDynamic"
+        tab      = tab_fitz_5.Fitz_5_Tab()
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "fitz_5_tab.txt"
+
+        title    = "Graph\nStatic"
+        tab      = tab_fitz_6.Fitz_6_Tab()
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "fitz_5_tab.txt" # share with 5 for awhild
 
 
-        # title    = "QGroupBox\n"
-        # tab      = tab_groupbox.QGroupBoxTab()
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "group_widget_tab.txt"
 
-        # # ---- QTextEdit
-        # title    = "QTextEdit\n"
-        # tab      = tab_text_edit.QTextEditTab()
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "text_edit_tab.txt"
 
         # title    = "QList\n"
         # tab      = tab_qlist.QListWidgetTab()
         # self.tab_widget.addTab( tab, title  )
         # self.tab_help_dict[ title ] = "list_widget_tab.txt"
 
-        # title    = "DialogEtc\n"
-        # tab      = tab_dialog_etc.DialogEtcTab()    # tab_dialog_etc.py
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "dialog_etc_tab.txt"
 
-        # title    = "QDateEdit\n"
-        # tab      = tab_date_edit.QDateEditTab()
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "date_edit_widget_tab.txt"
-
-        # title    = "QGroupBox\n"
-        # tab      = tab_groupbox.QGroupBoxTab()
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "group_widget_tab.txt"
 
 
 
@@ -259,7 +269,6 @@ class QtBookExamples( QMainWindow ):
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
-
     #----------------------------
     def not_implemented( self,   ):
         """
@@ -287,22 +296,6 @@ class QtBookExamples( QMainWindow ):
         doc_name            = f"{self.doc_dir}qt_widgets_help.txt"
         ex_editor           = r"xed"
         proc                = subprocess.Popen( [ ex_editor, doc_name ] )
-
-    # #-------
-    # def open_tab_help( self,   ):
-    #     """
-    #     what it says read:
-    #         still needs work
-    #     """
-    #     tab_title           = self.tab_widget.tabText( self.tab_widget.currentIndex())
-    #     # print( f"{self.doc_dir}{tab_title = }")
-
-    #     doc_name            = self.tab_help_dict.get( tab_title, "no_specific_help.txt")
-    #     doc_name            = f"{self.doc_dir}{doc_name}"
-    #     print( f"{doc_name = }")
-    #     ex_editor          = r"xed"
-
-    #     proc               = subprocess.Popen( [ ex_editor, doc_name ] )
 
     # ---- events ------------------------------------------
     #----------------------------
@@ -369,7 +362,7 @@ def main():
     a_wat_inspector     = wat_inspector.WatInspector( app )
     window              = QtBookExamples()
     window.show()
-    #sys.exit(
+
     app.exec()
 
     #sys.exit( 0 )

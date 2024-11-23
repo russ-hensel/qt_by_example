@@ -17,11 +17,11 @@ if __name__ == "__main__":
 
 # ---- imports
 
-from  tkinter import messagebox
+import datetime
 # import collections
 import sqlite3 as lite
 import time
-import datetime
+from tkinter import messagebox
 
 # ------- local imports
 # from   app_global import AppGlobal
@@ -30,8 +30,8 @@ import datetime
 #import file_writers
 #import pseudo_column
 #import sql_writers
-import    string_util
-from   app_global import AppGlobal
+import string_util
+from app_global import AppGlobal
 
 
 # ----------------------------------------

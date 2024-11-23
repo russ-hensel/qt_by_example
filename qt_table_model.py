@@ -16,122 +16,84 @@ table_model.
 
 # ---- begin pyqt from import_qt.py
 
-from PyQt5.QtGui import (
-    QStandardItemModel,
-    QStandardItem,
-
-                 )
-#from PyQt5.QtCore import QAbstractTableModel, Qt
-
-# ---- QtCore
-from PyQt5.QtCore  import  (
-    QDate,
-    QModelIndex,
-    QTimer,
-    Qt,
-    QAbstractTableModel,
-    pyqtSlot,
-                            )
-
-from PyQt5.QtGui import (
-    QIntValidator,
-    )
-
-# ----QtWidgets
-from PyQt5.QtWidgets import (
-    QWidget,
-    QPushButton,
-    QDialog,
-    QAction,
-    QTableWidgetItem,
-    QTableWidget,
-    QDateEdit,
-    QMenu,
-    QAction,
-    QLineEdit,
-    QActionGroup,
-    QApplication,
-    QDockWidget,
-    QTabWidget,
-    QLabel,
-    QListWidget,
-    QMainWindow,
-    QMessageBox,
-    QSpinBox,
-    QMdiSubWindow,
-    QTextEdit,
-    QButtonGroup,
-    )
-
-# ----QtWidgets big
-from PyQt5.QtWidgets import (
-    QAction,
-    QMenu,
-    QApplication,
-    QMainWindow,
-
-    QTableView,
-    QFrame,
-    QMainWindow,
-    QMdiArea,
-    QMdiSubWindow,
-    QMdiArea,
-    QMdiSubWindow,
-    )
-
-# ----QtWidgets layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-    )
-
-# ----QtWidgets Boxes, Dialogs
-from PyQt5.QtWidgets import (
-    QAction,
-    QActionGroup,
-    QDockWidget,
-    QFileDialog,
-    QInputDialog,
-
-    QLabel,
-    QListWidget,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QSpinBox,
-    QTextEdit,
-    QVBoxLayout,
-    QCheckBox,
-    QComboBox,
-    )
-
-# ---- QtSql
-from PyQt5.QtSql import (
-    QSqlDatabase,
-    QSqlTableModel,
-    QSqlQuery,
-    QSqlQueryModel,
-    QSqlRecord,
-    QSqlRelation,
-    QSqlRelationalDelegate,
-    QSqlRelationalTableModel,
-    QSqlTableModel,
-    )
-
-# ---- not in standard imports
-from PyQt5.QtWidgets import ( QApplication, QMainWindow,
- QGraphicsView, QGraphicsScene, QGraphicsPixmapItem,
- QVBoxLayout, QWidget, QPushButton, QDockWidget
- )
-from PyQt5.QtGui import QPixmap, QPainter
-from PyQt5.QtCore import Qt, QRectF
-
-
-import sqlite3
 #from   functools import partial
 #import collections
 import functools
+import sqlite3
+
+# ---- QtCore
+from PyQt5.QtCore import (QAbstractTableModel,
+                          QDate,
+                          QModelIndex,
+                          QRectF,
+                          Qt,
+                          QTimer,
+                          pyqtSlot)
+from PyQt5.QtGui import (QIntValidator,
+                         QPainter,
+                         QPixmap,
+                         QStandardItem,
+                         QStandardItemModel)
+# ---- QtSql
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlQuery,
+                         QSqlQueryModel,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
+                         QSqlTableModel)
+# ---- not in standard imports
+# ----QtWidgets Boxes, Dialogs
+# ----QtWidgets layouts
+# ----QtWidgets big
+# ----QtWidgets
+from PyQt5.QtWidgets import (QAction,
+                             QActionGroup,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDateEdit,
+                             QDialog,
+                             QDockWidget,
+                             QFileDialog,
+                             QFrame,
+                             QGraphicsPixmapItem,
+                             QGraphicsScene,
+                             QGraphicsView,
+                             QGridLayout,
+                             QHBoxLayout,
+                             QInputDialog,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QMainWindow,
+                             QMdiArea,
+                             QMdiSubWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QSpinBox,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
+
+#from PyQt5.QtCore import QAbstractTableModel, Qt
+
+
+
+
+
+
+
+
+
+
 #import time
 #from   pubsub import pub
 

@@ -29,9 +29,73 @@
 # ---- imports
 
 
+import inspect
+#from   ex_qt import ia_qt
+#import ia_qt
+import subprocess
+import sys
 #import adjust_path
 import time
+from datetime import datetime
+from functools import partial
+from subprocess import PIPE, STDOUT, Popen, run
 
+import wat
+from PyQt5 import QtGui
+from PyQt5.QtCore import (QDate,
+                          QDateTime,
+                          QModelIndex,
+                          QSize,
+                          Qt,
+                          QTime,
+                          QTimer)
+from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+# sql
+from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+# widgets bigger
+# widgets -- small
+# layouts
+from PyQt5.QtWidgets import (QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDateEdit,
+                             QDateTimeEdit,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QSizePolicy,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QTimeEdit,
+                             QVBoxLayout,
+                             QWidget)
+
+import parameters
+import tab_box_layout
+import tab_combo_box
+import tab_date_edit
+import tab_dialog_etc
+import tab_grid_layout
+import tab_groupbox
+import tab_misc_widgets
+import tab_qlist
+import tab_text_edit
+import utils_for_tabs as uft
+import wat_inspector
 
 # from   platform import python_version
 # print( f"your python version is: {python_version()}"  )   # add to running on
@@ -43,97 +107,17 @@ import time
 
 # ---- imports neq qt
 
-from PyQt5.QtGui import QColor, QPalette
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction, QSizePolicy
-from PyQt5.QtCore import QDate, Qt,  QSize
-from PyQt5.QtGui import QTextCursor
-from PyQt5 import QtGui
-from PyQt5.QtGui import QTextDocument
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTimeEdit
-from PyQt5.QtCore import QTime
-
-from PyQt5.QtCore  import  (
-    QTimer,
-    QDate,
-    Qt,
-    QModelIndex,
-    QDateTime,
-  )
-
-# layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-    )
-
-# widgets -- small
-from PyQt5.QtWidgets import (
-    QButtonGroup,
-    QComboBox,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QMessageBox,
-    QPushButton,
-    QRadioButton,
-    QTabWidget,
-    QTextEdit,
-    QWidget,
-    QCheckBox,
-    )
 
 
-# widgets bigger
-from PyQt5.QtWidgets import (
-    QGroupBox,
-    QAction,
-    QMenu,
-    QApplication,
-    QMainWindow,
-    QMessageBox,
-    QTableView,
-    QDateEdit,
-    QTableWidgetItem,
-    QTableWidget,
-    )
 
-# sql
-from PyQt5.QtSql import (
-    QSqlDatabase,
-    QSqlTableModel,
-    QSqlQuery
-    )
 
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateTimeEdit
-from PyQt5.QtCore import QDateTime
 
-import inspect
-#from   ex_qt import ia_qt
-#import ia_qt
-import subprocess
-from   subprocess import run
-from   subprocess import Popen, PIPE, STDOUT
-from   datetime import datetime
-from   functools  import partial
 
-import wat
-import wat_inspector
 
-import utils_for_tabs as uft
-import parameters
 
-import tab_grid_layout
-import tab_combo_box
-import tab_dialog_etc
-import tab_date_edit
-import tab_box_layout
-import tab_misc_widgets
-import tab_groupbox
-import tab_text_edit
-import tab_qlist
+
+
+
 # ---- end imports
 
 __version__   = "ver02 2024 22 14.00"

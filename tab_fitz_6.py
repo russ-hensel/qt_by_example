@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/basic/events_1.py",
-.../basic/events_1b.py",
-"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/basic/events_2.py",
-"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/basic/events_3.py",
-"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/basic/events_4.py"
+ "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1b.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_2.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_3.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_4.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_5.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_6.py"
+
+largely the last
+
+
 """
 
 # --------------------
@@ -17,23 +23,28 @@ if __name__ == "__main__":
 
 
 import inspect
+import json
+import os
 import subprocess
 import sys
 import time
 from datetime import datetime
 from functools import partial
+from random import randint
 from subprocess import PIPE, STDOUT, Popen, run
 
+import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
 from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from PyQt5.QtCore import (QAbstractListModel,
+                          QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
@@ -55,6 +66,7 @@ from PyQt5.QtWidgets import (QAction,
                              QLabel,
                              QLCDNumber,
                              QLineEdit,
+                             QListView,
                              QListWidget,
                              QListWidgetItem,
                              QMainWindow,
@@ -99,12 +111,17 @@ import wat_inspector
 
 
 
+
+
 # ---- end imports
 
 print_func_header   = uft.print_func_header
 
+basedir = os.path.dirname(__file__)
+
+
 #  --------
-class Fitz_3_Tab( QWidget ) :
+class Fitz_6_Tab( QWidget ) :
     def __init__(self):
         """
 
@@ -118,106 +135,93 @@ class Fitz_3_Tab( QWidget ) :
         """
         layouts
             a vbox for main layout
-            h_box for or each row of buttons
+            h_box for or each row of widgets
         """
         tab_page      = self
         layout        = QVBoxLayout( tab_page )
+        #self.graphWidget = pg.PlotWidget()
+        widget              = pg.PlotWidget()
+        self.graphWidget    = widget
+        layout.addWidget( self.graphWidget )
 
-        # ----
+        self.graphWidget.setBackground("w")
+
+        pen = pg.mkPen(color=(255, 0, 0))
+
+
+        # Add Background color to white
+        self.graphWidget.setBackground("w")  # w = white
+
+        self.graphWidget.setTitle(
+            "Your Title Here", color="b", size="30pt"
+        )
+        # Add Axis Labels
+        styles = {"color": "#f00", "font-size": "20px"}
+        self.graphWidget.setLabel("left", "Temperature (°C)", **styles)
+        self.graphWidget.setLabel("bottom", "Hour (H)", **styles)
+        # Add legend
+        self.graphWidget.addLegend()
+        # Add grid
+        self.graphWidget.showGrid(x=True, y=True)
+        # Set Range
+        self.graphWidget.setXRange(0, 10, padding=0)
+        self.graphWidget.setYRange(20, 55, padding=0)
+
+        # ---- new row
         row_layout    = QHBoxLayout(   )
         layout.addLayout( row_layout,  )
 
 
-        widget          =  QLabel("Mouse around; Mouse Events ---> ")
-        row_layout.addWidget( widget )
 
-        widget         = QLabel( "mouse events come here 1 " )
-        self.label_1   = widget
-        row_layout.addWidget( widget )
-
-        widget         = QLabel( "mouse events come here 2" )
-        self.label_2   = widget
-        row_layout.addWidget( widget )
+        # ---- PB plot
+        widget = QPushButton("clear\n")
+        widget.clicked.connect( self.graphWidget.clear     )
+        row_layout.addWidget( widget,   )
 
 
-        # mouse tracking on the whole tab page
-        self.setMouseTracking(True)
-
-
-        # ---- new row, standard buttons
-        button_layout = QHBoxLayout(   )
-        layout.addLayout( button_layout,  )
+        # ---- PB plot
+        widget = QPushButton("plot\n")
+        widget.clicked.connect( self.plot    )
+        row_layout.addWidget( widget,   )
 
         # ---- PB inspect
         widget = QPushButton("inspect\n")
         widget.clicked.connect( self.inspect    )
-        button_layout.addWidget( widget,   )
+        row_layout.addWidget( widget,   )
 
         # ---- PB breakpoint
         widget = QPushButton("breakpoint\n")
         widget.clicked.connect( self.breakpoint    )
-        button_layout.addWidget( widget,   )
+        row_layout.addWidget( widget,   )
 
 
-    def contextMenuEvent( self, e):
-        context = QMenu(self)
-        context.addAction(QAction("test 1", self))
-        context.addAction(QAction("test 2", self))
-        context.addAction(QAction("test 3", self))
-        context.exec_(e.globalPos())
-
-
-    def mouseMoveEvent(self, e):
-
-        self.label_1.setText("mouseMoveEvent")
-        # deeper analysis in lable_2
-        pos         = e.pos()
-        global_pos  = e.globalPos()
-        self.label_2.setText( "mouseMoveEvent: %s %s " % (pos, global_pos))
-
-
-    def mousePressEvent(self, e):
+    def plot(self,  ):
         """ """
-        self.label_1.setText("mousePressEvent")
-        # deeper analysis in lable_2
-        if e.button() == Qt.LeftButton:
-            # handle the left-button press in here
-            self.label_2.setText("mousePressEvent LEFT")
+        print_func_header( "plot" )
 
-        elif e.button() == Qt.MiddleButton:
-            # handle the middle-button press in here.
-            self.label_2.setText("mousePressEvent MIDDLE")
+        hour            = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        temperature_1   = [30, 32, 34, 32, 33, 31, 29, 32, 35, 45]
+        temperature_2   = [50, 35, 44, 22, 38, 32, 27, 38, 32, 44]
 
-        elif e.button() == Qt.RightButton:
-            # handle the right-button press in here.
-            self.label_2.setText("mousePressEvent RIGHT")
+        self.plot_data(hour, temperature_1, "Sensor1", "r")
+        self.plot_data(hour, temperature_2, "Sensor2", "b")
 
-    def mouseReleaseEvent(self, e):
+
+    def plot_data(self, x, y, plotname, color):
         """ """
-        self.label_1.setText("mouseReleaseEvent")
-        # deeper analysis in lable_2
+        print_func_header( "plot_xandy" )
 
-        if e.button() == Qt.LeftButton:
-            self.label_2.setText("mouseReleaseEvent LEFT")
+        pen = pg.mkPen(color=color)
+        self.graphWidget.plot(
+            x,
+            y,
+            name=plotname,
+            pen=pen,
+            symbol="+",
+            symbolSize=30,
+            symbolBrush=(color),
+        )
 
-        elif e.button() == Qt.MiddleButton:
-            self.label_2.setText("mouseReleaseEvent MIDDLE")
-
-        elif e.button() == Qt.RightButton:
-            self.label_2.setText("mouseReleaseEvent RIGHT")
-
-    def mouseDoubleClickEvent(self, e):
-        """ """
-        self.label_1.setText("mouseDoubleClickEvent")
-        # deeper analysis in lable_2
-        if e.button() == Qt.LeftButton:
-            self.label_2.setText("mouseDoubleClickEvent LEFT")
-
-        elif e.button() == Qt.MiddleButton:
-            self.label_2.setText("mouseDoubleClickEvent MIDDLE")
-
-        elif e.button() == Qt.RightButton:
-            self.label_2.setText("mouseDoubleClickEvent RIGHT")
 
     # ------------------------
     def inspect(self):
@@ -226,9 +230,10 @@ class Fitz_3_Tab( QWidget ) :
         """
         print_func_header( "inspect" )
 
-        self_widgets_list   = self.widgets_list
+        self_graph_widget   = self.graphWidget
+
         wat_inspector.go(
-             msg            = "see self_widgets_list",
+             msg            = "locals are graph and timer",
              a_locals       = locals(),
              a_globals      = globals(), )
 
@@ -241,3 +246,5 @@ class Fitz_3_Tab( QWidget ) :
         print_func_header( "breakpoint" )
 
         breakpoint()
+
+# ---- eof

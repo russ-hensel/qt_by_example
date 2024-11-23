@@ -8,76 +8,56 @@ Created on Wed Nov  6 16:36:24 2024
 
 # ---- imports neq qt
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction, QSizePolicy
-from PyQt5.QtCore import QDate, Qt,  QSize
-from PyQt5.QtGui import QTextCursor
 from PyQt5 import QtGui
-from PyQt5.QtGui import QTextDocument
-
+from PyQt5.QtCore import (QAbstractTableModel,
+                          QDate,
+                          QDateTime,
+                          QModelIndex,
+                          QSize,
+                          Qt,
+                          QTimer,
+                          pyqtSlot)
+from PyQt5.QtGui import QTextCursor, QTextDocument
 # sql
-from PyQt5.QtSql import (QSqlDatabase, QSqlQuery, QSqlQueryModel, QSqlRelation,
-                         QSqlRelationalDelegate, QSqlRelationalTableModel,
+# sql
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlField,
+                         QSqlQuery,
+                         QSqlQueryModel,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
                          QSqlTableModel)
-
-from PyQt5.QtCore  import  (
-    QTimer,
-    QDate,
-    Qt,
-    QModelIndex,
-    QDateTime,
-    QAbstractTableModel,
-    pyqtSlot,
-  )
-
-
-# layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-   )
-
-# widgets -- small
-from PyQt5.QtWidgets import (
-    QButtonGroup,
-    QComboBox,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QMessageBox,
-    QPushButton,
-    QRadioButton,
-    QTabWidget,
-    QTextEdit,
-    QWidget,
-    QCheckBox,
-    )
-
-
 # widgets bigger
-from PyQt5.QtWidgets import (
-    QGroupBox,
-    QAction,
-    QMenu,
-    QApplication,
-    QMainWindow,
-    QMessageBox,
-    QTableView,
-    QDateEdit,
-    QTableWidgetItem,
-    QTableWidget,
-    )
-
-# sql
-from PyQt5.QtSql import (
-    QSqlDatabase,
-    QSqlTableModel,
-    QSqlQuery,
-    QSqlRecord,
-    QSqlField,
-    )
-
+# widgets -- small
+# layouts
+from PyQt5.QtWidgets import (QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDateEdit,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QSizePolicy,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
 # ---- end imports
 

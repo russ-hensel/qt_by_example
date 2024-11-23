@@ -8,14 +8,18 @@ Note the setup code that allows it to work.
 
 """
 
-import time
 import sys
+import time
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction, QSizePolicy
+from PyQt5.QtWidgets import (QAction,
+                             QApplication,
+                             QDateEdit,
+                             QMainWindow,
+                             QMenu,
+                             QSizePolicy)
 
 #import qt_wat_app.py
 import wat_inspector
-
 
 
 def wat_setup():

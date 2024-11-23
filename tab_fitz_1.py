@@ -14,115 +14,87 @@ if __name__ == "__main__":
 # --------------------
 
 
+import inspect
+import subprocess
+import sys
 import time
+from datetime import datetime
+from functools import partial
+from subprocess import PIPE, STDOUT, Popen, run
+
+import wat
+from PyQt5 import QtGui
+from PyQt5.QtCore import (QDate,
+                          QDateTime,
+                          QModelIndex,
+                          QSize,
+                          Qt,
+                          QTime,
+                          QTimer)
+from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+# sql
+from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
+# widgets biger
+# widgets -- small
+# layouts
+from PyQt5.QtWidgets import (QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDateEdit,
+                             QDateTimeEdit,
+                             QDial,
+                             QDoubleSpinBox,
+                             QFontComboBox,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QLabel,
+                             QLCDNumber,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QProgressBar,
+                             QPushButton,
+                             QRadioButton,
+                             QSizePolicy,
+                             QSlider,
+                             QSpinBox,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QTimeEdit,
+                             QVBoxLayout,
+                             QWidget)
+
+import parameters
+import qt_widgets
+import utils_for_tabs as uft
+import wat_inspector
 
 # ---- imports neq qt
 
-from PyQt5.QtGui import QColor, QPalette
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateEdit, QMenu, QAction, QSizePolicy
-from PyQt5.QtCore import QDate, Qt,  QSize
-from PyQt5.QtGui import QTextCursor
-from PyQt5 import QtGui
-from PyQt5.QtGui import QTextDocument
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTimeEdit
-from PyQt5.QtCore import QTime
-
-from PyQt5.QtCore  import  (
-    QTimer,
-    QDate,
-    Qt,
-    QModelIndex,
-    QDateTime,
-  )
-
-# layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-    )
-
-from PyQt5.QtWidgets import (
-    QApplication,
-    QCheckBox,
-    QComboBox,
-    QDateEdit,
-    QDateTimeEdit,
-    QDial,
-    QDoubleSpinBox,
-    QFontComboBox,
-    QLabel,
-    QLCDNumber,
-    QLineEdit,
-    QMainWindow,
-    QProgressBar,
-    QPushButton,
-    QRadioButton,
-    QSlider,
-    QSpinBox,
-    QTimeEdit,
-)
 
 
 
-# widgets -- small
-from PyQt5.QtWidgets import (
-    QButtonGroup,
-    QComboBox,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QListWidgetItem,
-    QMessageBox,
-    QPushButton,
-    QRadioButton,
-    QTabWidget,
-    QTextEdit,
-    QWidget,
-    QCheckBox,
-    )
 
 
-# widgets biger
-from PyQt5.QtWidgets import (
-    QGroupBox,
-    QAction,
-    QMenu,
-    QApplication,
-    QMainWindow,
-    QMessageBox,
-    QTableView,
-    QDateEdit,
-    QTableWidgetItem,
-    QTableWidget,
-    )
-
-# sql
-from PyQt5.QtSql import (
-    QSqlDatabase,
-    QSqlTableModel,
-    QSqlQuery
-    )
-
-import sys
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDateTimeEdit
-from PyQt5.QtCore import QDateTime
-
-import inspect
-import subprocess
-from   subprocess import run
-from   subprocess import Popen, PIPE, STDOUT
-from   datetime import datetime
-
-from   functools  import partial
 
 
-import wat_inspector
-import wat
-import utils_for_tabs as uft
-import qt_widgets
-import parameters
+
+
+
+
+
+
+
+
 
 
 # ---- end imports

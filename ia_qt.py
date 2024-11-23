@@ -45,129 +45,82 @@ Search:
 
 # ---- Imports
 
-from PyQt5.QtSql import ( QSqlDatabase,
-                          QSqlQueryModel, QSqlTableModel, QSqlQuery )
-from PyQt5.QtSql import ( QSqlDatabase,              QSqlTableModel,
-                           QSqlRelationalTableModel, QSqlRelation, QSqlRelationalDelegate, QSqlQuery, QSqlDriver, QSqlRecord )
-
-
-from PyQt5.QtGui import (
-    QStandardItemModel,
-    QStandardItem,
-                        )
-# ---- QtCore
-from PyQt5.QtCore  import  (
-    QDate,
-    QModelIndex,
-    QTimer,
-    Qt,
-    QAbstractTableModel,
-    pyqtSlot,
-                            )
-
-# ----QtWidgets
-from PyQt5.QtWidgets import (
-    QWidget,
-    QPushButton,
-    QAction,
-    QDateEdit,
-    QMenu,
-    QAction,
-    QLineEdit,
-    QActionGroup,
-    QApplication,
-    QDockWidget,
-    QTabWidget,
-    QLabel,
-    QListWidget,
-    QMainWindow,
-    QMessageBox,
-    QSpinBox,
-    QMdiSubWindow,
-    QTextEdit,
-    QButtonGroup,
-    )
-
-# ----QtWidgets big
-from PyQt5.QtWidgets import (
-    QAction,
-    QMenu,
-    QApplication,
-    QMainWindow,
-    QTableWidget,
-    QTableView,
-    QFrame,
-    QMainWindow,
-    QMdiArea,
-    QMdiSubWindow,
-    QMdiArea,
-    QMdiSubWindow,
-    )
-
-# ----QtWidgets layouts
-from PyQt5.QtWidgets import (
-    QBoxLayout,
-    QHBoxLayout,
-    QVBoxLayout,
-    QGridLayout,
-    )
-
-# ----QtWidgets Boxs, Dialogs
-from PyQt5.QtWidgets import (
-    QAction,
-    QActionGroup,
-    QDockWidget,
-    QFileDialog,
-    QInputDialog,
-
-    QLabel,
-    QListWidget,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QSpinBox,
-    QTextEdit,
-    QVBoxLayout,
-    QCheckBox,
-    QComboBox,
-    )
-
-from PyQt5.QtGui import (
-    QIntValidator,
-    )
-
-# ---- QtSql
-from PyQt5.QtSql import (
-    QSqlDatabase,
-    QSqlTableModel,
-    QSqlQuery,
-    QSqlError,
-    QSqlRecord,
-    QSqlField,
-
-    )
-
-
-# delap some imports so that environments
-# that do not include them may still run
-
-
+import collections
 #import pandas as pd
 #import numpy as np
 #import sys
 #import pprint
 import io
-import time
-import collections
 import pprint
-from   pprint   import pprint as pp
-from   datetime import datetime
-from   collections.abc import Sequence
-
 #import Series
 #import DataFrame
 #import pandas as pd
 import sys
+import time
+from collections.abc import Sequence
+from datetime import datetime
+from pprint import pprint as pp
+
+# ---- QtCore
+from PyQt5.QtCore import (QAbstractTableModel,
+                          QDate,
+                          QModelIndex,
+                          Qt,
+                          QTimer,
+                          pyqtSlot)
+from PyQt5.QtGui import QIntValidator, QStandardItem, QStandardItemModel
+# ---- QtSql
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlDriver,
+                         QSqlError,
+                         QSqlField,
+                         QSqlQuery,
+                         QSqlQueryModel,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
+                         QSqlTableModel)
+# ----QtWidgets Boxs, Dialogs
+# ----QtWidgets layouts
+# ----QtWidgets big
+# ----QtWidgets
+from PyQt5.QtWidgets import (QAction,
+                             QActionGroup,
+                             QApplication,
+                             QBoxLayout,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDateEdit,
+                             QDockWidget,
+                             QFileDialog,
+                             QFrame,
+                             QGridLayout,
+                             QHBoxLayout,
+                             QInputDialog,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QMainWindow,
+                             QMdiArea,
+                             QMdiSubWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QSpinBox,
+                             QTableView,
+                             QTableWidget,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
+
+# delap some imports so that environments
+# that do not include them may still run
+
+
+
 #from   pandas import Series, DataFrame
 #import table_model
 

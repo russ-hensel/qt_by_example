@@ -47,6 +47,7 @@ You can call wat.modifiers / foo with the following modifiers:
 # ---- imports
 
 import dis
+import inspect
 import io
 import pprint
 import subprocess
@@ -91,10 +92,6 @@ from PyQt5.QtWidgets import (QAction,
                              QTextEdit,
                              QVBoxLayout,
                              QWidget)
-
-
-
-import inspect
 
 import info_about
 import info_about_qt as io_qt

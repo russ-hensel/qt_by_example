@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-based on
-... /book_pyqt5_src/basic/widgets_2c.py
+ "/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_1b.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_2.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_3.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_4.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_5.py",
+"/mnt/WIN_D/Russ/0000/python00/python3/_examples/python_book_code/book_pyqt5_src/model-views/todo_6.py"
+
+largely the last
+
+
 """
+
 # --------------------
 if __name__ == "__main__":
     #----- run the full app
@@ -12,26 +22,29 @@ if __name__ == "__main__":
 # --------------------
 
 
-
 import inspect
+import json
 import os
 import subprocess
 import sys
 import time
 from datetime import datetime
 from functools import partial
+from random import randint
 from subprocess import PIPE, STDOUT, Popen, run
 
+import pyqtgraph as pg  # import PyQtGraph after PyQt5
 import wat
 from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate,
+from PyQt5.QtCore import (QAbstractListModel,
+                          QDate,
                           QDateTime,
                           QModelIndex,
                           QSize,
                           Qt,
                           QTime,
                           QTimer)
-from PyQt5.QtGui import QColor, QPalette, QPixmap, QTextCursor, QTextDocument
+from PyQt5.QtGui import QColor, QImage, QPalette, QTextCursor, QTextDocument
 # sql
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
@@ -53,6 +66,7 @@ from PyQt5.QtWidgets import (QAction,
                              QLabel,
                              QLCDNumber,
                              QLineEdit,
+                             QListView,
                              QListWidget,
                              QListWidgetItem,
                              QMainWindow,
@@ -103,71 +117,106 @@ import wat_inspector
 
 print_func_header   = uft.print_func_header
 
+basedir = os.path.dirname(__file__)
+
+
 #  --------
-class Fitz_2_Tab( QWidget ) :
+class Fitz_5_Tab( QWidget ) :
     def __init__(self):
         """
-        some content from and there may be more
-        /mnt/WIN_D/Russ/0000/python00/python3/_projects/rshlib/gui_qt_ext.py
-        tab_misc_widgets.py
+
         """
         super().__init__()
         self._build_gui()
         self.mutate_ix   = 0
 
+        self.timer = QTimer()
+        self.timer.setInterval(50)
+        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.start()
+
     # -------------------------------
     def _build_gui(self,   ):
         """
-        added some size control
+        layouts
+            a vbox for main layout
+            h_box for or each row of widgets
         """
         tab_page      = self
         layout        = QVBoxLayout( tab_page )
 
-        # ---- fitz code here
+        widget              = pg.PlotWidget()
+        self.graphWidget    = widget
+        layout.addWidget( self.graphWidget )
 
-        basedir = os.path.dirname(__file__)
+        self.x = list(range(100))  # 100 time points
+        self.y = [
+            randint(0, 100) for _ in range(100)
+        ]  # 100 data points
 
-        widget = QLabel("Hello")
+        self.graphWidget.setBackground("w")
 
-        # # tag::scaledContents[]
-        widget.setPixmap( QPixmap( "a_cat.jpg" ) )
-        widget.setPixmap( QPixmap( "bird_house.jpg" ))
-
-        # for some photos you may loose control of size this whould fix
-        widget.setMinimumSize( 100, 75)  # Minimum width: 100px, Minimum height: 75px
-        widget.setMaximumSize( 400, 300)  # Maximum width: 400px, Maximum height: 300px
-
-        chat_says = """
-        Summary of Methods:
-
-            setFixedSize(width, height): Sets a fixed size.
-            setMinimumSize(width, height): Sets a minimum size.
-            setMaximumSize(width, height): Sets a maximum size.
-            setSizePolicy(policy_horizontal, policy_vertical): Sets resizing behavior.
-            resize(width, height): Sets the initial size of the QLabel.
-
-        """
+        pen = pg.mkPen(color=(255, 0, 0))
+        self.data_line = self.graphWidget.plot(
+            self.x, self.y, pen=pen
+        )  # <1>
 
 
-        #widget.setPixmap( QPixmap( "otjex.jpg" ) )
-        #widget.setPixmap( QPixmap(os.path.join( basedir, "a_cat.jpg")) )
-        widget.setScaledContents(True)
-        # widget.setGeometry( 50, 50, 50, 50 ) #
-        layout.addWidget( widget )
 
-        # ---- new row, standard buttons
-        button_layout = QHBoxLayout(   )
-        layout.addLayout( button_layout,  )
+        # ---- new row
+        row_layout    = QHBoxLayout(   )
+        layout.addLayout( row_layout,  )
+
+        # ---- PB "start\n"
+        widget = QPushButton("start\n")
+        widget.clicked.connect( self.start    )
+        row_layout.addWidget( widget,   )
+
+        # ---- PB breakpoint
+        widget = QPushButton("stop\n")
+        widget.clicked.connect( self.stop    )
+        row_layout.addWidget( widget,   )
+
 
         # ---- PB inspect
         widget = QPushButton("inspect\n")
         widget.clicked.connect( self.inspect    )
-        button_layout.addWidget( widget,   )
+        row_layout.addWidget( widget,   )
 
         # ---- PB breakpoint
         widget = QPushButton("breakpoint\n")
         widget.clicked.connect( self.breakpoint    )
-        button_layout.addWidget( widget,   )
+        row_layout.addWidget( widget,   )
+
+    # ------------------------
+    def start(self):
+        """ """
+        print_func_header( "start" )
+
+        self.timer.start()
+
+    # ------------------------
+    def stop(self):
+        """ """
+        print_func_header( "stop" )
+
+        self.timer.stop()
+
+
+    # ------------------------
+    def update_plot_data(self):
+
+        self.x = self.x[1:]  # Remove the first y element.
+        self.x.append(
+            self.x[-1] + 1
+        )  # Add a new value 1 higher than the last.
+
+        self.y = self.y[1:]  # Remove the first
+        self.y.append(randint(0, 100))  # Add a new random value.
+
+        self.data_line.setData(self.x, self.y)  # Update the data.
+
+
 
     # ------------------------
     def inspect(self):
@@ -176,9 +225,10 @@ class Fitz_2_Tab( QWidget ) :
         """
         print_func_header( "inspect" )
 
-        self_widgets_list   = self.widgets_list
+        self_graph_widget   = self.graphWidget
+        self_timer          = self.timer
         wat_inspector.go(
-             msg            = "see self_widgets_list",
+             msg            = "locals are graph and timer",
              a_locals       = locals(),
              a_globals      = globals(), )
 
@@ -191,5 +241,6 @@ class Fitz_2_Tab( QWidget ) :
         print_func_header( "breakpoint" )
 
         breakpoint()
+
 
 # ---- eof

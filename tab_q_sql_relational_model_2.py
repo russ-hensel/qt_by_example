@@ -5,8 +5,6 @@
 
 tab_q_sql_relational_model_2.QSqlRelationalTableModelTab_2()
 
-
-
 """
 # --------------------
 if __name__ == "__main__":
@@ -18,50 +16,69 @@ if __name__ == "__main__":
 
 # ---- imports
 
-from platform import python_version
 import inspect
 import os
 import subprocess
 import sys
+from functools import partial
+from platform import python_version
 from subprocess import PIPE, STDOUT, Popen, run
 
 #from app_global import AppGlobal
 from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate, QModelIndex, QSize, QSortFilterProxyModel, Qt,
+from PyQt5.QtCore import (QDate,
+                          QModelIndex,
+                          QSize,
+                          QSortFilterProxyModel,
+                          Qt,
                           QTimer)
 # sql
-from PyQt5.QtSql import (QSqlDatabase, QSqlQuery, QSqlQueryModel, QSqlRelation,
-                         QSqlRelationalDelegate, QSqlRelationalTableModel,
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlField,
+                         QSqlQuery,
+                         QSqlQueryModel,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
                          QSqlTableModel)
-
-
-from PyQt5.QtSql import QSqlRecord, QSqlField
-
-
-
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication,
-                             QButtonGroup, QCheckBox, QComboBox,
-                             QDataWidgetMapper, QDateEdit, QDialog,
-                             QDoubleSpinBox, QFormLayout, QGridLayout,
-                             QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-                             QLineEdit, QListWidget, QListWidgetItem,
-                             QMainWindow, QMenu, QMessageBox, QPushButton,
-                             QRadioButton, QSpinBox, QStyledItemDelegate,
-                             QTableView, QTableWidget, QTableWidgetItem,
-                             QTabWidget, QTextEdit, QVBoxLayout, QWidget)
-
-
-
-
-
-from functools import partial
-
-
-import utils_for_tabs as uft
-import wat_inspector
+from PyQt5.QtWidgets import (QAbstractItemView,
+                             QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDataWidgetMapper,
+                             QDateEdit,
+                             QDialog,
+                             QDoubleSpinBox,
+                             QFormLayout,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QHeaderView,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QSpinBox,
+                             QStyledItemDelegate,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
 import parameters
-
+import utils_for_tabs as uft
+import wat_inspector
 
 INDENT        = uft.INDENT
 BEGIN_MARK_1  = uft.BEGIN_MARK_2

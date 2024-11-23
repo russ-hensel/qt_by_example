@@ -6,36 +6,41 @@ Created on Sun Nov  3 11:44:12 2024
 Utilities and now the resting place of the globals
 
 """
-# ---- tof
-from PyQt5.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QGridLayout,
-                             QHBoxLayout, QLabel, QLineEdit, QListWidget,
-                             QListWidgetItem, QMessageBox, QPushButton,
-                             QRadioButton, QTabWidget, QTextEdit, QVBoxLayout,
-                             QWidget)
-
-from PyQt5.QtGui import QColor, QPalette
-
-
-
-
 import sys
-from PyQt5.QtWidgets import QApplication,     QTextEdit, QMainWindow, QTableView, QVBoxLayout, QWidget, QPushButton, QLineEdit, QFormLayout, QDialog, QMessageBox, QComboBox
-from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlRelationalTableModel, QSqlRelation, QSqlRelationalDelegate
+
 from PyQt5.QtCore import Qt
-
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView, QVBoxLayout, QWidget, QPushButton, QLineEdit, QFormLayout, QDialog, QMessageBox, QComboBox, QLabel
-from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlRelationalTableModel, QSqlRelation, QSqlRelationalDelegate, QSqlQuery, QSqlDriver, QSqlRecord
-
-
+from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlDriver,
+                         QSqlQuery,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
+                         QSqlTableModel)
 # ----QtWidgets layouts
-from PyQt5.QtWidgets import (
-    QGridLayout,
-    QVBoxLayout,
-    QHBoxLayout,
-
-    )
-
+# ---- tof
+from PyQt5.QtWidgets import (QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDialog,
+                             QFormLayout,
+                             QGridLayout,
+                             QHBoxLayout,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QTableView,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
 # ---- end imports
 

@@ -14,50 +14,71 @@ tab_q_sql_relational_model_1.QSqlRelationalTableModelTab_1()
 # ---- imports
 
 
-from platform import python_version
 import inspect
 import os
 import subprocess
 import sys
+#	addWidget(QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment())
+# import PyQt5.QtWidgets as qtw    #  qt widgets avoid so much import above
+from functools import partial
+from platform import python_version
 from subprocess import PIPE, STDOUT, Popen, run
 
 #from app_global import AppGlobal
 from PyQt5 import QtGui
-from PyQt5.QtCore import (QDate, QModelIndex, QSize, QSortFilterProxyModel, Qt,
+from PyQt5.QtCore import (QDate,
+                          QModelIndex,
+                          QSize,
+                          QSortFilterProxyModel,
+                          Qt,
                           QTimer)
 # sql
-from PyQt5.QtSql import (QSqlDatabase, QSqlQuery, QSqlQueryModel, QSqlRelation,
-                         QSqlRelationalDelegate, QSqlRelationalTableModel,
+from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlField,
+                         QSqlQuery,
+                         QSqlQueryModel,
+                         QSqlRecord,
+                         QSqlRelation,
+                         QSqlRelationalDelegate,
+                         QSqlRelationalTableModel,
                          QSqlTableModel)
-
-
-from PyQt5.QtSql import QSqlRecord, QSqlField
-
-
-
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication,
-                             QButtonGroup, QCheckBox, QComboBox,
-                             QDataWidgetMapper, QDateEdit, QDialog,
-                             QDoubleSpinBox, QFormLayout, QGridLayout,
-                             QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-                             QLineEdit, QListWidget, QListWidgetItem,
-                             QMainWindow, QMenu, QMessageBox, QPushButton,
-                             QRadioButton, QSpinBox, QStyledItemDelegate,
-                             QTableView, QTableWidget, QTableWidgetItem,
-                             QTabWidget, QTextEdit, QVBoxLayout, QWidget)
-
-
-import sys
-#	addWidget(QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment())
-# import PyQt5.QtWidgets as qtw    #  qt widgets avoid so much import above
-from functools import partial
-
-
-import utils_for_tabs as uft
-import wat_inspector
+from PyQt5.QtWidgets import (QAbstractItemView,
+                             QAction,
+                             QApplication,
+                             QButtonGroup,
+                             QCheckBox,
+                             QComboBox,
+                             QDataWidgetMapper,
+                             QDateEdit,
+                             QDialog,
+                             QDoubleSpinBox,
+                             QFormLayout,
+                             QGridLayout,
+                             QGroupBox,
+                             QHBoxLayout,
+                             QHeaderView,
+                             QLabel,
+                             QLineEdit,
+                             QListWidget,
+                             QListWidgetItem,
+                             QMainWindow,
+                             QMenu,
+                             QMessageBox,
+                             QPushButton,
+                             QRadioButton,
+                             QSpinBox,
+                             QStyledItemDelegate,
+                             QTableView,
+                             QTableWidget,
+                             QTableWidgetItem,
+                             QTabWidget,
+                             QTextEdit,
+                             QVBoxLayout,
+                             QWidget)
 
 import parameters
-
+import utils_for_tabs as uft
+import wat_inspector
 
 INDENT        = uft.INDENT
 BEGIN_MARK_1  = uft.BEGIN_MARK_2

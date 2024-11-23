@@ -16,7 +16,7 @@ Qt Widgets, Qt Sql Widgets, and closely related objects.
 ---- Tracing the code
 ---- QtWidgets
 
----- qt_sql_widges -- work in pipeline
+---- qt_sql_widgets -- work in pipeline
 
 ---- QtWidgets Old
 ---- Code Style
@@ -31,7 +31,7 @@ Qt Widgets, Qt Sql Widgets, and closely related objects.
 ----Purpose/Functionality--------------------------------------------------------------------------
 
 This application in intended to show how to use Qt widgets largely through
-a running application, inspectiong the code behind it, and some documentation ( like this file ).
+a running application, inspection the code behind it, and some documentation ( like this file ).
 
 Most of the widgets have some visual aspect, but especially for the sql widgets
 they also have some important non visual aspects.  The code should illustrate
@@ -101,13 +101,14 @@ Typical Tab Functionality:
 
     Common buttons
 
-        print something
+        print something     buttons do not say this but any time you press
+                            a button keep your eye on the console output
 
-        mutate something
+        mutate something    maybe not so common
 
-        inspect
+        inspect             this pulls up an gui version of wat
 
-        breakpoint
+        breakpoint          breaks into the debugger in the tab object you are viewing
 
     A lot of actions cause output to the console, typically the function
     causing this will print something like:
@@ -117,7 +118,7 @@ Typical Tab Functionality:
 
 ---- Help ------------------------
 
-    From the menu in the upper left of each window are submenus for
+    From the menu in the upper left of each window are sub menus for
     access to help
 
         .... General Help ... this document
@@ -126,8 +127,8 @@ Typical Tab Functionality:
             Readme.MD
             Developer Notes
 
-    A feature of tthe current tab Help is the section called:
-        Ask a ChatBot -- these are questions that a chatbot can be
+    A feature of the current tab Help is the section called:
+        Ask a ChatBot -- these are questions that a ChatBot can be
                          asked to give you further insight
 
 
@@ -163,16 +164,20 @@ Typical Tab Functionality:
         print_func_header( "mutate" )
         where this argument is the name of the method, should make finding code easy.
 
----- qt_sql_widges -- work in pipeline
+---- qt_sql_widgets -- work in pipeline
 
-        * still need to extract all tabs to their own modules
         * lots of code in old modules needs to be refactored in
         * still a lot of general cleanup
 
----- qt_widges -- work in pipeline
+---- qt_widgets -- work in pipeline
 
         * widget coverage is low
-        * still need to extract all tabs to their own modules
+        * this will take a lot of time, will not do unless I want to explore some widget
+
+---- qt_fitz_book -- code re-implemented to go with M. Fitzpatric book on qt
+
+        * small fraction of book is covered
+        * lots of enhancement opportunities
 
 ==== Widgets -- move me
 
@@ -187,9 +192,6 @@ Typical Tab Functionality:
 
         QSqlRelationalTableModel
              QTableView  use to view QSqlRelationalTableModel
-
-
-
 
 
 
@@ -219,9 +221,7 @@ About QT SQL Widgets
 
 
 
-
-!! need to build these indices into this help.
-
+Next bit is garbled:
 
 by use Choosing a widget
 
@@ -233,7 +233,9 @@ by use Choosing a widget
 
             QQuery ??
 
-by widget
+
+
+Tabs by widget
 
     QTableWidget
 
@@ -255,25 +257,14 @@ by widget
 
       memory at once, you can implement pagination. This involves querying and displaying only a           subset        of rows at a time.
 
-     by tab
 
-
-    build_tvrmd_tab
-
-        QSqlRelationalTableModel
-        QTableView
-
-
-    build_wmc_tab
-
-        QSqlTableModel
 
 
 ---- Parameters
     Some aspects of the program are controlled by a module called parameters ( parameters.py )
     For now the documentation of the parameters is in the code of the module.
 
-    It is eary in this process much is broken
+    It is early in this process much is broken
 
 
 
@@ -296,8 +287,6 @@ Overall App Illustrates:
 
 
 
-
-
 Individual Tabs:
 
     Each illustrates one or more widgets in a Tab.  Tabs are implemented as individual classes
@@ -312,12 +301,12 @@ Individual Tabs:
 
         Inspecting the objects.
         Breakpoint, breaking into the debugger in the objects code.
+            With this you need not search around for the source code.
 
 
 Buttons:
     text may be on 2 lines to save horizontal space
     if lower case with underscores they the text is the method name being called
-
 
 
 
@@ -327,10 +316,6 @@ Reading the code:
     build_gui
 
     I sometimes have a Search comment at the top of the code to help you find code of interest
-
-
-
-
 
 
 
@@ -354,7 +339,7 @@ Reading the code:
 
             Hi, I’m Yusuke Kamiyamane. Freelance designer, developer and factotum based in Tokyo, Japan.
 
-            
+
             Contact information
 
             Bonheur Un 202, 3-1-64, Midori-cho, Koganei-shi, Tokyo, 184-0003, Japan

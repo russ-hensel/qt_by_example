@@ -1,12 +1,58 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov  6 16:36:24 2024
+explore some of the attributes of Q Widgets
 
-@author: russ
+
+"""
+# ---- search
 """
 
-# ---- imports neq qt
+non sql, non table
+
+    QTextEdit
+    QComboBox
+    QListWidget
+    QLineEdit
+    QWidget
+
+layouts
+
+        QBoxLayout
+
+non sql
+
+    models
+        QAbstractTableModel
+        QTableWidget            -- model, view or both ?
+            object is instance of <class 'PyQt5.QtWidgets.QTableView'> and type <class 'PyQt5.QtWidgets.QTableWidget'>
+
+
+    views
+        QTableView   -- use with ???
+
+sql
+
+    modeles
+        QSqlRelationalTableModel
+        QSqlTableModel
+        QSqlQueryModel
+
+    views
+
+    components
+        QSqlField
+        QSqlError
+        QSqlRecord
+        QSqlDatabase
+        QSqlQuery
+
+
+
+
+"""
+
+# ---- imports qt
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import (QAbstractTableModel,
@@ -17,10 +63,11 @@ from PyQt5.QtCore import (QAbstractTableModel,
                           Qt,
                           QTimer,
                           pyqtSlot)
+
 from PyQt5.QtGui import QTextCursor, QTextDocument
-# sql
-# sql
+
 from PyQt5.QtSql import (QSqlDatabase,
+                         QSqlError,
                          QSqlField,
                          QSqlQuery,
                          QSqlQueryModel,
@@ -29,11 +76,10 @@ from PyQt5.QtSql import (QSqlDatabase,
                          QSqlRelationalDelegate,
                          QSqlRelationalTableModel,
                          QSqlTableModel)
-# widgets bigger
-# widgets -- small
-# layouts
+
 from PyQt5.QtWidgets import (QAction,
                              QApplication,
+                             QBoxLayout,
                              QButtonGroup,
                              QCheckBox,
                              QComboBox,
@@ -61,7 +107,14 @@ from PyQt5.QtWidgets import (QAction,
 
 # ---- end imports
 
+doesitexist   = """
 
+   my_type       =  QSqlTableWidget
+       #a_str   = f"{a_str}\n{xin}{INDENT2}database()     = {a_obj.database() }"
+       a_str   = f"{a_str}\n{xin}{INDENT2}rowCount()     = {a_obj.rowCount() }"
+       # if a_obj.rowCount( ) > 0:
+
+ """
 
 DEBUGGING       = False  # in testing may be changed externally
 
@@ -79,8 +132,6 @@ joe = f"joe{NEW_LINE}then some more "
 
 if DEBUGGING:
     pass
-
-
 
 common_dir_items  = (
 ['__module__',
@@ -118,7 +169,6 @@ more_common_dir_items  = (
 
 common_dir_items = common_dir_items  + more_common_dir_items
 
-
 # ---------------------
 def to_columns( item_list, format_list = ( "{: <30}", "{:<30}" ), indent = "    "  ):
     """
@@ -143,7 +193,6 @@ def to_columns( item_list, format_list = ( "{: <30}", "{:<30}" ), indent = "    
     #     ret_str  = f"{current_str}\n{line_out}"
 
     return line_out
-
 
 # ---------------------
 def to_columns_old( current_str, item_list, format_list = ( "{: <30}", "{:<30}" ), indent = "    "  ):
@@ -199,7 +248,6 @@ def short_str( a_obj, max_len = MAX_STR_LEN ):
         a_str  = a_str[ :max_len ] + "..."
     return a_str
 
-
 # ----------------------------------------
 class InfoAbout(   ):
     """
@@ -217,7 +265,6 @@ class InfoAbout(   ):
 
         self.info_about_base       = InfoAboutBase()
 
-
     # ----------------------
     def add_inspectors( self, list_of_inspectors   ):
         """
@@ -228,26 +275,27 @@ class InfoAbout(   ):
     # ----------------------
     def add_defined_inspectors( self,   ):
         """
+        add all here to make available
+        should be from most specialized to most general
         """
-        an_inspector   = InfoAboutQLineEdit(  )
-        self.add_inspector( an_inspector )
 
-        # an_inspector   = InfoAboutList(  )
-        # self.add_inspector( an_inspector )
 
-        # an_inspector   = InfoAboutQTextEdit(  )
-        # self.add_inspector( an_inspector )
+        self.add_inspector( InfoAboutQSqlRelationalTableModel() )
 
-        an_inspector   = InfoAboutQSqlRelationalTableModel(  )
-        self.add_inspector( an_inspector )
+        self.add_inspector( InfoAboutQSqlTableModel() )
+
+        self.add_inspector( InfoAboutQAbstractTableModel() )
+        self.add_inspector( InfoAboutQTableWidget() )
+        self.add_inspector( InfoAboutQTableView() )
 
         self.add_inspector( InfoAboutQTextEdit() )
-        self.add_inspector( InfoAboutQTableView() )
-        self.add_inspector( InfoAboutTableModel() )
-        self.add_inspector( InfoAboutQComboBox()  )
-        #self.add_inspector(   )
-        #self.add_inspector(   )
 
+        self.add_inspector( InfoAboutQLineEdit(  ) )
+        self.add_inspector( InfoAboutQComboBox()  )
+        self.add_inspector( InfoAboutQWidget()    )
+
+        #self.add_inspector(   )
+        #self.add_inspector(   )
 
     # ----------------------
     def add_inspector( self, info_provider_instance  ):
@@ -424,15 +472,35 @@ class InfoAboutBase(   ):
         """
         self.line_list.append( i_line )
 
-    #-------------------------
-    def mid_info( self ):
+    # ------------------------------
+    def begin_info( self ):
         """
         this is info for all
         """
         #self.add_line(  "so it begins" )
-        self.add_line( f"object is an instance of {type( self.inspect_me)}" )
+        self.add_line( f"object is instance of {self.my_class} and type {type( self.inspect_me)}" )
+
+        a_srep      = short_str( self.inspect_me )
+        self.add_line( f">>>>>>>>>>{self.xin}{INDENT}>{a_srep}<" )
         #a_str   = f"{xin}{a_str}for msg = {msg} object isinstance of Sequence"
-        self.add_line(   "" )
+        #self.add_line(   "end of begin " )
+        # a_srep  = short_str( a_obj )
+        # a_str   = f"{a_str}\n{xin}{INDENT}>{a_srep}<"
+
+        # a_str   = f"{a_str}\n{xin}{INDENT2}type is = { str( type(a_obj) ) }"
+        # #a_str   = f"{a_str}\n{xin}{INDENT2}str     = {str( a_obj )}"
+        # a_repr  = short_repr( a_obj )
+        # a_str   = f"{a_str}\n{xin}{INDENT2}repr    = {a_repr}"
+
+    #-------------------------
+    def mid_info( self ):
+        """
+        this is info for all -- seems to all hav emove to begin.
+        """
+        #self.add_line(  "so it begins" )
+        #self.add_line( f"object is of type {type( self.inspect_me)}" )
+        #a_str   = f"{xin}{a_str}for msg = {msg} object isinstance of Sequence"
+        #self.add_line(   "" )
 
     #-------------------------
     def custom_info( self ):
@@ -443,27 +511,6 @@ class InfoAboutBase(   ):
         #self.add_line( f"object is an instance of {type( self.inspect_me)}" )
         #a_str   = f"{xin}{a_str}for msg = {msg} object isinstance of Sequence"
         #self.add_line(   "" )
-
-    # ------------------------------
-    def begin_info( self ):
-        """
-        this is info for all
-        """
-        self.add_line(  "so it begins" )
-        self.add_line( f"object is an instance of {type( self.inspect_me)}" )
-
-        a_srep      = short_str( self.inspect_me )
-        self.add_line( f">>>>>>>>>>{self.xin}{INDENT}>{a_srep}<" )
-        #a_str   = f"{xin}{a_str}for msg = {msg} object isinstance of Sequence"
-        self.add_line(   "end of begin " )
-        # a_srep  = short_str( a_obj )
-        # a_str   = f"{a_str}\n{xin}{INDENT}>{a_srep}<"
-
-        # a_str   = f"{a_str}\n{xin}{INDENT2}type is = { str( type(a_obj) ) }"
-        # #a_str   = f"{a_str}\n{xin}{INDENT2}str     = {str( a_obj )}"
-        # a_repr  = short_repr( a_obj )
-        # a_str   = f"{a_str}\n{xin}{INDENT2}repr    = {a_repr}"
-
 
     # ------------------------
     def fix_msg( self ):
@@ -480,10 +527,48 @@ class InfoAboutBase(   ):
         """ """
         info       = "\n".join( self.line_list )
 
-
-
-
 # ---- now the actual cases --------------------------------
+# -----------------------------------
+class InfoAboutQWidget ( InfoAboutBase  ):
+
+    #----------- init -----------
+    def __init__(self,   ):
+
+        super( ).__init__(     )
+        self.my_class    = QWidget
+
+    #-------------------------
+    def custom_info( self ):
+        obj         = self.inspect_me
+        self.add_line(  "custom_info about a QWidget   " )
+
+        a_srep  = short_str( obj )
+
+        self.add_line(  f"{self.xin}{INDENT2} QWidget {self.details_only = }" )
+
+
+        if not self.details_only:
+            self.add_line(  f"{self.xin}{INDENT2}{a_srep }" )
+
+        # details
+        self.add_line(  f"{self.xin}{INDENT2}{obj.hasHeightForWidth() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.height() = }" )
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.isEnabled() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.isVisible() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.layoutDirection() = }" )
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.maximumHeight() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.maximumSize() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.maximumWidth() = }" )
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.minimumWidth() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.objectName() = }" )
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.sizeIncrement() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.sizePolicy() = }" )
+        self.add_line(  f"{self.xin}{INDENT2}{obj.windowType() = }" )
+
 # -----------------------------------
 class InfoAboutxxx( InfoAboutBase  ):
 
@@ -519,17 +604,15 @@ class InfoAboutxxx( InfoAboutBase  ):
 
         #     self.add_line( f"{self.xin}{INDENT} {i_key = } {i_value = }" )
 
-class InfoAboutQSqlRecord( QSqlRecord  ):
+class InfoAboutQSqlRecord( InfoAboutBase  ):
 
     #----------- init -----------
     def __init__(self,   ):
-
         """
         look at relationaltable see if some stuff should be moved here
         """
-
         super( ).__init__(     )
-        self.my_class    = str
+        self.my_class    = QSqlRecord
 
     #-------------------------
     def custom_info( self ):
@@ -560,6 +643,65 @@ class InfoAboutQSqlRecord( QSqlRecord  ):
                            f"{f.isNull() = }  {f.isReadOnly( ) = } {f.isValid( ) = }  " )
             # self.add_line( f"{INDENT2}      field_info = {field_info}" )
 
+
+
+
+
+        look_into_this = """
+        for ix_field in range( 0,field_count ):
+            a_str   = f"{a_str}\n{xin}{INDENT2}    {ix_field}: name/value = {a_obj.fieldName( ix_field )} /  {a_obj.field( ix_field ).value() }"
+            field   = a_obj.field( ix_field )
+            f       = field
+            field_info   = ( f"{f.isAutoValue( ) = } {f.isGenerated( ) = } "
+                             f"{f.isNull() = }  {f.isReadOnly( ) = } {f.isValid( ) = }    ")
+
+            #a_str   = f"{a_str}\n{xin}{INDENT2}      {ix_field}: field_info = {field_info}"
+            a_str   = f"{a_str}\n{xin}{INDENT2}      field_info = {field_info}"   """
+
+
+# -----------------------------------
+class InfoAboutQSqlError( InfoAboutBase  ):
+
+    #----------- init -----------
+    def __init__(self,   ):
+
+        super( ).__init__(     )  # message
+        self.my_class    = QSqlError
+
+    #-------------------------
+    def custom_info( self ):
+        obj         = self.inspect_me
+        self.add_line(  "custom_info about a QSqlError" )
+
+        self.add_line(  f"{self.xin}{INDENT2}isValid()          = {obj.isValid() }" )
+        self.add_line(  f"{self.xin}{INDENT2}databaseText()     = {obj.databaseText() }" )
+        self.add_line(  f"{self.xin}{INDENT2}driverText()       = {obj.driverText() }" )
+        self.add_line(  f"{self.xin}{INDENT2}driverText()       = {obj.driverText() }" )
+        self.add_line(  f"{self.xin}{INDENT2}text()             = {obj.text() }" )
+
+# -----------------------------------
+class InfoAboutQSqlField( InfoAboutBase  ):
+
+    #----------- init -----------
+    def __init__(self,   ):
+
+        super( ).__init__(     )
+        self.my_class    = QSqlField
+
+    #-------------------------
+    def custom_info( self ):
+        obj         = self.inspect_me
+        self.add_line(  "custom_info about a QSqlField" )
+
+
+
+        #self.add_line(  f"{self.xin}{INDENT2}type()         = {obj.type() }"   )
+        self.add_line(  f"{self.xin}{INDENT2}typeID()       = {obj.typeID() }" )
+        self.add_line(  f"{self.xin}{INDENT2}value()        = {obj.value() }"   )
+        self.add_line(  f"{self.xin}{INDENT2}length()       = {obj.length() }" )
+
+
+
 # -----------------------------------
 class InfoAboutQSqlDatabase( InfoAboutBase  ):
 
@@ -582,6 +724,41 @@ class InfoAboutQSqlDatabase( InfoAboutBase  ):
         self.add_line(  f"{self.xin}{INDENT2}{obj.databaseName() = }" )
         self.add_line(  f"{self.xin}{INDENT2}{obj.isOpen() = }" )
 
+
+# -----------------------------------
+class InfoAboutQSqlQueryModel( InfoAboutBase  ):
+    """
+    nothing left for us in ia_qt
+    """
+    #----------- init -----------
+    def __init__(self,   ):
+
+        super( ).__init__(     )  # message
+        self.my_class    = QSqlQueryModel
+
+    #-------------------------
+    def custom_info( self ):
+        obj         = self.inspect_me
+        self.add_line(  "custom_info about a QSqlQueryModel" )
+
+        self.add_line(  "{xin}{INDENT2}lastError().isValid()    = {obj.lastError().isValid() }" )
+        self.add_line(  "{xin}{INDENT2}lastError().text()       = {obj.lastError().text() }" )
+        self.add_line(  "{xin}{INDENT2}rowCount()               = {obj.rowCount() } records" )
+        if obj.rowCount( ) > 0:
+            print( "need to fix this looper 6835")
+            # a_str   = f"{a_str}\n{xin}{INDENT2}... records record(0):"
+            # a_record    =  a_obj.record( 0 )
+            # str_2       =  q_sql_record( a_record,
+            #                             msg      = None,
+            #                             max_len  = None,
+            #                             xin      = "    ",
+            #                             print_it = False,
+            #                             sty      = "",
+            #                             include_dir  = False,
+            #                             details_only = True,
+            #                     )
+
+            # a_str   = f"{a_str}{str_2}"
 
 # -----------------------------------
 class InfoAboutQSqlQuery( InfoAboutBase  ):
@@ -611,6 +788,35 @@ class InfoAboutQSqlQuery( InfoAboutBase  ):
 
 
 
+# -----------------------------------
+class InfoAboutQListWidget ( InfoAboutBase  ):
+
+    #----------- init -----------
+    def __init__(self,   ):
+
+        super( ).__init__(     )  # message
+        self.my_class    = QListWidget
+
+    #-------------------------
+    def custom_info( self ):
+        obj         = self.inspect_me
+        self.add_line(  "custom_info about a QListWidget" )
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.isOpen() = }" )
+
+
+        self.add_line(  f"{self.xin}{INDENT2}count()            = {obj.count() }" )
+        self.add_line(  f"{self.xin}{INDENT2}currentItem()      = {obj.currentItem() }" )
+        self.add_line(  f"{self.xin}{INDENT2}item( 0 ).text( ) = {obj.item( 0 ).text( ) }" )
+
+        current_item = obj.currentItem()
+        if current_item:
+            # Retrieve and show the text of the current item
+            item_text = current_item.text()
+        else:
+             item_text = None
+
+        self.add_line(  f"{self.xin}{INDENT2}current_item.text() = {item_text}" )
 
 # -----------------------------------
 class InfoAboutQComboBox ( InfoAboutBase  ):
@@ -624,15 +830,27 @@ class InfoAboutQComboBox ( InfoAboutBase  ):
     #-------------------------
     def custom_info( self ):
         obj         = self.inspect_me
+        a_obj       = obj  # !! fix me
         self.add_line(  "custom_info about a QComboBox   " )
 
-        a_srep  = short_str( obj )
-
-
-        self.add_line(  f"{self.xin}{INDENT2}{a_srep }" )
+        # a_srep  = short_str( obj )
+        # self.add_line(  f"{self.xin}{INDENT2}{a_srep }" )
 
         self.add_line(  f"{self.xin}{INDENT2}{obj.count() = }       " )
         self.add_line(  f"{self.xin}{INDENT2}{obj.maxVisibleItems() = }       " )
+        self.add_line(  f"{self.xin}{INDENT2}currentText()          = {a_obj.currentText() }"   )
+        self.add_line(  f"{self.xin}{INDENT2}currentIndex()         = {a_obj.currentIndex() }"  )
+
+        current_index       = a_obj.currentIndex()
+        current_index_text  = a_obj.itemText( current_index )
+        self.add_line(  f"{self.xin}{INDENT2}current_index_text     = {current_index_text}" )
+
+        if current_index_text != a_obj.currentText():
+            self.add_line(  f"{self.xin} current index text not equal to current text"  )
+
+        for ix in range( a_obj.count()):
+            value_at_index =  a_obj.itemText( ix )
+            self.add_line(  f"{self.xin}    {INDENT2}value                  = {value_at_index}" )
 
 
 
@@ -645,7 +863,54 @@ class InfoAboutQLineEdit( InfoAboutBase  ):
         super( ).__init__(     )
         self.my_class    = QLineEdit
 
+    #-------------------------
+    def custom_info( self ):
+        """
+        this should be custom
+        """
+        obj         = self.inspect_me
+        a_obj       = obj  # !! fix me
 
+        self.add_line(  "custom_info for a QLineEdit" )
+
+        self.add_line(  f"{self.xin}{INDENT2}alignment()          = {a_obj.alignment() }"  )
+        self.add_line(  f"{self.xin}{INDENT2}cursorPosition()     = {a_obj.cursorPosition() }" )
+
+        self.add_line(  f"{self.xin}{INDENT2}hasAcceptableInput() = {a_obj.hasAcceptableInput() }" )
+        self.add_line(  f"{self.xin}{INDENT2}isModified()         = {a_obj.isModified() }" )
+        self.add_line(  f"{self.xin}{INDENT2}maxLength()          = {a_obj.maxLength() }" )
+        self.add_line(  f"{self.xin}{INDENT2}placeholderText()    = {a_obj.placeholderText() }" )
+        self.add_line(  f"{self.xin}{INDENT2}validator()          = {a_obj.validator() }" )
+        self.add_line(  f"{self.xin}{INDENT2}text()               = {a_obj.text() }" )
+
+# -----------------------------------
+class InfoAboutQTableWidget( InfoAboutBase  ):
+    """
+    About this class.....
+    """
+    #----------- init -----------
+    def __init__(self,   ):
+        """
+        Usual init
+        """
+        super( ).__init__(     )
+        self.my_class    = QTableWidget
+
+    #-------------------------
+    def custom_info( self ):
+        """
+        this should be custom
+                item     = QTableWidgetItem( "Cell ({}, {})".format( i, j) )
+                table_widget.setItem(i, j, item)
+        """
+        self.add_line(  "custom_info for a QTableWidget" )
+        #self.add_line( f"object is an instance of {type( self.inspect_me)}" )
+        #a_str   = f"{xin}{a_str}for msg = {msg} object isinstance of Sequence"
+        #self.add_line(   "" )
+
+        obj   = self.inspect_me
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.rowCount() =  }" )
 
 # -----------------------------------
 class InfoAboutQTextEdit( InfoAboutBase  ):
@@ -684,12 +949,6 @@ class InfoAboutQTableView( InfoAboutBase  ):
 
         super( ).__init__(     )
         self.my_class    = QTableView
-
-    # --------------------------
-    def have_info_forxxx( self, a_obj ):
-
-        have_info  = isinstance(  a_obj,  QTableView  )
-        return have_info
 
     #-------------------------
     def custom_info( self ):
@@ -732,10 +991,10 @@ class InfoAboutQTableView( InfoAboutBase  ):
             self.add_line( f"{self.xin}{INDENT} {ix_col = } {its.isColumnHidden( ix_col ) = }" )
 
 # -----------------------------------
-class InfoAboutQAbstractTableModell( InfoAboutBase  ):
+class InfoAboutQAbstractTableModel( InfoAboutBase  ):
     """
     About this class.....
-
+    nothing left in ia_qt
     """
     #----------- init -----------
     def __init__(self,   ):
@@ -747,48 +1006,80 @@ class InfoAboutQAbstractTableModell( InfoAboutBase  ):
     def custom_info( self ):
 
         obj           = self.inspect_me
-        self.add_line(  "custom_info for a QAbstractTableModel" )
-
+        a_obj         = obj   # until fixed
+        xin           = self.xin
+        self.add_line(  "custom_info for a QAbstractTableModel  TableModel... this is incomplete and needs testing " )
+        self.add_line(  "data exposed as list of lits of lists compare to QTableWidget" )
         self.add_line(  f"{self.xin}{INDENT2}{obj.rowCount() = }" )
-
-        if False:
-            pass
-            # row_count       = model.rowCount()
-            # column_count    = model.columnCount()
-            # for ix_row in range( row_count ):
-            #     if ix_row > MAX_LIST_ITEMS:
-            #         self.add_line(  f"{self.xin}{INDENT2} and more lines not listed...... " )
-            #         break
-
-            #     for ix_col  in range( 3 ):   # should figure out a column count
-            #         index     = model.index( ix_row,   ix_col   )
-            #         data      = model.data( index )
-            #         msg       = f"for {ix_row = } {ix_col = } {index = } {data = }"
-            #         self.add_line(  f"{self.xin}{INDENT2} {msg}" )
-
+        self.add_line(  f"{xin}{INDENT2}rowCount()               = {a_obj.rowCount() } records"  )
+        self.add_line(  f"{xin}{INDENT2}_data                   = {a_obj._data  }    "      )
+        self.add_line(  f"{xin}{INDENT2}_headers                = {a_obj._headers }    "    )
 
 
 
 # -----------------------------------
-class InfoAboutTableModel( InfoAboutBase  ):
+class InfoAboutQSqlTableModel( InfoAboutBase  ):
     """
     About this class.....
-    is this to close to relationaltablemodel??
+    is this to close to relationaltablemodel?? or the  QSqlTableModel  isdirty
     """
     #----------- init -----------
     def __init__(self,   ):
-
+        """ """
         super( ).__init__(     )
         self.my_class    = QSqlTableModel
 
     #-------------------------
     def custom_info( self ):
-
+        """
+        info just for this instance type
+        """
         model           = self.inspect_me
-        self.add_line(  "custom_info for a QSqlTableModel" )
+        a_obj           = model   # needs fix
+        obj             = model
+
+        xin             = self.xin
+
+        self.add_line(  "custom_info for a QSqlTableModel " )
 
         self.add_line(  f"{self.xin}{INDENT2}rowCount()     = {model.rowCount() }" )
+        self.add_line(  f"{xin}{INDENT2}database()     = {a_obj.database() }" )
 
+        self.add_line(  f"{xin}{INDENT2}rowCount()     = {a_obj.rowCount() }" )
+        self.add_line(  f"{xin}{INDENT2}isDirty()      = {a_obj.isDirty() }" )
+
+        more = """
+        # choose onne
+        max_dirty  = 5
+        max_clean  = 5
+
+        max_dirty  = max_rows
+        max_clean  = max_rows
+
+        ix_dirty   = 0
+        ix_clean   = 0
+        for ix_row in range( 0, a_obj.rowCount() ):
+        #if a_obj.rowCount( ) > 0:
+            # make an index
+            # records do not seem to kno if they are dirty
+            ix_col      = 1
+            index       = a_obj.index(  ix_row, ix_col )
+            is_dirty    = a_obj.isDirty( index )    # apparently field by field so....
+            do_record   = False
+            if   is_dirty and ( ix_dirty < max_dirty ):
+                ix_dirty    += 1
+                a_str        = f"{a_str}\n{xin}{INDENT2}index {ix_row}, {ix_col} isDirty()      = {is_dirty}"
+                do_record    = True
+            elif ( not is_dirty ) and ix_clean < max_clean:
+                ix_clean    += 1
+                a_str        = f"{a_str}\n{xin}{INDENT2}index {ix_row} {ix_col} isDirty()      = {is_dirty}"
+                do_record    = True
+            elif ( ix_clean >= max_clean ) and (ix_dirty >= max_dirty ):
+                break
+
+
+        """
+        # ---- get based on dataa
         row_count       = model.rowCount()
         column_count    = model.columnCount()
         for ix_row in range( row_count ):
@@ -802,6 +1093,61 @@ class InfoAboutTableModel( InfoAboutBase  ):
                 data      = model.data( index )
                 msg       = f"for {ix_row = } {ix_col = } {index = } {data = }"
                 self.add_line(  f"{self.xin}{INDENT2} {msg}" )
+
+        # ----- see if blows
+        for ix_row in range( row_count ):
+            if ix_row > 3* MAX_LIST_ITEMS:
+                self.add_line(  f"{self.xin}{INDENT2} and more rows not listed...... " )
+                break
+
+            print( "" ) # marker for new row
+            c_names         = []
+            for ix_col  in range( column_count ):   # should figure out a column count
+                index       = model.index( ix_row,   ix_col   )
+                data        = model.data( index )
+                #field       = model.fieldIndex( ix_col )  # f
+                c_header    = model.headerData( ix_col, Qt.Horizontal)
+                    # russ not sure this is accurate all the time look at record next mith text
+                field       = model.fieldIndex( c_header )  # may be error in some cases
+                        # If you're working with a QSqlRelationalTableModel that has relations set, the column name
+                        # returned will reflect the field name from the base table, not the related table.
+                #field       = model.fieldIndex( c_header )  # might work
+                c_names.append( c_header )
+                msg       = f"for model {ix_row = } {ix_col = } {c_header = } { field = }  {data = }"
+                self.add_line(  f"{self.xin}{INDENT2}{msg}" )
+
+        # self.add_line(  "Custom_info for a QSqlRelationalTableModel" )
+        # for ix_col in range(model.columnCount()):
+        #     header   = model.headerData( ix_col, Qt.Horizontal)
+        #     self.add_line(f"{self.xin}{INDENT2} Column {ix_col}: {header}")
+        # ---- based on record
+        self.add_line(  f"{self.xin}{INDENT2}For a record .. anything new here -- columns differ " )
+        # grabbed fromtab_qsl relational  --- does record have a column count?
+        new_record      = model.record()
+        c_names         = []
+        max_col         = new_record.count()
+        for ix_col in range( max_col ):    # seems ok to index past end
+            i_name     = new_record.fieldName( ix_col )
+            c_names.append( i_name )
+            self.add_line( f"{self.xin}{INDENT2}{ix_col = }:     {new_record.fieldName( ix_col ) = } " )
+                # chat says still works afteer heder may be changed
+        #c_names      = [ "name", "phone_number", "xxx"]
+        for i_name in c_names:
+            self.add_line( f"{self.xin}{INDENT2}{i_name = }:  {new_record.indexOf( i_name ) = } " )
+
+        print( "by records in model ")
+        for ix_row in range( obj.rowCount()  ):
+            record = obj.record(ix_row)  # obj = model
+
+            for ix in range(record.count()):
+                self.add_line( f"{self.xin}{INDENT2}Field by index {ix = } {record.fieldName(ix) = }: {record.value(ix) = }")
+            # print( f"{record.value(ix_table_joined)}) {record.value(ix_table_id)})" )
+            # record_key    = (record.value(ix_table_joined), record.value(ix_table_id))
+            # print( f"{record_key = }")
+
+        # print( "did this get left off ?" )
+
+        # end see if blows ------------------
 
 # -----------------------------------
 class InfoAboutQSqlRelationalTableModel( InfoAboutBase  ):
@@ -826,6 +1172,7 @@ class InfoAboutQSqlRelationalTableModel( InfoAboutBase  ):
         row_count       = model.rowCount()
         column_count    = model.columnCount()
 
+        # for now duplicate with InfoAboutQSqlTableModel
         self.add_line(  f"{self.xin}{INDENT2}For the model " )
         self.add_line(  f"{self.xin}{INDENT2}  {model.rowCount() = } {model.columnCount() = } " )
 
@@ -871,6 +1218,40 @@ class InfoAboutQSqlRelationalTableModel( InfoAboutBase  ):
 
         # print( "did this get left off ?" )
         # print( f'{ model.fieldIndex( "person_id") = }' )
+
+class InfoAboutQBoxLayout( InfoAboutBase  ):
+
+    #----------- init -----------
+    def __init__(self,   ):
+
+        super( ).__init__(     )  # message
+        self.my_class    = QBoxLayout
+
+    #-------------------------
+    def custom_info( self ):
+        obj         = self.inspect_me
+        self.add_line(  "custom_info about a QBoxLayout" )
+
+        self.add_line(  f"{self.xin}{INDENT2}{obj.isOpen() = }" )
+
+        self.add_line(  f"{self.xin}{INDENT2}children ()  = {obj.children () }" )
+        self.add_line(  f"{self.xin}{INDENT2}count()      = {obj.count() }"  )
+
+        self.add_line(  f"{self.xin}{INDENT2}dumpObjectInfo() = {obj.dumpObjectInfo() }"  )
+        self.add_line(  f"{self.xin}{INDENT2}dumpObjectTree() = {obj.dumpObjectTree() }" )
+
+
+        # a_str   = f"{a_str}\n{xin}{INDENT2}findChild()          = {a_obj.findChild() }"
+        #     not enough arguments
+
+        # a_str   = f"{a_str}\n{xin}{INDENT2}findChildren()    = {a_obj.findChildren() }"
+        #     not enough arguments
+
+        self.add_line(  f"{self.xin}{INDENT2}geometry()          = {obj.geometry() }" )
+        self.add_line(  f"{self.xin}{INDENT2}isEnabled()         = {obj.isEnabled() }" )
+
+
+
 
 # ---- main
 # --------------------

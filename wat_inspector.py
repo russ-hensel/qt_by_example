@@ -168,6 +168,8 @@ class WatWindow( QDialog  ):
         msg   = "Wat inspector"
         self.setWindowTitle( msg  )
 
+        self.last_get_wat_str_obj   = None
+
         if my_parameters is None:
             qt_xpos             = 50
             qt_ypos             = 50
@@ -218,6 +220,11 @@ class WatWindow( QDialog  ):
         widget.clicked.connect(         self.do_info_about )
         row_layout.addWidget( widget,   )
 
+        # ---- Cust Inspect
+        widget          = QPushButton( "Get Super" )
+        widget.clicked.connect(         self.do_get_super )
+        row_layout.addWidget( widget,   )
+
         # ---- Obj Help
         widget          = QPushButton( "Obj Help" )
         widget.clicked.connect(         self.do_type_help )
@@ -243,10 +250,9 @@ class WatWindow( QDialog  ):
         widget              = QLabel( "Locals" )
         row_layout.addWidget( widget,   )
 
-        # ---- Globals
+        # ---- Globals        self.add_inspector(
         widget              = QLabel( "Globals" )
         row_layout.addWidget( widget,   )
-
 
         widget              = QListWidget(    )
         self.local_widget   = widget
@@ -490,10 +496,43 @@ class WatWindow( QDialog  ):
     # ------------------------------------------
     def do_type_help( self ):
         """
+        get help for the obect
         """
         help_text     = self.get_help_as_string( self.last_get_wat_str_obj )
 
         self.display_text( title = "Object Help", main_text = help_text )
+
+
+    # ------------------------------------------
+    def do_get_super( self ):
+        """
+        get superclasses
+        print([cls.__name__ for cls in C.__mro__])
+        # Output: ['C', 'B', 'A', 'object']
+
+        class A:
+            pass
+
+        class B(A):
+            pass
+
+        class C(B):
+            pass
+
+        # List all superclasses of C
+        print(C.__mro__)
+        # Output: (<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>)
+
+        """
+        # List all superclasses of C
+        super_text   = inspect.getmro( type( self.last_get_wat_str_obj )  )
+        super_text   = [ str( i_line ) for i_line in super_text ]
+        super_text   = "\n".join( super_text )
+
+
+        # Output: (<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>)
+
+        self.display_text( title = "Super Classes", main_text = super_text )
 
     # ------------------------------------------
     def get_help_as_string( self, obj ):

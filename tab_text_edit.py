@@ -206,7 +206,10 @@ class QTextEditTab( QWidget ) :
         widget.clicked.connect( self.clear_text )
         button_layout.addWidget( widget,   )
 
-
+         # ---- PB copy_all_text
+        widget = QPushButton( "copy_all\n_text" )
+        widget.clicked.connect( self.copy_all_text  )
+        button_layout.addWidget( widget,   )
         # ---- PB
         widget = QPushButton( "copy_line_of_text\n" )
         widget.clicked.connect(lambda: self.copy_line_of_text( text_edit ))
@@ -291,24 +294,47 @@ class QTextEditTab( QWidget ) :
         selected_text      = text_edit.toPlainText()
         QApplication.clipboard().setText(selected_text)
         print(  f" copy_text -> {selected_text }" )
+
+
     #  --------
     def copy_all_text( self, text_edit ):
         """
         what it says
         """
         print_func_header( "copy_all_text" )
+
+        # text_edit not used
+        all_text = self.text_edit.toPlainText()
+        print( f"{all_text = }")
+
+        self.copy_all_text_b( None )
+
+        return all_text  # return not used
+
+    #  --------
+    def copy_all_text_b( self, text_edit ):
+        """
+        what it says
+        """
+        print_func_header( "copy_all_text_b" )
+
+        text_edit   = self.text_edit
         # Save current cursor position
-        cursor = text_edit.textCursor()
+        cursor      = text_edit.textCursor()
         original_position = cursor.position()
 
         # Select all text and copy to the clipboard
         text_edit.selectAll()
         text_edit.copy()   # think goes to clipboard
+
         all_text = self.text_edit.toPlainText()
 
         # Restore cursor to its original position
         cursor.setPosition(original_position)
         text_edit.setTextCursor(cursor)
+
+        print( "all text copied to clipboard" )
+
         return  all_text
 
     # ----
@@ -437,6 +463,8 @@ at the cursor ----<<""")
         print(f"Next {num_lines} lines:", lines)
         return lines
 
+
+
     #----------------------
     def copy_line_of_text(self, arg ):
         """
@@ -515,7 +543,7 @@ at the cursor ----<<""")
 
         print( "\n >>>> inspect_widget.inspect_widget  -- to do "   )
         print( "some cursor stuff in copy__")
-        print( f"copy_all_text {self.copy_all_text( self.text_edit )}" )
+        # print( f"copy_all_text {self.copy_all_text( self.text_edit )}" )
 
     # ----
     def change_widget(self, text_edit ):

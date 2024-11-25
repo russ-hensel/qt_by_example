@@ -266,37 +266,98 @@ class QBoxLayoutTab( QWidget ) :
 
         layout        = QVBoxLayout( tab_page )
 
-        layout_a     = QHBoxLayout(    )
-        layout.addLayout( layout_a )
-        self.layout_tab_layout_a   = layout_a
+        row_layout      = QHBoxLayout( )
+        self.row_layout_1   = row_layout
+        layout.addLayout( row_layout )
 
-        self.widget_ix              = 22
-        widget                      = QPushButton( f"Button   {self.widget_ix}")
-        layout_a.addWidget( widget, stretch = 2 )
-        self.layout_tab_button_1    = widget
-        self.widget_temp            = widget
+
+        # and some options to look into
+
+        # # Set margins around the layout (left, top, right, bottom)
+        # layout.setContentsMargins(10, 20, 10, 20)
+
+        # # Set spacing between widgets
+        # layout.setSpacing(15)
+
+        # # Add the left alignment
+
+        # layout.addWidget(button1, alignment=Qt.AlignLeft)
+
+        # # Add some fixed spacing (20 pixels)
+        # layout.addSpacing(20)
+
+
+        # layout.addWidget(button2, alignment=Qt.AlignCenter, stretch=2)
+
+        # # Add flexible space that expands as the layout resizes
+        # layout.addStretch()
+
+        # # Add the third button with right alignment
+        # button3 = QPushButton("Button 3")
+        # layout.addWidget(button3, alignment=Qt.AlignRight, stretch=1)
+
+
+
+
+
+        stretch                     = 0
+        widget                      = QPushButton( f"{ stretch = }")
+        self.pb_0_0                 = widget
+        row_layout.addWidget( widget, stretch = stretch,  )
+
+
+        stretch                     = 1
+        widget                      = QPushButton( f"{ stretch = }")
+        self.pb_0_1                 = widget
+        row_layout.addWidget( widget, stretch = stretch,  )
+
+        stretch                     = 2
+        widget                      = QPushButton( f"{ stretch = }")
+        self.pb_0_2                 = widget
+        row_layout.addWidget( widget, stretch = stretch,  )
+
+        row_layout      = QHBoxLayout( )
+        self.row_layout_1   = row_layout
+        layout.addLayout( row_layout )
+
+        stretch                     = 2
+        widget                      = QPushButton( f"{ stretch = }")
+        row_layout.addWidget( widget, stretch = stretch,  )
+
+        stretch                     = 1
+        widget                      = QPushButton( f"{ stretch = }")
+        row_layout.addWidget( widget, stretch = stretch,  )
+
+        stretch                     = 0
+        widget                      = QPushButton( f"{ stretch = }")
+        row_layout.addWidget( widget, stretch = stretch,  )
+
+
+
 
         layout_b     = QHBoxLayout(    )
         layout.addLayout( layout_b )
 
+        # ---- PB inspect
         widget = QPushButton("show\n_values")
         layout_b.addWidget( widget )
+        widget.clicked.connect( self.show_values )
 
-        widget = QPushButton("remove_add\n_widget")
-        layout_b.addWidget( widget )
-        widget.clicked.connect( lambda: self.remove_add_widget_layout_tab() )
+        # widget = QPushButton("remove_add\n_widget")
+        # layout_b.addWidget( widget )
+        # widget.clicked.connect( lambda: self.remove_add_widget_layout_tab() )
 
-        widget = QPushButton("replace\n_widget")
-        layout_b.addWidget( widget )
-        widget.clicked.connect( lambda: self.replace_widget_layout_tab() )
+        # widget = QPushButton("replace\n_widget")
+        # layout_b.addWidget( widget )
+        # widget.clicked.connect( lambda: self.replace_widget_layout_tab() )
 
         # --------
-        widget = QPushButton( "minimize\n" )  # showminimized iconify
+        widget = QPushButton( "change_size_\npolicy" )  # showminimized iconify
         layout_b.addWidget( widget )
-        print( "need to change self to the parent ")
-        widget.clicked.connect(lambda: self.iconify( ))
+        widget.clicked.connect(  self.change_size_policy )
 
         button_layout = layout_b
+
         # ---- PB inspect
         widget = QPushButton("inspect\n")
         widget.clicked.connect( self.inspect    )
@@ -339,8 +400,6 @@ class QBoxLayoutTab( QWidget ) :
         self.replace_layout_widget( self.layout_tab_layout_a, widget, widget_new )
         self.widget_temp            = widget_new
 
-
-
     # -----------------------------
     def replace_layout_widget( self, layout, widget, widget_new ):
         """
@@ -364,6 +423,30 @@ class QBoxLayoutTab( QWidget ) :
         """
         = QGroupBox()
         """
+
+
+    # ------------------------
+    def change_size_policy(self):
+        """
+        what it says
+        """
+        print_func_header( "change_size_policy" )
+
+        self.pb_0_0.setSizePolicy( QSizePolicy.Expanding, QSizePolicy.Expanding ) # x and y direction ?
+
+
+
+    # ------------------------
+    def show_values(self):
+        """
+        what it says
+        """
+        print_func_header( "show_values" )
+
+        print( f"{ self.pb_0_0.width() = } " )
+        print( f"{ self.pb_0_1.width() = } " )
+        print( f"{ self.pb_0_2.width() = } " )
+
     # ------------------------
     def inspect(self):
         """
@@ -374,9 +457,13 @@ class QBoxLayoutTab( QWidget ) :
         # make some locals for inspection
         my_tab_widget           = self
         #parent_window = self.parent( ).parent( ).parent().parent()
+        self_row_layout_1   = self.row_layout_1
+        self_pb_0_0         = self.pb_0_0
+        self_pb_0_1         = self.pb_0_1
+        self_pb_0_2         = self.pb_0_2
 
         wat_inspector.go(
-             msg            = "inspect ",
+             msg            = "inspect self_ insead of self. pb for pushbuttons ",
              a_locals       = locals(),
              a_globals      = globals(), )
 

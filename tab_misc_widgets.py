@@ -133,7 +133,7 @@ class MiscWidgetTab( QWidget ) :
         row_layout.addWidget( widget )
 
         widget          =  uft.ColoredFiller('red')
-        self.qlabel_1   = widget
+        self.qwidget_1  = widget
         row_layout.addWidget( widget )
 
         # ---- New Row button_1 and _2
@@ -281,15 +281,20 @@ class MiscWidgetTab( QWidget ) :
 
         self.button_ex_1         = widget
 
+        widget = QPushButton("show_\nvalues")
+        self.button_ex_1         = widget
+        widget.clicked.connect(  self.show_values )
+        button_layout.addWidget( widget )
+
+
         widget = QPushButton("mutate\n")
         self.button_ex_1         = widget
         widget.clicked.connect( lambda: self.mutate( ) )
         button_layout.addWidget( widget )
 
-        widget = QPushButton("clear_values\n")
-        # widget.clicked.connect(lambda: self.print_message(widget.text()))
+        widget = QPushButton("clear_\nvalues")
         a_widget        = widget
-        widget.clicked.connect( lambda: self.clear_values( ) )
+        widget.clicked.connect(  self.clear_values  )
         button_layout.addWidget( widget )
 
         widget = QPushButton("set_values\n")
@@ -461,6 +466,26 @@ class MiscWidgetTab( QWidget ) :
         print(f"User edited text: {new_text}")
 
     # ------------------------
+    def show_values(self):
+        """
+        the usual
+        """
+        print_func_header( "inspect" )
+
+        print( f"{self.qwidget_1 = }")
+        #print( f"{self.qwidget_1 = }")
+
+
+        print( f"{self.line_edit_1.text() = }" )  # setText()   ??
+        print( f"{self.line_edit_1.isEnabled() = }" )  # setEnabled() no focus
+        print( f"{self.line_edit_1.isReadOnly() = }" )
+
+        print( f"{self.qlabel_1.text() = }" )  # setText() ??
+        print( f"{self.qlabel_2.text() = }" )
+
+        print( f"{str(self.cbox_1.isChecked()) = }" )
+
+    # ------------------------
     def inspect(self):
         """
         the usual
@@ -473,25 +498,18 @@ class MiscWidgetTab( QWidget ) :
         self_qlabel_1       = self.qlabel_1
         self_qlabel_2       = self.qlabel_2
 
+        self_line_edit_1  = self.line_edit_1
+        self_line_edit_2  = self.line_edit_2
+
+        self_qwidget_1      = self.qwidget_1
+
         #my_tab_widget = self
         #parent_window = self.parent( ).parent( ).parent().parent()
-        local_self_text_edit  = self.qlabel_1
+
         wat_inspector.go(
              msg            = "tbd add more locals",
              a_locals       = locals(),
              a_globals      = globals(), )
-
-        print( "stuff to be moved !!")
-        msg   = f"{function_nl}inspect"
-        print( msg )
-        print( f"{ self.line_edit_1.text() = }" )  # setText()   ??
-        print( f"{ self.line_edit_1.isEnabled() = }" )  # setEnabled() no focus
-        print( f"{ self.line_edit_1.isReadOnly() = }" )
-
-        print( f"{ self.qlabel_1.text() = }" )  # setText() ??
-        print( f"{ self.qlabel_1.text() = }" )
-
-        print( f"{str( self.cbox_ex_1.isChecked()) = }" )
 
     # ------------------------
     def breakpoint(self):
@@ -502,3 +520,6 @@ class MiscWidgetTab( QWidget ) :
         print_func_header( "breakpoint" )
 
         breakpoint()
+
+
+# ---- eof

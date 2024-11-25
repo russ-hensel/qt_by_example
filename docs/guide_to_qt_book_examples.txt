@@ -41,6 +41,10 @@ that I wrote and can be found on the web at:
         russ-hensel/qt_by_example: Examples of how qt widgets work
         https://github.com/russ-hensel/qt_by_example
 
+        a screenshot of one of the tabs:
+
+        https://github.com/russ-hensel/qt_by_example/wiki/BookExamples
+
 The particular app is fairly small but embedded in a lot of other code,
 I think if you get the whole repo. Then qt_fitz_book.py should run.
 
@@ -55,7 +59,7 @@ but I would still be interest of you opinion about it in a number of respects:
     -- do you feel this violates your interests, legally or morally?
     -- would you care to see more?
     -- the project is too big for me, is it ok if I invite others including on your forum?
-
+https://github.com/russ-hensel/qt_by_example/wiki/BookExamples
 If you do not mind more work in this direction, there are a host of other details
 that may be of interest:
 
@@ -100,7 +104,7 @@ So in conclusion:
         russ-hensel (russ_hensel)
         https://github.com/russ-hensel
         russ.hensel@gmail.com
-        
-        
-        
-        
+
+
+
+

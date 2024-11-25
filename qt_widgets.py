@@ -261,7 +261,7 @@ class QtWidgetExamples( QMainWindow ):
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "group_widget_tab.txt"
 
-        title    = "QLayout\n"
+        title    = "QBoxLayout\n"
         tab      = tab_box_layout.QBoxLayoutTab()
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "layout_Widget_tab.txt"
@@ -276,8 +276,6 @@ class QtWidgetExamples( QMainWindow ):
         # tab      = uft.SeperatorTab()
         # title    = "Done\n>>"
         # self.tab_widget.addTab( tab, title  )
-
-
 
     # ------------------------------------
     def build_menu( self,  ):

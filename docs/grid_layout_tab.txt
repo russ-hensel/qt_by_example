@@ -18,7 +18,7 @@ QGridLayout
 ---- Purpose/Functionality --------------------------------------------------------------------------
 
     This show objects ( so far lables ) layed out using a QGridLayot
-    Other than that it does not do much 
+    Other than that it does not do much
 
 ........Widget included:
 
@@ -44,10 +44,6 @@ QGridLayout
 ---- Work still to do --------------------------------------------------------------------------
 
     Lots, indluding this section
-    
-    
----- eof     
-
 
 
 ---- eof

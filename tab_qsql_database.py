@@ -432,8 +432,7 @@ class SampleDB():
         """
         Print out the table
         """
-        what    = "query_print_people"
-        print( f"{BEGIN_MARK_1}{what}{BEGIN_MARK_2}")
+        print_func_header( "query_print_people" )
 
         query           = QSqlQuery( self.db )
 
@@ -445,6 +444,37 @@ class SampleDB():
             age                 = query.value(2)
             family_relation     = query.value(3)
             print(f"ID: {person_id}, Name: {name}, Age: {age} {family_relation = }")
+
+    #------------
+    def query_book_club( self, ):
+        """
+        Print out the table
+        """
+        print_func_header( "query_book_club" )
+
+        sql     = """
+            SELECT
+                id,
+                name,
+                frequency
+                FROM book_club
+            """
+
+        print_func_header( "query_book_club" )
+
+        query           = QSqlQuery( self.db )
+
+        print("book_club table:")
+
+        query.exec_(sql)
+
+        while query.next():
+            a_id             = query.value(0)
+            name        = query.value(1)
+            frequency     = query.value(2)
+
+            print(f"ID: {a_id = }  { name = }  {frequency = }  ")
+
 
     #------------
     def query_print_phone( self, ):
@@ -512,7 +542,6 @@ class KeyGen():
 
         return self.keys[ self.ix_keys ]
 
-
 #-----------------------------------------------
 class QSqlDatabaseTab( QWidget ):
     """
@@ -532,7 +561,7 @@ class QSqlDatabaseTab( QWidget ):
         """
         what it says
         """
-        self.table_model_is_hidden  = False
+        #self.table_model_is_hidden  = False
 
         tab_page      = self
         layout        = QVBoxLayout( tab_page )
@@ -550,6 +579,25 @@ class QSqlDatabaseTab( QWidget ):
         # ---- PB print_db
         widget              = QPushButton("print_db\n ")
         connect_to          = self.print_db
+        widget.clicked.connect( connect_to )
+        button_layout.addWidget( widget )
+
+        # ---- PB "insert_more_\ndata"
+        widget              = QPushButton("insert_more_\ndata")
+        connect_to          = self.insert_more_data
+        widget.clicked.connect( connect_to )
+        button_layout.addWidget( widget )
+
+        # ---- PB "delete_\ndata"
+        widget              = QPushButton("delete_\ndata")
+        connect_to          = self.delete_data
+        widget.clicked.connect( connect_to )
+        button_layout.addWidget( widget )
+
+
+        # ---- PB "query_book_\nclub "
+        widget              = QPushButton("query_book_\nclub ")
+        connect_to          = uft.DB_OBJECT.query_book_club # see SampleDB
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
@@ -572,6 +620,8 @@ class QSqlDatabaseTab( QWidget ):
 
         uft.DB_OBJECT.query_print_people()
         uft.DB_OBJECT.query_print_phone()
+
+        uft.DB_OBJECT.query_book_club()
         uft.DB_OBJECT.query_print_people_phone()
 
     # ------------------------
@@ -580,6 +630,83 @@ class QSqlDatabaseTab( QWidget ):
         print_func_header( "rebuild_db" )
 
         uft.DB_OBJECT.reset()
+
+    #-----------------------------------------------
+    def insert_more_data( self ):
+        """
+
+        """
+        print_func_header( "insert_more_data" )
+
+        db      = uft.DB_OBJECT.db
+
+        query   = QSqlQuery( db )
+
+        table_data = [
+            ("**History",      "weekly"    ),
+            ("**Adventure",    "weekly"    ),
+            ("**Easterns",      "monthly"  ),
+            ("**Physics",      "daily"     ),
+        ]
+
+        for name, frequency in table_data:
+            # this only one way to bind
+            print( f"insert {name} {frequency}")
+
+            sql     = """INSERT INTO book_club (
+                name,
+                frequency  )
+                VALUES (?, ? )
+            """
+
+            query.prepare( sql )
+
+            if not query.prepare(sql):
+                print(f"Prepare failed: {query.lastError().text()}")
+                continue
+
+            query.addBindValue( name )
+            query.addBindValue( frequency )
+
+            if not query.exec_():
+                print(f"Execution failed: {query.lastError().text()}")
+            else:
+                pass
+                #print("Insert successful.")
+
+    #-----------------------------------------------
+    def delete_data( self ):
+        """
+        I have a table:
+            CREATE TABLE book_club (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                name            TEXT NOT NULL,
+                frequency       TEXT
+
+         could you give me the sql to delete all records where name begins with "*"
+         give the code for running with QSqlQuery using a bind variable for the where clause
+        """
+        print_func_header( "delete_data" )
+
+        db      = uft.DB_OBJECT.db
+
+        query   = QSqlQuery(db)
+
+        # SQL statement with a bind variable
+        sql     = "DELETE FROM book_club WHERE name LIKE ?"
+
+        if not query.prepare(sql):
+            print(f"Prepare failed: {query.lastError().text()}")
+
+        else:
+            query.addBindValue("*%")
+
+            if not query.exec_():
+                print(f"Execution failed: {query.lastError().text()}")
+            else:
+                print("Records deleted successfully.")
+
+
 
     # ------------------------
     def inspect(self):

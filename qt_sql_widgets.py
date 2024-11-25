@@ -5,11 +5,11 @@ Examples of the qtsql widgets in use
     this is a redo, with time all will run on the same sample
     database and use inspection as part of there operation
 
-    QSqlTableModel Tab
+
 
 
 """
-# ---- top/search
+# ---- top/search  --- search is ng fo no w
 """"
     Search for the following in the code below:
 
@@ -118,6 +118,8 @@ import tab_q_table_widget
 import tab_qsql_database
 import tab_qsql_table_model
 import tab_table_model
+#tab_q_table_model
+
 import utils_for_tabs as uft
 import wat_inspector
 
@@ -233,7 +235,7 @@ class QtSqlWidgetExamples( QMainWindow ):
         # self.tab_widget.addTab( tab, title  )
         # ---- TableModelTab
         tab      = tab_table_model.TableModelTab()
-        title    = "TableModelTab\n"
+        title    = "TableModelTab\nQAbstractTableModel"
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "table_model_tab.txt"
 
@@ -243,16 +245,23 @@ class QtSqlWidgetExamples( QMainWindow ):
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "q_table_widget_tab.txt"
 
-        # ---- QSqlQueryTab
-        tab      =  tab_q_sql_query.QSqlQueryTab()
-        title    = "QSqlQuery\n"
-        self.tab_widget.addTab( tab, title  )
-        self.tab_help_dict[ title ] = "qsql_query_tab.txt"
+        # # ---- QTableModelTab
+        # tab      =  tab_q_table_model.QTableModelTab()
+        # title    = "QTableModel\nQAbstractTableModel"
+        # self.tab_widget.addTab( tab, title  )
+        # self.tab_help_dict[ title ] = "q_table_widget_tab.txt"
 
-        # ---- QSqlDatabaseTab  -- will create and populate the db
+
+        # ---- QSqlQueryTab  --- absorde into database
+        # tab      =  tab_q_sql_query.QSqlQueryTab()
+        # title    = "QSqlQuery\n"
+        # self.tab_widget.addTab( tab, title  )
+        # self.tab_help_dict[ title ] = "qsql_query_tab.txt"
+
+        # ---- QSqlDatabaseTab  -- will create and populate the db and show QSqlQuery
         if minimun_useful <= 20:  # number is usefulness of tab
             tab      = tab_qsql_database.QSqlDatabaseTab()
-            title    = "QSqlDatabase\n"
+            title    = "QSqlDatabase\n&QSqlQuery"
             self.tab_widget.addTab( tab, title  )
             self.tab_help_dict[ title ] = "qsql_database_tab.txt"
 
@@ -278,13 +287,13 @@ class QtSqlWidgetExamples( QMainWindow ):
         # self.tab_widget.addTab( tab, title  )
         # self.tab_help_dict[ title ] = "qsql_relational_table_model_tab_1.txt"
 
-        # # ---- QSqlRelationalTableModelTab_2
-        # tab      = tab_q_sql_relational_model_2.QSqlRelationalTableModelTab_2()
-        # title    = "QSqlRelationalTableModel_2\n"
-        # self.tab_widget.addTab( tab, title  )
-        # self.tab_help_dict[ title ] = "qsql_relational_table_model_tab_2.txt"
-
         # ---- QSqlRelationalTableModelTab_2
+        tab      = tab_q_sql_relational_model_2.QSqlRelationalTableModelTab_2()
+        title    = "QSqlRelationalTableModel_2\n"
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "qsql_relational_table_model_tab_2.txt"
+
+        # ---- QSqlRelationalTableModelTab_3 # should it be 2 or 3 !! lok inot this
         tab      = tab_q_sql_relational_model_3.QSqlRelationalTableModelTab_3()
         title    = "QSqlRelationalTableModel_3\n"
         self.tab_widget.addTab( tab, title  )
@@ -294,7 +303,7 @@ class QtSqlWidgetExamples( QMainWindow ):
         # self.tab_widget.addTab( tab, title  )
 
 
-        print( "later tabs are messing up the db beware")
+        print( "later tabs are messing up the db beware  -- think all fixed and gone -- look in old ??")
 
         # tab      = QTableWidgetTab()
         # title    = "QTableWidgetTab"
@@ -325,24 +334,7 @@ class QtSqlWidgetExamples( QMainWindow ):
         # tab      = self.build_db_tab()
         # self.tab_widget.addTab( tab, "BasicDB"  )
 
-        # tab      = self.build_tvrmd_tab()
-        # self.tab_widget.addTab( tab, "build_tvrmd_tab"  )
 
-        # tab      = self.build_tvtmt_tab()
-        # self.tab_widget.addTab( tab, "build_tvtmt_tab"  )
-        # # tableview_tablemodel_titles.py  tvtmt
-
-        # tab      = self.build_wmc_tab()
-        # self.tab_widget.addTab( tab, "build_wmc_tab"  )
-
-        # # look at later
-        # # tab      = self.build_rr_w_crud_tab()
-        # # self.tab_widget.addTab( tab, "build_rr_w_crud_tab"  )
-
-        # # self.tab_widget.addTab( self.build_layout_tab( ), "Layouts" )
-
-        # # tab      = self.create_tab_with_buttons( ["Button 1", "Button 2", "Button 3"])
-        # # self.tab_widget.addTab( tab, "Tab 1"  )
 
     # ------------------------------------
     def _build_menu( self,  ):
@@ -421,15 +413,12 @@ class QtSqlWidgetExamples( QMainWindow ):
         """
         proc               = subprocess.Popen( [ uft.TEXT_EDITOR, file_name ] )
 
-
     # -----------------------
     def show_parameters(self):
         """
         what it says,
         """
         uft.show_parameters( )
-
-
 
 
 def main():

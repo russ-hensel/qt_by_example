@@ -30,11 +30,12 @@ from PyQt5.QtCore import (QDate,
                           Qt,
                           QTime,
                           QTimer)
+
 from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
-# sql
+
+
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
-# widgets -- small
-# layouts
+
 from PyQt5.QtWidgets import (QAbstractItemView,
                              QAction,
                              QApplication,
@@ -79,16 +80,6 @@ import utils_for_tabs as uft
 import wat_inspector
 
 # ---- imports neq qt
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -423,15 +414,12 @@ class QTableWidgetTab( QWidget ):
 
         # make some locals for inspection
 
-        # parent_window = self.parent( ).parent( ).parent().parent()
-        # a_db          = parent_window.sample_db
-        # model         = self.people_model
-        # view          = self.people_view
+        self_table_widget   = self.table_widget
+
         wat_inspector.go(
              msg            = "inspect...",
              a_locals       = locals(),
              a_globals      = globals(), )
-
 
 
 # ---- eof

@@ -40,6 +40,8 @@ The Wat Inspector:
 
         * <Cust Inspec> is for a feature that may be included in the future now
                         it works on just a few types
+                        
+        * <Get Super>   Get a list of super classes for object using mro
         
         * <Obj Help>    attempts to get the help text for the object
             

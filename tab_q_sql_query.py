@@ -103,7 +103,7 @@ INDENT          = uft.BEGIN_MARK_2
 
 print_func_header =  uft.print_func_header
 
-
+print( "==================================mover rename into databasetab ")
 
 #-----------------------------------------------
 class QSqlQueryTab( QWidget ):
@@ -134,10 +134,25 @@ class QSqlQueryTab( QWidget ):
 
         layout.addLayout( button_layout )
 
-        widget = QPushButton( "loop_with\n_qsqlquery" )
-        widget.clicked.connect(lambda: self.loop_with_qsqlquery( ) )
-        widget.setMaximumWidth(150)
+        widget = QPushButton( "select_\nand_print" )
+        widget.clicked.connect( self.select_and_print  )
+
         button_layout.addWidget( widget,   )
+
+        widget = QPushButton( "insert_\ndata" )
+        widget.clicked.connect( self.insert_data  )
+        button_layout.addWidget( widget,   )
+
+
+        widget = QPushButton( "delete_\ndata" )
+        widget.clicked.connect( self.insert_data  )
+        button_layout.addWidget( widget,   )
+
+
+        widget = QPushButton( "delete_\ndata" )
+        widget.clicked.connect( self.delete_data  )
+        button_layout.addWidget( widget,   )
+
 
         # ---- PB inspect
         widget              = QPushButton("inspect\n")
@@ -152,29 +167,51 @@ class QSqlQueryTab( QWidget ):
         button_layout.addWidget( widget )
 
     #-----------------------------------------------
-    def loop_with_qsqlquery( self ):
+    def select_and_print( self ):
         """
         select data then loop through with a print
         """
-        print_func_header( "loop_with_qsqlquery" )
+        print( "move to db tab" )
 
-        query = QSqlQuery( "SELECT name, age FROM people", uft.EXAMPLE_DB )
-        # print( '!! may need query = QSqlQuery()
-        #        query.exec_("SELECT name, age FROM people"  ' ) # Execute the query '
-        # if not query.exec_( sql ):
-        #     error = query.lastError()
-        #     print(f"Error executing query: {error.text()}")
-        #     print(f"Driver error: {error.driverText()}")
-        #     print(f"Database error: {error.databaseText()}")
 
-        while query.next():
-            name = query.value(0)  # Get the value of the first column (name)
-            age = query.value(1)   # Get the value of the second column (age)
-            print(f"Name: {name}, Age: {age}")
 
-            print( "unpack ")
-            row_data = [query.value(i) for i in range(query.record().count())]
-            print(row_data)
+    #-----------------------------------------------
+    def insert_data( self ):
+        """
+        also see the tab_qsql_database.py  populate_book_club_table
+        this uses bind variables, probably the safeest way to execute sql
+        """
+        print_func_header( "insert_data" )
+
+        query = QSqlQuery( self.db )
+
+        table_data = [
+            ("History",      "weekly"    ),
+            ("Adventure",    "weekly"    ),
+            ("Easterns",      "monthly"   ),
+            ("Physics",      "daily"     ),
+        ]
+
+        for name, frequency in table_data:
+            # this only one way to bind
+            sql     = """INSERT INTO book_club (
+                name,
+                frequency  )
+                VALUES (?, ? )
+            """
+
+            query.prepare( sql )
+            query.addBindValue( name )
+            query.addBindValue( frequency )
+
+
+    #-----------------------------------------------
+    def delete_data( self ):
+        """
+
+        """
+        print_func_header( "insert_data" )
+
 
     # ------------------------
     def inspect(self):

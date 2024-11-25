@@ -127,6 +127,7 @@ class TableModelTab( QWidget ):
 
         table_view                  = QTableView()
         self.table_model_table_view = table_view
+        self.table_view             = table_view
         # Connect the clicked signal to a slot
         table_view.doubleClicked.connect( self.double_clicked )
         table_view.doubleClicked.connect( self.clicked )
@@ -505,31 +506,13 @@ class TableModelTab( QWidget ):
         """
         print_func_header( "inspect" )
 
-        # self_q_pbutton_1    = self.q_pbutton_1
-        # self_q_pbutton_2    = self.q_pbutton_2
+        self_table_model    = self.table_model
+        self_table_view     = self.table_view
 
-        # self_qlabel_1       = self.qlabel_1
-        # self_qlabel_2       = self.qlabel_2
-
-        # #my_tab_widget = self
-        # #parent_window = self.parent( ).parent( ).parent().parent()
-        # local_self_text_edit  = self.qlabel_1
         wat_inspector.go(
              msg            = "tbd add more locals",
              a_locals       = locals(),
              a_globals      = globals(), )
-
-        # print( "stuff to be moved !!")
-        # msg   = f"{function_nl}inspect"
-        # print( msg )
-        # print( f"{ self.line_edit_1.text() = }" )  # setText()   ??
-        # print( f"{ self.line_edit_1.isEnabled() = }" )  # setEnabled() no focus
-        # print( f"{ self.line_edit_1.isReadOnly() = }" )
-
-        # print( f"{ self.qlabel_1.text() = }" )  # setText() ??
-        # print( f"{ self.qlabel_1.text() = }" )
-
-        # print( f"{str( self.cbox_ex_1.isChecked()) = }" )
 
     # ------------------------
     def breakpoint(self):

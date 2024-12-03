@@ -5,9 +5,9 @@ The Plan ( some implemented ! )
 
 The plan for this is to have a small number of applications that illustrate the
 use of many of qt's widgets.  It grew out of my efforts to learn qt.  I use it
-as a place to first test out code I think I understand and then experiment a bit
-with it.  It may be useful to have two versions, one close to this distribution
-and one for expermentations.
+as a place to first test out code I think I understand, and then experiment a bit
+with the code.  It may be useful to have two versions of the code, one close to this distribution
+and one for expermentations. Would you like to contribute? Contact me.
 
 Wat in a QT GUI:
 
@@ -18,8 +18,8 @@ that runs wat as a GUI application.
     igrek51/wat: Deep inspection of Python objects
     https://github.com/igrek51/wat
     
-This is used a lot by other Qt by example apps.
-You may be interested in it even if you are not interested in the rest of this
+Wat is used a lot by other Qt by example apps.
+You may be interested in Wat even if you are not interested in the rest of this
 repo.  It does run in qt, so you need to have qt installed.  You do not
 need to run it in a qt app of your own, but you can if you wish.  I will
 try to add some material in the wiki.
@@ -27,14 +27,14 @@ try to add some material in the wiki.
 Back to the Examples:
 
 The application's code should be simple and contain code that is closely linked to the
-appearance of the widgets so that it is easy to find.  One wat to find it
-is to use the break button found on all the tabs, this will break into the
-debugger in the tab page you are viewing.
+appearance of the widgets so that the code for each widget is easy to find.  One wat to find the code
+is to use the <break> button found on all the tabs, this will break into the
+debugger in the code of the tab page you are viewing.
 
 The code is the examples should be "copy and paste ready" so you can copy it
 into your application, tweak it anf be off and running.
 
-Whatch for updates and for postings here of any overall change in status.
+Watch for updates and for postings here of any overall change in status.
 
 Status: 
     A bit sad, but not so sad as it was.
@@ -52,15 +52,16 @@ To run:
 
     Try running 
         * qt_widgets.py        -- qt widgets of vaious types
-        * qt_sql_widgets.py    -- qt widgets using sql 
+        * qt_sql_widgets.py    -- qt widgets mostly using sql 
         * qt_fitz_book.py      -- code based on book by M. Fitzpatric 
         for wat alone
         * qt_wat.pya_wat_function
         * qt_wat_app.py    
         
-Lot more info coming to the Wiki soon, some even there now.
+Lot more info coming to the Wiki soon, some even there now, mostly
+screenshots.
 
-And yes i should learn github markup
+And yes I should learn github markup.
 
 
 

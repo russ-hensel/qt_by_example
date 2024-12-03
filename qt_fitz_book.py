@@ -96,6 +96,10 @@ import tab_fitz_3
 import tab_fitz_4
 import tab_fitz_5
 import tab_fitz_6
+import tab_fitz_7
+
+
+
 import utils_for_tabs as uft
 import wat_inspector
 
@@ -219,7 +223,10 @@ class QtBookExamples( QMainWindow ):
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "fitz_5_tab.txt" # share with 5 for awhild
 
-
+        title    = "Table Something"
+        tab      = tab_fitz_7.Fitz_7_Tab()
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "fitz_7_tab.txt" # share with 5 for awhild
 
 
         # title    = "QList\n"

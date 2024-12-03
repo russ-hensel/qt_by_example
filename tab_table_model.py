@@ -24,6 +24,15 @@ from subprocess import PIPE, STDOUT, Popen, run
 
 import wat
 from PyQt5 import QtGui
+
+from PyQt5.QtCore import (QAbstractTableModel,
+                          QDate,
+                          QModelIndex,
+                          QRectF,
+                          Qt,
+                          QTimer,
+                          pyqtSlot)
+
 from PyQt5.QtCore import (QDate,
                           QDateTime,
                           QModelIndex,
@@ -68,7 +77,7 @@ from PyQt5.QtWidgets import (QAction,
                              QWidget)
 
 import parameters
-import qt_table_model
+
 import qt_widgets
 import utils_for_tabs as uft
 import wat_inspector
@@ -76,21 +85,115 @@ import wat_inspector
 # ---- imports neq qt
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 print_func_header =  uft.print_func_header
 
 # ---- end imports
+
+# ------------------------
+class ATableModel( QAbstractTableModel ):
+    """
+    use a a list of file names from browse
+    may be more generally useful
+    code derived from chat
+    was in
+    import qt_table_model
+    """
+    def __init__(self,  headers):
+        super().__init__()
+        self._data      = []
+        self._headers   = headers
+        self.indexer    = None
+        """
+        model.indexer.index_tuple = ( 0, 1 )
+        """
+    #-------
+    def add_indexer (self, index_tuple ):
+        """
+        what it says read
+        index tuple for now pair of column numbers to use as an index to model
+
+        """
+        self.indexer    = ModelIndexer( self, index_tuple  )
+
+    #-------
+    def rowCount(self, index=None):
+        """
+        what it says read
+        why index = None, drop it
+        """
+        return len(self._data)
+
+    def columnCount(self, index=None):
+        return len(self._headers)
+
+    def data(self, index, role=Qt.DisplayRole):
+        if role == Qt.DisplayRole:
+            return self._data[index.row()][index.column()]
+
+    def set_data(self, data ):
+        self._data      = data
+
+    # def add_data(self, data ):
+    #     pass
+
+
+    def set_data_at_index(self, index, value, role=Qt.EditRole):
+        """
+        index might be index = model.index(ix_row,  ix_col )  # Row 1, Column 1
+
+        Args:
+            index (TYPE): DESCRIPTION.
+            value (TYPE): DESCRIPTION.
+            role (TYPE, optional): DESCRIPTION. Defaults to Qt.EditRole.
+
+        Returns:
+            bool: DESCRIPTION.
+
+        """
+        if role == Qt.EditRole:
+            self._data[index.row()][index.column()] = value  # Update the data
+            self.dataChanged.emit(index, index, [Qt.DisplayRole])
+                # Emit dataChanged signal for this index
+            return True
+        return False
+
+    def headerData(self, section, orientation, role=Qt.DisplayRole):
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return self._headers[section]
+            elif orientation == Qt.Vertical:
+                return str(section + 1)
+
+    # Method to add a row
+    def addRow(self, row_data):
+        """
+        read
+        row_data   a list of the data types ??
+        remember to invalidate index if any --- may build in or not
+        """
+        self.beginInsertRows(self.index(len(self._data), 0), len(self._data), len(self._data))
+        self._data.append(row_data)
+        self.endInsertRows()
+
+    # Optional method to remove a row
+    def removeRow(self, row_index):
+        """
+        what it says, read
+        """
+        self.beginRemoveRows(self.index(row_index, 0), row_index, row_index)
+        self._data.pop(row_index)
+        self.endRemoveRows()
+
+    # ---------------------------
+    def clear_data(self):
+        """
+        what it says, read
+        """
+        self.beginResetModel()
+        self._data.clear()
+        self.endResetModel()
+
+
 
 
 #-----------------------------------------------
@@ -122,7 +225,7 @@ class TableModelTab( QWidget ):
 
         headers = ["Name", "Age", "Occupation" ]
         #self.view           = QTableView()
-        self.table_model          = qt_table_model.TableModel( headers )  # QAbstractTableModel
+        self.table_model   =        ATableModel( headers )  # QAbstractTableModel
         #self.model.set_data( data )
 
         table_view                  = QTableView()

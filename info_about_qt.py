@@ -26,6 +26,11 @@ non sql
         QAbstractTableModel
         QTableWidget            -- model, view or both ?
             object is instance of <class 'PyQt5.QtWidgets.QTableView'> and type <class 'PyQt5.QtWidgets.QTableWidget'>
+        QTableView,
+
+What is the relationship between  QAbstractTableModel QTableWidget  QTableView, and
+what is the appropriate use for each?
+
 
 
     views

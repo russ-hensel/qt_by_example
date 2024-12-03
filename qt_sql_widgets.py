@@ -229,21 +229,27 @@ class QtSqlWidgetExamples( QMainWindow ):
         self.tab_widget.setStyleSheet("QTabBar::tab { height: 40px; }") # 40 enough for 2 lines ??
         layout.addWidget( self.tab_widget   )
 
+
+        # ---- QTableWidgetTab
+        tab      =  tab_q_table_widget.QTableWidgetTab()
+        title    = "QTable\nWidget"
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "q_table_widget_tab.txt"
+
+
         # # ---- Done
         # tab      = uft.SeperatorTab()
         # title    = "Tab\nDone>>"
         # self.tab_widget.addTab( tab, title  )
+
+
         # ---- TableModelTab
         tab      = tab_table_model.TableModelTab()
         title    = "TableModelTab\nQAbstractTableModel"
         self.tab_widget.addTab( tab, title  )
         self.tab_help_dict[ title ] = "table_model_tab.txt"
 
-        # ---- QTableWidgetTab
-        tab      =  tab_q_table_widget.QTableWidgetTab()
-        title    = "QTableWidget\nMostly Broken"
-        self.tab_widget.addTab( tab, title  )
-        self.tab_help_dict[ title ] = "q_table_widget_tab.txt"
+
 
         # # ---- QTableModelTab
         # tab      =  tab_q_table_model.QTableModelTab()
@@ -259,17 +265,20 @@ class QtSqlWidgetExamples( QMainWindow ):
         # self.tab_help_dict[ title ] = "qsql_query_tab.txt"
 
         # ---- QSqlDatabaseTab  -- will create and populate the db and show QSqlQuery
-        if minimun_useful <= 20:  # number is usefulness of tab
-            tab      = tab_qsql_database.QSqlDatabaseTab()
-            title    = "QSqlDatabase\n&QSqlQuery"
-            self.tab_widget.addTab( tab, title  )
-            self.tab_help_dict[ title ] = "qsql_database_tab.txt"
+        # if minimun_useful <= 20:  # number is usefulness of tab
+        #     tab      = tab_qsql_database.QSqlDatabaseTab()
+        #     title    = "QSqlDatabase\n&QSqlQuery"
+        #     self.tab_widget.addTab( tab, title  )
+        #     self.tab_help_dict[ title ] = "qsql_database_tab.txt"
 
         # # ----
         # tab      = uft.SeperatorTab()
         # title    = "Tab\nDraft>>"
         # self.tab_widget.addTab( tab, title  )
-
+        tab      = tab_qsql_database.QSqlDatabaseTab()
+        title    = "QSqlDatabase\n&QSqlQuery"
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "qsql_database_tab.txt"
 
         # ---- QSqlTableModelTab
         tab      = tab_qsql_table_model.QSqlTableModelTab()

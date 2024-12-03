@@ -1,20 +1,20 @@
-QSqlDatabase
 
-This tab is related to building the database used by the other tabs.
 
+ 
+Status:  pretty much working 
 
 ----------------------- Table of Contents -----------------
 
 
 ----Purpose/Functionality
 ........Widgets included
----- Interaction
+---- User interaction
 ---- Discussion
 ---- Ask a ChatBot
----- Work still to do
+---- Ideas for Improvement
 
 
-
+ 
 ----------------------- Contents -----------------------
 
 ----Purpose/Functionality--------------------------------------------------------------------------
@@ -24,6 +24,11 @@ Also you can do the usual inspection and breakpoint.
 
 The code for this tab is found in QSqlDatabaseTab and SampleDB.  The tab focus on the use of
 QSqlDatabase and QSqlQuery
+
+---- Discussion
+
+Generally we are using bind variables as a best pratice against sql injection.
+
 
 The tables in brief ( for more detail see the SQL in SampleDB )
 
@@ -41,7 +46,7 @@ The tables in brief ( for more detail see the SQL in SampleDB )
     To help distinguish the id's of the various tables I have
     tried to build them in widely separated numeric ranges
 
----- Interaction ---------------------------------------
+---- User interaction ---------------------------------------
 
 Buttons
 
@@ -53,6 +58,15 @@ Buttons
 
     *<print_db>
         Print out the data in all the tables.
+        
+    *<insert_more_data>
+    
+    
+    *<delete_data>
+    
+    *<update_data>
+        
+         
 
     *<inspect>
         the usual
@@ -61,23 +75,22 @@ Buttons
         the usual
 
 
-
 ........Widgets included:
 
-        No visual widgets but uses...
+        No visual widgets but uses... 
+        QSqlQuery
+        QSqlDatabase
 
-
-
-
+ 
 
 ---- Ask a ChatBot --------------------------------------------------------------------------
 
-            I have a .......
+            I have a database...... How using QSQLQuery can I ..... 
 
 
----- Work still to do --------------------------------------------------------------------------
+---- Ideas for Improvement --------------------------------------------------------------------------
 
-    Lots, including this section
+        workin on it 
 
 
 

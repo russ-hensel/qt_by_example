@@ -12,10 +12,6 @@ Table of Contents
 
 
 
-
-
-
-
 ---- How these examples are constructed.
         Note:
             I am in the middle of a lot of refactoring, these notes are sometime

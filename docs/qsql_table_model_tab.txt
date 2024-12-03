@@ -9,11 +9,14 @@ between tables by using multiple qt widgets.
 
 
 ---- Purpose/Functionality
+........Widgets included
 ---- User interaction
+---- Discussion
 ---- Questions
+---- Ask a ChatBot
 ---- Work still to do
 
-
+ 
 
 --------------------------------------------------------
 

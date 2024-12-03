@@ -73,15 +73,13 @@ from PyQt5.QtWidgets import (QAbstractItemView,
                              QVBoxLayout,
                              QWidget)
 
-import parameters
-import qt_table_model
-import qt_widgets
+#i#mport parameters
+#import qt_table_model
+#import qt_widgets
 import utils_for_tabs as uft
 import wat_inspector
 
 # ---- imports neq qt
-
-
 
 
 # ---- end imports
@@ -105,6 +103,10 @@ class QTableWidgetTab( QWidget ):
         """
         super().__init__( )
         self.build_tab()
+        self.mutation_ix   = 0
+        self.mutation_max  = 1
+        self.mutation_dispatch  = { 0: self.mutate_0, 1: self.mutate_1, 2: self.mutate_2  }
+
 
     #-----------------------------------------------
     def build_tab(self,   ):
@@ -149,11 +151,8 @@ class QTableWidgetTab( QWidget ):
         table_widget.setHorizontalHeaderLabels( labels  )
         table_widget.setSortingEnabled( True )
 
-        table_widget.setSortingEnabled( True )
-
         table_widget.cellClicked.connect( self.on_cell_clicked )
 
-        #layout.addWidget(self.table)  # Add the table to the layout
 
         # getting an error !!
         print( f"{table_widget.currentRow()}")
@@ -161,43 +160,41 @@ class QTableWidgetTab( QWidget ):
 
         # ---- buttons
         button_layout = QHBoxLayout()
-        layout.addLayout(button_layout)
+        layout.addLayout( button_layout )
 
         # --- begin a_widget method
         a_widget           = QPushButton("add_row\n_at_end")
-        self.add_button    = a_widget
         a_widget.clicked.connect(self.add_row_at_end)
+        button_layout.addWidget(a_widget)
 
+        # delete or remove a row
+        a_widget           = QPushButton("select_\nrow_3 ( 0 based )")
+        a_widget.clicked.connect(self.select_row_3)
         button_layout.addWidget(a_widget)
 
         # delete or remove a row
         a_widget           = QPushButton("remove_row\n_current")
-        self.add_button    = a_widget
         a_widget.clicked.connect(self.remove_row_currrent)
         button_layout.addWidget(a_widget)
 
         # delete or remove a row
         a_widget           = QPushButton("set_size\n")
-        self.add_button    = a_widget
         a_widget.clicked.connect(self.set_size)
         button_layout.addWidget(a_widget)
 
         #
         a_widget           = QPushButton("sort\n")
-        self.add_button    = a_widget
         a_widget.clicked.connect(self.sort)
         button_layout.addWidget(a_widget)
 
-        # ---- search
-        a_widget           = QPushButton( "search\n" )
-        self.add_button    = a_widget
-        a_widget.clicked.connect( self.search )
-        button_layout.addWidget(a_widget)
+        # # ---- search
+        # a_widget           = QPushButton( "search\n" )
+        # a_widget.clicked.connect( self.search )
+        # button_layout.addWidget(a_widget)
 
-        # ---- find_row_with_text
-        a_widget           = QPushButton( "find_row_\nwith_text" )
-        self.add_button    = a_widget
-        a_widget.clicked.connect( self.find_row_with_text )
+        # ---- mutate
+        a_widget           = QPushButton( "mutate\n ( 0, 1,)" )
+        a_widget.clicked.connect( self.mutate )
         button_layout.addWidget(a_widget)
 
         # ---- PB inspect
@@ -212,27 +209,27 @@ class QTableWidgetTab( QWidget ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
-        # Create the table widget with 3 rows and 3 columns
-        self.table_widget = QTableWidget(3, 3)
+        # # Create the table widget with 3 rows and 3 columns
+        # self.table_widget = QTableWidget(3, 3)
 
-        # Set up column headers
-        self.table_widget.setHorizontalHeaderLabels(['Column 1', 'Column 2', 'Column 3'])
+        # # Set up column headers
+        # self.table_widget.setHorizontalHeaderLabels(['Column 1', 'Column 2', 'Column 3'])
 
-        # Add some sample data to the table
-        self.populate_table()
+        # # Add some sample data to the table
+        # self.populate_table()
 
-        # Set selection behavior and mode
-        self.table_widget.setSelectionBehavior( QAbstractItemView.SelectRows)  # Can be SelectRows, SelectColumns, or SelectItems
-        self.table_widget.setSelectionMode(QAbstractItemView.MultiSelection)   # Can be SingleSelection or MultiSelection
+        # # Set selection behavior and mode
+        # self.table_widget.setSelectionBehavior( QAbstractItemView.SelectRows)  # Can be SelectRows, SelectColumns, or SelectItems
+        # self.table_widget.setSelectionMode(QAbstractItemView.MultiSelection)   # Can be SingleSelection or MultiSelection
 
-        # Pro grammatically select a row and a column
-        self.select_row(1)  # Select the second row (index 1)
-        self.select_column(2)  # Select the third column (index 2)
+        # # Pro grammatically select a row and a column
+        # self.select_row(1)  # Select the second row (index 1)
+        # self.select_column(2)  # Select the third column (index 2)
 
         # Set layout
-        layout = QVBoxLayout()
-        layout.addWidget(self.table_widget)
-        self.setLayout(layout)
+        # layout = QVBoxLayout()
+        # layout.addWidget(self.table_widget)
+        # self.setLayout(layout)
 
     # -------------------------------------
     def populate_table(self):
@@ -243,6 +240,15 @@ class QTableWidgetTab( QWidget ):
                 self.table_widget.setItem(row, col, item)
 
     # -------------------------------------
+    def select_row_3(self,  ):
+        """
+        what it says
+        """
+        print_func_header( "select_row_3" )
+
+        self.select_row( 3 )
+
+    # -------------------------------------
     def select_row(self, row_index):
         """Select a specific row.
         may depend on selection mode
@@ -251,6 +257,7 @@ class QTableWidgetTab( QWidget ):
 
         print( f"select_row {row_index = }")
         self.table_widget.selectRow( row_index )
+        self.table_widget.show()
 
     # -------------------------------------
     def select_column(self, col_index):
@@ -297,6 +304,21 @@ class QTableWidgetTab( QWidget ):
 
         row_position = self.table_widget.currentRow()
         self.table_widget.removeRow( row_position )
+
+    # -------------------------------------
+    def remove_row_currrent_what(self):
+        """
+        what it says
+        """
+        print_func_header( "remove_row_current" )
+        # ---- insert data --- now a mess, parameterize this
+        print( "this adds cell 'upside down' and cell cords are ng ")
+        for i in range( 4, 0,   -1 ):  # better match table
+            for j in range( 5,  0, -1 ):  # col
+                # these items arguments must be strings
+                item     = QTableWidgetItem( "Cell ({}, {})".format( i, j) )
+                table_widget.setItem(i, j, item)
+
 
     # ------------------------------
     def set_size(self):
@@ -350,25 +372,47 @@ class QTableWidgetTab( QWidget ):
             print( msg )
 
     #----------------------------
-    def find_row_with_text( self  ):
+    def mutate( self  ):
+        """
+        read it
+        """
+        print_func_header( "mutate" )
+        self.mutation_ix   += 1
+        if self.mutation_ix > self.mutation_max:
+            self.mutation_ix = 0
+        self.mutation_dispatch[ self.mutation_ix ]()
+
+
+    #----------------------------
+    def mutate_0( self  ):
         """
         read it
         getText get text
         """
-        print_func_header( "find_row_with_text" )
+        print_func_header( "mutate_0" )
+        table   = self.table_widget
+        table.hideRow( 1 )
+        table.hideColumn( 1 )
 
-        table               = self.table_widget
-        ix_col_searched     = 2
-        ix_found            = None
-        target_text   = "Cell (2, 2)"
-        for row in range( table.rowCount() ):
-            item = table.item( row, ix_col_searched )  # Column 5
-            if item and item.text() == target_text:
-                ix_found = row
+    #----------------------------
+    def mutate_1( self  ):
+        """
+        read it
+        """
+        print_func_header( "mutate_1" )
+        table   = self.table_widget
+        table.showRow( 1 )
+        table.showColumn( 1 )
 
-        print( f"find_row_with_text {ix_found = }")
-
-        return ix_found
+    #----------------------------
+    def mutate_2( self  ):
+        """
+        read it -- right now does nothing new
+        """
+        print_func_header( "mutate_2" )
+        table   = self.table_widget
+        table.showRow( 1 )
+        table.showColumn( 1 )
 
     #----------------------------
     def find_row_with_text_in_column(self, ):
@@ -420,6 +464,17 @@ class QTableWidgetTab( QWidget ):
              msg            = "inspect...",
              a_locals       = locals(),
              a_globals      = globals(), )
+
+
+    # ------------------------
+    def breakpoint(self):
+        """
+        the usual
+        """
+        print_func_header( "breakpoint" )
+
+        breakpoint()
+
 
 
 # ---- eof

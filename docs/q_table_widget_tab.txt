@@ -1,30 +1,25 @@
 
-how are table widget and table model different
-
-
-how about a chart of relationships
+ 
 
 
 
 
-Status:  at last doc update much was not working.
+Status:  pretty much working 
 
-
-    This tab is related to QTableWidget, not an SQL widget, but
-    a two dimentional table for user interaction.  It may be used
-    for any data inclusing SQL data, but the data needs to be moved
-    in and out "manually"
-
-
-
+ 
 
 
 ----------------------- Table of Contents -----------------
+ 
 
+---- Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
+---- Ask a ChatBot
+---- Ideas for Improvement
 
-----Purpose/Functionality
-----Ideas for Improvement
-
+ 
 
 ------------------------- Contents -------------------------------
 
@@ -33,20 +28,30 @@ Status:  at last doc update much was not working.
 
 ........Widgets included:
 
-        No visual widgets but uses...
+        QTableWidget
 
----- Inte4ractions
+---- Interactions
+
+---- Discussion
 
 
+    This tab is related to QTableWidget, not an SQL widget, but
+    a two dimensional table for user interaction.  It may be used
+    for any data including SQL data, but the data needs to be moved
+    in and out "manually"
+    
+    it is a bit simpler than table models which needed to be 
+    implemented fro abstracttable models and used with a tableview
+    which this guy doesw not need.
 
 ---- Ask a ChatBot --------------------------------------------------------------------------
 
-        I have a .......
+        I have a QTableWidget ..... 
 
 
----- Work still to do --------------------------------------------------------------------------
+---- Ideas for Improvement --------------------------------------------------------------------------
 
-        Lots, indluding this section
+         
 
 
 

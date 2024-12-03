@@ -7,6 +7,7 @@ Utilities and now the resting place of the globals
 
 """
 import sys
+import importlib
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QPalette
@@ -42,6 +43,9 @@ from PyQt5.QtWidgets import (QApplication,
                              QVBoxLayout,
                              QWidget)
 
+
+
+
 # ---- end imports
 
 INDENT          = "    "   # {INDENT}
@@ -59,6 +63,26 @@ main_window     = None
 # DB_OBJECT      = None
 # PARAMETERS     = None
 # TEXT_EDITOR    = None
+
+# -------------------------------------------------------
+def create_class_from_strings(   module_name, class_name):
+    """
+    instance   = uft.create_class_from_strings(   module_name, class_name)
+    this will load a class from string names
+    this makes it easier to specify classes in the parameter file.
+
+    args:  strings as named
+    ret:   instance of the class
+
+    example:
+    if not ( self.parameters.ext_processing_module is None ):
+        self.ext_processing =  self.create_class_from_strings( self.parameters.ext_processing_module,
+                                                               self.parameters.ext_processing_class  )
+    """
+
+    a_class    = getattr( importlib.import_module(module_name), class_name )
+    instance   = a_class(  )
+    return instance
 
 
 

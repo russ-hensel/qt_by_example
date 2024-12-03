@@ -97,24 +97,8 @@ import tab_text_edit
 import utils_for_tabs as uft
 import wat_inspector
 
-# from   platform import python_version
-# print( f"your python version is: {python_version()}"  )   # add to running on
-
-# # import PyQt5.QtWidgets as qtw    #  qt widgets avoid so much import below
-# from   PyQt5.QtCore import Qt, QTimer
-# from   PyQt5 import QtGui
-
 
 # ---- imports neq qt
-
-
-
-
-
-
-
-
-
 
 
 
@@ -315,6 +299,11 @@ class QtWidgetExamples( QMainWindow ):
         action.triggered.connect( connect_to )
         menu_help.addAction( action )
 
+        action          = QAction( "Test of something", self )
+        connect_to      = partial( self.test,  )
+        action.triggered.connect( connect_to )
+        menu_help.addAction( action )
+
 
     #----------------------------
     def not_implemented( self,   ):
@@ -415,8 +404,55 @@ class QtWidgetExamples( QMainWindow ):
         """
         proc               = subprocess.Popen( [ uft.TEXT_EDITOR, file_name ] )
 
-    # ---- maybe dead maybe salvage
+    #-------
+    def test( self,    ):
+        """
+        some sort of test
+        self.tab_widget
 
+        title    = "QComboBox\n"
+        tab      = tab_combo_box.QComboBoxTab()
+        self.tab_widget.addTab( tab, title  )
+        self.tab_help_dict[ title ] = "combo_box_widget_tab.txt"
+
+        drive the whole thing off module name, would take 2 passes so
+        may be too big an import
+
+        instaad glob the dir for the help files
+
+
+        """
+
+        # need to detect dups, give each an id ? but what if deleted
+        # can we look thru the dict or use type or what
+
+
+        title          = "add tab_fitz_7"
+        module_name    = "tab_fitz_7"
+        class_name     = "Fitz_7_Tab"
+
+        tab            = uft.create_class_from_strings(   module_name, class_name)
+        self.tab_widget.addTab( tab, title  )
+
+        self.tab_help_dict[ title ] = "wrong_fix widget_tab.txt"
+
+
+        # code        = "tab      = tab_fitz_7.Fitz_7_Tab();                title       = "add tab_fitz_7""
+        # exec_to     = exec( code, globals(), locals() )
+        # self.tab_help_dict[ title ] = "combo_box_widget_tab.txt"
+
+        # import   tab_fitz_7
+        # title       = "add tab_fitz_7"
+
+
+
+        # code        = "tab      = tab_fitz_7.Fitz_7_Tab();        self.tab_widget.addTab( tab, title  )"
+        # exec_to     = exec( code, globals(), locals() )
+        # self.tab_help_dict[ title ] = "combo_box_widget_tab.txt"
+
+
+
+    # ---- maybe dead maybe salvage
     # --------
     def on_rb_clicked(self):
         """

@@ -44,6 +44,11 @@ from PyQt5.QtCore import (QDate,
                           QTime,
                           QTimer)
 from PyQt5.QtGui import QColor, QPalette, QTextCursor, QTextDocument
+
+from PyQt5.QtWidgets import   QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox, QDialog
+
+
+
 # sql
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 # widgets biger
@@ -87,18 +92,6 @@ import wat_inspector
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # ---- end imports
 
 
@@ -111,7 +104,7 @@ print_func_header =  uft.print_func_header
 
 
 #  --------
-class DialogEtcTab( QWidget ) :
+class DialogEtcTab( QWidget ):
     def __init__(self):
         """
         q_dialog_etc_tab.py
@@ -134,8 +127,6 @@ class DialogEtcTab( QWidget ) :
         row_layout          = QHBoxLayout(   )
         layout.addLayout( row_layout )
 
-
-
         # row_layout      = QHBoxLayout(   )
         # layout.addLayout( row_layout )
 
@@ -148,23 +139,21 @@ class DialogEtcTab( QWidget ) :
         # widget.toggled.connect( self.cbox_clicked )
         # row_layout.addWidget( widget, stretch = 0 )
 
-        # widget          = QCheckBox( "cbox_2 label"  )
-        # self.cbox_2     = widget
-        # widget.setChecked(True)
-        # widget.toggled.connect( self.cbox_clicked )
-        # row_layout.addWidget( widget, stretch = 0 )
-
-        # widget          = QCheckBox( "cbox_3 label"  )
-        # self.cbox_3     = widget
-        # widget.setChecked(True)
-        # widget.toggled.connect( self.cbox_clicked )
-        # row_layout.addWidget( widget, stretch = 0 )
-
         # ---- QPushButton("Open Messagebox")
         widget          = QPushButton("show_message\n_box")
         widget.setCheckable(True)
         widget.clicked.connect( lambda: self.show_message_box( ) )
         row_layout.addWidget( widget )
+
+        # ---- PB inspect
+        widget = QPushButton("browse_for\nfile")
+        widget.clicked.connect( self.browse_for_file    )
+        row_layout.addWidget( widget,   )
+
+        # ---- PB inspect
+        widget = QPushButton("browse_for\ndirectory")
+        widget.clicked.connect( self.browse_for_directory    )
+        row_layout.addWidget( widget,   )
 
         # ---- PB inspect
         widget = QPushButton("inspect\n")
@@ -202,7 +191,48 @@ class DialogEtcTab( QWidget ) :
         elif msg_box.clickedButton() == choice_b:
             print("Choice B selected")
 
-        QMessageBox.information( self, "Deput_in_clipboardlete Ok", "detail_text_model Record deleted successfully.")
+        QMessageBox.information( self, "Deput_in_clipboardlete Ok",
+                                "detail_text_model Record deleted successfully.")
+
+    # ------------------------
+    def browse_for_file(self):
+        """
+        what it says
+        """
+        print_func_header( "browse_for_file" )
+        initial_dir     = "/mnt/WIN_D/Russ/0000/python00/python3/_projects/stuffdb/__pycache__"
+
+        file_dialog     = QFileDialog(self, "Select Files")
+
+        file_dialog.setFileMode(QFileDialog.ExistingFiles) #multiple file selection
+        file_dialog.setNameFilter("All Files (*);;Text Files (*.txt)")
+        file_dialog.setDirectory( initial_dir )
+        # file_dialog.setWindowTitle(  title      )
+        # #file_dialog.setNameFilter(   file_types  )
+
+        if file_dialog.exec_():
+            files = file_dialog.selectedFiles()
+            #self.model.clear_data()
+            print("browse Selected files:")
+            for file in files:
+                print(file)
+                row_data     = [ file, "1", "2"]
+                # self.model.addRow( row_data)
+
+    # ------------------------
+    def browse_for_directory(self):
+        """
+        what it says
+        """
+        print_func_header( "browse_for_directory" )
+
+        # Open the directory browser
+        directory = QFileDialog.getExistingDirectory(self, "Select Directory")
+        if directory:
+            # Display the selected directory
+            print (f"Selected Directory: {directory}")
+        else:
+            print("No directory selected")
 
     # ------------------------
     def inspect(self):

@@ -1,12 +1,23 @@
 
 
------------------------ Table of Contents -----------------
 
+
+Status:  pretty much working 
+
+ 
+
+
+----------------------- Table of Contents -----------------
+ 
 
 ---- Purpose/Functionality
+........Widgets included
+---- User interaction
+---- Discussion
 ---- Ask a ChatBot
----- Work still to do
+---- Ideas for Extension
 
+ 
 
 
 ---- Purpose/Functionality --------------------------------------------------------------------------
@@ -18,6 +29,15 @@
 
             QListWidget
 
+---- User interaction
+
+
+
+---- Discussion
+
+        note that there are editable listboxes and non editable ones 
+
+
 
 ---- Ask a ChatBot
 
@@ -28,14 +48,16 @@
 
         I have a QListWidget.  What can I do to change the way it manages input?
 
----- Work still to do  --------------------------------------------------------------------------
+ 
+---- Ideas for Extension
+
+ 
 
     more modifications at runtime
 
     set selctions
 
     scroll
-
 
 
 ---- eof

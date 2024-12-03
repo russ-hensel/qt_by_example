@@ -594,6 +594,11 @@ class QSqlDatabaseTab( QWidget ):
         widget.clicked.connect( connect_to )
         button_layout.addWidget( widget )
 
+        # ---- PB "update_\ndata"
+        widget              = QPushButton("update_\ndata")
+        widget.clicked.connect( self.update_data )
+        button_layout.addWidget( widget )
+
 
         # ---- PB "query_book_\nclub "
         widget              = QPushButton("query_book_\nclub ")
@@ -634,7 +639,7 @@ class QSqlDatabaseTab( QWidget ):
     #-----------------------------------------------
     def insert_more_data( self ):
         """
-
+        what it says, data with stars
         """
         print_func_header( "insert_more_data" )
 
@@ -706,6 +711,37 @@ class QSqlDatabaseTab( QWidget ):
             else:
                 print("Records deleted successfully.")
 
+    #-----------------------------------------------
+    def update_data( self ):
+        """
+        what it says
+        """
+        print_func_header( "update_data" )
+
+        db      = uft.DB_OBJECT.db
+
+        query   = QSqlQuery(db)
+
+
+        sql      = """
+            UPDATE book_club
+            SET name = :new_name
+            WHERE name LIKE :pattern;
+            """
+
+        if not query.prepare(sql):
+            print(f"Prepare failed: {query.lastError().text()}")
+
+        else:
+            query.bindValue(":new_name", "stars")
+            query.bindValue(":pattern", "*%")
+
+            if not query.exec_():
+                print(f"Execution failed: {query.lastError().text()}")
+
+            else:
+                rows_affected = query.numRowsAffected()
+                print( f"Records udated successfully. {rows_affected = } ")
 
 
     # ------------------------

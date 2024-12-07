@@ -24,6 +24,11 @@ repo.  It does run in qt, so you need to have qt installed.  You do not
 need to run it in a qt app of your own, but you can if you wish.  I will
 try to add some material in the wiki.
 
+Install:
+
+There is no install, just download and run in a Python of about 3.10 or higher, PyQt5 and the 
+wat-inspector mentioned above.  If it does not run for you let me know and I will try to help out.
+
 Back to the Examples:
 
 The application's code should be simple and contain code that is closely linked to the

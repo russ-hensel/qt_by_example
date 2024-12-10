@@ -2,8 +2,16 @@
     which qt, for now QT5 for Python
 
 The Plan ( some implemented ! )
+The new plan for this is to have a have one applications for all the examples with a
+key word search that activates a tab that shows the desired widgets in action.  The
+code for each tab will largely be limited to that tab so if you copy code from it you
+will not be entangled in a larger environment.  A break button on each tab will break
+you into the code in the tab you are viewing.  In Spyder ( and I think other IDEs ) this
+will also open an editor at the break point, making it really easy to find the code that
+the tab illustrates. This plan will largely replace the old plan ( below ) although the
+tab code will remain largely the same.
 
-The plan for this is to have a small number of applications that illustrate the
+The old plan for this is to have a small number of applications that illustrate the
 use of many of qt's widgets.  It grew out of my efforts to learn qt.  I use it
 as a place to first test out code I think I understand, and then experiment a bit
 with the code.  It may be useful to have two versions of the code, one close to this distribution

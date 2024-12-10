@@ -8,7 +8,9 @@ code for each tab will largely be limited to that tab so if you copy code from i
 will not be entangled in a larger environment.  A break button on each tab will break
 you into the code in the tab you are viewing.  In Spyder ( and I think other IDEs ) this
 will also open an editor at the break point, making it really easy to find the code that
-the tab illustrates. This plan will largely replace the old plan ( below ) although the
+the tab illustrates. Once in the debug mode you can set additional breakpoints ( at least in
+Spyder ) and continue debuggin even if you did not start the app in the debugger.
+This plan will largely replace the old plan ( below ) although the
 tab code will remain largely the same.
 
 The old plan for this is to have a small number of applications that illustrate the

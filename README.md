@@ -1,6 +1,12 @@
 # qt_by_example  
     which qt, for now QT5 for Python
 
+This repo is obsolete, too much has changed on my machine.  I will create
+qt5_by_example to replace this soon; as it is so much better and bigger.  For now
+you can leave me messages in the issues section of the repo.
+if you are interested in qt5_by_example, messge me here and I will
+let you know how to get your hands on it.
+
 The Plan ( some implemented ! )
 The new plan for this is to have a have one applications for all the examples with a
 key word search that activates a tab that shows the desired widgets in action.  The

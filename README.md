@@ -1,3 +1,8 @@
+Depricated, soon to be deleted, replaced by qt5_by_example 
+
+
+
+
 # qt_by_example  
     which qt, for now QT5 for Python
 

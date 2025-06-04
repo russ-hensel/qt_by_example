@@ -1,9 +1,30 @@
+Depricated, soon to be deleted, replaced by qt5_by_example 
+
+
+
+
 # qt_by_example  
     which qt, for now QT5 for Python
 
-The Plan ( some implemented ! )
+This repo is obsolete, too much has changed on my machine.  I will create
+qt5_by_example to replace this soon; as it is so much better and bigger.  For now
+you can leave me messages in the issues section of the repo.
+if you are interested in qt5_by_example, messge me here and I will
+let you know how to get your hands on it.
 
-The plan for this is to have a small number of applications that illustrate the
+The Plan ( some implemented ! )
+The new plan for this is to have a have one applications for all the examples with a
+key word search that activates a tab that shows the desired widgets in action.  The
+code for each tab will largely be limited to that tab so if you copy code from it you
+will not be entangled in a larger environment.  A break button on each tab will break
+you into the code in the tab you are viewing.  In Spyder ( and I think other IDEs ) this
+will also open an editor at the break point, making it really easy to find the code that
+the tab illustrates. Once in the debug mode you can set additional breakpoints ( at least in
+Spyder ) and continue debuggin even if you did not start the app in the debugger.
+This plan will largely replace the old plan ( below ) although the
+tab code will remain largely the same.
+
+The old plan for this is to have a small number of applications that illustrate the
 use of many of qt's widgets.  It grew out of my efforts to learn qt.  I use it
 as a place to first test out code I think I understand, and then experiment a bit
 with the code.  It may be useful to have two versions of the code, one close to this distribution
@@ -23,6 +44,11 @@ You may be interested in Wat even if you are not interested in the rest of this
 repo.  It does run in qt, so you need to have qt installed.  You do not
 need to run it in a qt app of your own, but you can if you wish.  I will
 try to add some material in the wiki.
+
+Install:
+
+There is no install, just download and run in a Python of about 3.10 or higher, PyQt5 and the 
+wat-inspector mentioned above.  If it does not run for you let me know and I will try to help out.
 
 Back to the Examples:
 
